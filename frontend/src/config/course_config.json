@@ -1,0 +1,35 @@
+{
+  "$schema": "./course_config.schema.json",
+  "course": {
+    "title": "Clase de Procesamiento de Audio",
+    "shortTitle": "DSP",
+    "subtitle": "Boilerplate genérico — reemplazar con contenido real.",
+    "institution": "Pontificia Universidad Católica de Chile",
+    "term": "—"
+  },
+  "theme": {
+    "background": "cream",
+    "accent": "#2563eb",
+    "showHeaderTitle": true,
+    "showProgressDots": true,
+    "showSlideCounter": true
+  },
+  "slides": [],
+  "pipelines": {},
+  "_doc": {
+    "slides[]": {
+      "id": "string · clave única; debe coincidir con la entrada en src/slides/index.js y con el ## anchor en content.md",
+      "label": "string · texto mostrado en tooltips/dots",
+      "props": "object opcional · pasado como props al componente (audio, imágenes, parámetros)"
+    },
+    "pipelines.<id>": {
+      "module": "string · nombre del módulo en dsp_pipelines/pipelines/",
+      "input": "string · archivo en dsp_pipelines/inputs/",
+      "params": "object · kwargs serializables pasados a run()",
+      "outputs": {
+        "audio": "object · { logical_name: 'archivo_destino_en_public.wav' }",
+        "images": "object · { logical_name: 'archivo_destino_en_public.png' }"
+      }
+    }
+  }
+}

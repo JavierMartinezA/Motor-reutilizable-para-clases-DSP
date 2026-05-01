@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(python sync_to_public.py)",
+      "Bash(python -m uvicorn *)",
+      "Bash(set PYTHONIOENCODING=utf-8)"
+    ]
+  }
+}
