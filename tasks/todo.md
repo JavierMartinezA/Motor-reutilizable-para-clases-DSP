@@ -2,15 +2,20 @@
 
 ## Pendientes vivos
 
-- [ ] Crear la primera slide concreta del próximo curso siguiendo
-      `_template/SlideTemplate.jsx`. Registrar en `src/slides/index.js` y
-      `course_config.json`.
-- [ ] Implementar el primer pipeline DSP real en
-      `dsp_pipelines/pipelines/<id>.py`. Usar `_template.py` como base.
+- [x] Slide **`sintesis-clasica`** (“Síntesis Clásica: Arquitectos del Aire”):
+      `frontend/src/slides/sintesis-clasica/Slide.jsx`, registro en
+      `src/slides/index.js` y `course_config.json`.
+- [x] Pipeline **`sintesis_clasica`**: `dsp_pipelines/pipelines/sintesis_clasica.py`
+      (tres demos WAV + PNG; clave JSON sin guion por import Python).
+- [x] Slide **`sintesis_fm`** ("La Magia de la Síntesis FM y el DX7"):
+      8 pasos · motor Web Audio (FM ≡ PM), curvas de Bessel J_n(I), espectro
+      |J_n(I)| en líneas, envolvente ADSR sobre I (campana / Rhodes),
+      nulo de Bessel destacado en J_0(2.4048).
+- [x] `npm run build` verifica que el motor compila sin imports rotos.
 - [ ] Verificar el hook `PostToolUse` ejecutándolo manualmente con un pipeline
       placeholder y un input dummy.
-- [ ] Probar `npm run build` tras la purga para confirmar que el motor
-      compila sin imports rotos.
+- [ ] (Opcional) Pipeline Python `sintesis_fm` que genere WAV/PNG estáticos
+      de respaldo para casos sin audio interactivo (proyectores sin sonido).
 - [ ] Escribir un primer item en `tasks/lessons.md` después de la primera
       iteración real del flujo end-to-end (Python → sync → React).
 

@@ -14,8 +14,98 @@
     "showProgressDots": true,
     "showSlideCounter": true
   },
-  "slides": [],
-  "pipelines": {},
+  "slides": [
+    {
+      "id": "sintesis_fm",
+      "label": "01 · Portada y el problema (DX7)",
+      "props": {}
+    },
+    {
+      "id": "fm_intuicion",
+      "label": "02 · La intuición · vibrato → timbre",
+      "props": {}
+    },
+    {
+      "id": "fm_ecuacion",
+      "label": "03 · La ecuación y el plano FM",
+      "props": {}
+    },
+    {
+      "id": "fm_bessel",
+      "label": "04 · Funciones de Bessel sin álgebra",
+      "props": {}
+    },
+    {
+      "id": "fm_vivo",
+      "label": "05 · El plano FM en vivo",
+      "props": {}
+    },
+    {
+      "id": "recreando_80s",
+      "label": "06 · Fun Task 09 · Recreando los 80s",
+      "props": {}
+    },
+    {
+      "id": "fm_debate",
+      "label": "07 · Debate de cierre · el vacío de Bessel",
+      "props": {}
+    }
+  ],
+  "pipelines": {
+    "recreando_80s": {
+      "module": "recreando_80s",
+      "input": "original_80s.wav",
+      "params": {
+        "sr": 44100,
+        "duration_s": 1.4,
+        "fc": 73.4,
+        "ratio": 1.0,
+        "I_max": 6.5,
+        "detune_hz": 0.5,
+        "master_dbfs": -1.4,
+        "attack_s": 0.005,
+        "decay_s": 0.35,
+        "sustain": 0.55,
+        "release_s": 0.6,
+        "fmax_view_hz": 3000
+      },
+      "outputs": {
+        "audio": {
+          "cover_80s.wav": "cover_80s.wav",
+          "original_80s.wav": "original_80s.wav"
+        },
+        "images": {
+          "recreando_80s_spec_original.png": "recreando_80s_spec_original.png",
+          "recreando_80s_spec_cover.png": "recreando_80s_spec_cover.png",
+          "recreando_80s_spec_compare.png": "recreando_80s_spec_compare.png"
+        }
+      }
+    },
+    "sintesis_clasica": {
+      "module": "sintesis_clasica",
+      "input": "dummy_silence.wav",
+      "params": {
+        "sr": 44100,
+        "duration_s": 2.5,
+        "f0": 220,
+        "n_harmonics": 8,
+        "wavetable_size": 2048,
+        "cutoff_hz": 1800,
+        "filter_order": 4
+      },
+      "outputs": {
+        "audio": {
+          "sintesis_clasica_aditiva.wav": "sintesis_clasica_aditiva.wav",
+          "sintesis_clasica_wavetable.wav": "sintesis_clasica_wavetable.wav",
+          "sintesis_clasica_sustractiva.wav": "sintesis_clasica_sustractiva.wav"
+        },
+        "images": {
+          "sintesis_clasica_harmonics.png": "sintesis_clasica_harmonics.png",
+          "sintesis_clasica_filter.png": "sintesis_clasica_filter.png"
+        }
+      }
+    }
+  },
   "_doc": {
     "slides[]": {
       "id": "string · clave única; debe coincidir con la entrada en src/slides/index.js y con el ## anchor en content.md",

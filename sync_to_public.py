@@ -63,7 +63,7 @@ def _find_artifact(name: str) -> Path | None:
 def _copy(src: Path, dst: Path) -> None:
     dst.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(src, dst)
-    print(f"  · {src.name}  →  {dst.relative_to(ROOT)}")
+    print(f"  · {src.name}  ->  {dst.relative_to(ROOT)}")
 
 
 def sync_pipeline(pid: str, spec: dict) -> int:
@@ -71,7 +71,7 @@ def sync_pipeline(pid: str, spec: dict) -> int:
     audio_map = outputs.get("audio", {}) or {}
     image_map = outputs.get("images", {}) or {}
     copied = 0
-    print(f"[{pid}] sincronizando …")
+    print(f"[{pid}] sincronizando...")
     for src_name, dst_name in audio_map.items():
         src = _find_artifact(src_name)
         if src is None:
@@ -124,7 +124,7 @@ def main(argv: list[str]) -> int:
         return 0
 
     if not pipelines:
-        print("course_config.pipelines vacío → modo permisivo")
+        print("course_config.pipelines vacio -> modo permisivo")
         n = sync_permissive()
         print(f"OK · {n} archivo(s) copiado(s)")
         return 0
