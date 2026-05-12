@@ -16,9 +16,8 @@ Contrato (ver .claude/rules/python-dsp-base.md):
 
 Convención de I/O:
     input_wav  → dsp_pipelines/inputs/original_80s.wav
-                 (si el archivo no existe se genera un "fake original" sintético
-                  para que el pipeline corra end-to-end mientras el usuario sube
-                  el snippet real).
+                 (si el archivo no existe se genera una referencia sintética
+                  objetivo para que el pipeline corra end-to-end).
     outputs   → cover_80s.wav,
                  recreando_80s_spec_original.png,
                  recreando_80s_spec_cover.png,
@@ -195,12 +194,11 @@ def plot_spec(
 # 3. Generación del original sintético (fallback si no hay snippet real)
 # ============================================================
 
-def synthesize_fake_original(sr: int, dur: float, fc: float) -> np.ndarray:
-    """Si no se proveyó original_80s.wav, generamos una "referencia" con un
+def synthesize_target_reference(sr: int, dur: float, fc: float) -> np.ndarray:
+    """Genera una "referencia" objetivo con un
     ratio LIGERAMENTE distinto al cover. Esto permite que el espectrograma
     comparativo muestre el desplazamiento de bandas característico de un
-    error de ratio — útil para enseñar el diagnóstico aunque el alumno no
-    haya subido el snippet aún.
+    error de ratio — útil para enseñar el diagnóstico.
 
     [WHY] No usamos el mismo ratio que el cover porque entonces los dos
     espectrogramas serían idénticos y la lección visual sería nula.
@@ -273,10 +271,10 @@ def run(input_wav: Path, out_dir: Path, **params: Any) -> dict[str, Any]:
             t_old = np.arange(len(x_orig)) / sr_orig
             t_new = np.arange(int(len(x_orig) * sr / sr_orig)) / sr
             x_orig = np.interp(t_new, t_old, x_orig).astype(np.float32)
-        is_real_original = True
+        is_external_original = True
     else:
-        x_orig = synthesize_fake_original(sr, dur, fc=fc)
-        is_real_original = False
+        x_orig = synthesize_target_reference(sr, dur, fc=fc)
+        is_external_original = False
 
     # Para análisis siempre comparamos versiones MONO de la misma duración
     cover_mono = ((y_L + y_R) * 0.5).astype(np.float32)
@@ -293,9 +291,9 @@ def run(input_wav: Path, out_dir: Path, **params: Any) -> dict[str, Any]:
     fig1, ax1 = plt.subplots(figsize=(8, 3.6), dpi=110, facecolor=CREAM)
     plot_spec(
         ax1, x_orig_cmp, sr,
-        title=("Espectrograma · Original (referencia)"
-               if is_real_original else
-               "Espectrograma · Original (fallback sintético — sube original_80s.wav)"),
+        title=("Espectrograma · Original (externo)"
+               if is_external_original else
+               "Espectrograma · Sonido Objetivo a Clonar"),
         accent=BLUE, fmax_hz=fmax_view,
     )
     fig1.tight_layout()
@@ -318,7 +316,7 @@ def run(input_wav: Path, out_dir: Path, **params: Any) -> dict[str, Any]:
     # Comparativo combinado (2 paneles compartiendo eje y)
     fig3, axes = plt.subplots(2, 1, figsize=(11, 5.6), dpi=110, facecolor=CREAM, sharex=True, sharey=True)
     plot_spec(axes[0], x_orig_cmp, sr,
-              title="Original (referencia)" if is_real_original else "Original (fallback sintético)",
+              title="Referencia (externa)" if is_external_original else "Sonido Objetivo a Clonar",
               accent=BLUE, fmax_hz=fmax_view)
     plot_spec(axes[1], cover_cmp, sr,
               title=f"Cover · ratio={ratio:.3f} · I_max={I_max:.1f}",
@@ -332,15 +330,14 @@ def run(input_wav: Path, out_dir: Path, **params: Any) -> dict[str, Any]:
     fig3.savefig(str(spec_compare_path), dpi=110, facecolor=CREAM)
     plt.close(fig3)
 
-    # Si quien corrió esto tampoco tiene un original real, dejamos también un
-    # WAV "original sintético" para que la slide pueda reproducirlo durante la
-    # demo. No reemplaza al snippet real.
-    if not is_real_original:
-        fake_orig_path = out_dir / "original_80s.wav"
-        sf.write(str(fake_orig_path), normalize_peak_dbfs(x_orig_cmp, -2.0), sr, subtype="PCM_16")
+    # Si usamos la referencia generada internamente, la guardamos también como un
+    # WAV para que la slide pueda reproducirlo.
+    if not is_external_original:
+        target_path = out_dir / "original_80s.wav"
+        sf.write(str(target_path), normalize_peak_dbfs(x_orig_cmp, -2.0), sr, subtype="PCM_16")
         audio_outputs = {
             "cover_80s.wav": cover_path,
-            "original_80s.wav": fake_orig_path,
+            "original_80s.wav": target_path,
         }
     else:
         audio_outputs = {"cover_80s.wav": cover_path}
@@ -361,7 +358,7 @@ def run(input_wav: Path, out_dir: Path, **params: Any) -> dict[str, Any]:
             "detune_hz": detune_hz,
             "master_dbfs": master_dbfs,
             "ADSR_I": {"A": A_env, "D": D_env, "S": S_env, "R": R_env},
-            "is_real_original": is_real_original,
+            "is_external_original": is_external_original,
             "params": params,
         },
     }

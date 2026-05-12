@@ -493,44 +493,29 @@ function Step3Validacion() {
           Resultado del reto
         </span>
         <p style={{ margin: '4px 0 0', fontFamily: "'Newsreader', serif", fontSize: 14, color: INK, lineHeight: 1.55 }}>
-          Comparamos la referencia original con el WAV generado mediante NumPy.
-          En el espectrograma del clon se observan las bandas laterales propias de la FM,
-          concentrándose al inicio donde I(t) es mayor, logrando replicar el carácter percusivo original.
+          El resultado final es un WAV stereo generado con NumPy y su espectrograma. La energía
+          aparece en bandas laterales propias de FM y se concentra mas al inicio, donde I(t) es mayor, 
+          logrando replicar el carácter percusivo.
         </p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
-        {/* Referencia Original */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <SpectrogramPanel
-            kicker="Referencia Original"
-            title="original_80s.wav"
-            accent={BLUE}
-            imgSrc="/imagenes/recreando_80s_spec_original.png"
-          />
-          <AudioPlayer
-            src="/audio/original_80s.wav"
-            label="Original 80s"
-            sublabel="AUDIO DE REFERENCIA"
-            accent={BLUE}
-          />
-        </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 640px)', justifyContent: 'center' }}>
+        <SpectrogramPanel
+          kicker="Sintesis FM"
+          title="bajo FM generado con fc=73.4 Hz e Imax=6.5"
+          accent={AMBER}
+          imgSrc="/imagenes/recreando_80s_spec_cover.png"
+        />
+      </div>
 
-        {/* Audio Generado */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <SpectrogramPanel
-            kicker="Sintesis FM"
-            title="bajo FM generado con fc=73.4 Hz e Imax=6.5"
-            accent={AMBER}
-            imgSrc="/imagenes/recreando_80s_spec_cover.png"
-          />
-          <AudioPlayer
-            src="/audio/cover_80s.wav"
-            label="Bajo FM estilo 80s"
-            sublabel="GENERADO · NUMPY"
-            accent={AMBER}
-          />
-        </div>
+      {/* Audio Generado */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 520px)', justifyContent: 'center' }}>
+        <AudioPlayer
+          src="/audio/cover_80s.wav"
+          label="Bajo FM estilo 80s"
+          sublabel="GENERADO · NUMPY"
+          accent={AMBER}
+        />
       </div>
 
       <div style={{
