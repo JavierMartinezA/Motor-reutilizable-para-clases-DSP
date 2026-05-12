@@ -62,11 +62,11 @@ $$
 
 ## sintesis_fm
 
-### Portada - Esculpiendo el Espectro
-La síntesis de Modulación de Frecuencia (FM) representa un punto de inflexión donde la matemática pura se convierte en una herramienta poética para esculpir el sonido. A diferencia de la síntesis sustractiva, que esculpe el timbre quitando frecuencias de formas de onda ricas mediante filtros controlados por voltaje, la síntesis FM aborda el diseño sonoro desde un paradigma constructivo y no lineal. Desarrollada por John Chowning en la Universidad de Stanford en 1967, esta técnica demostró que la complejidad espectral no depende de la cantidad de osciladores, sino de la profundidad de su interacción matemática.
+### Portada - Mecanismo de Generación
+La síntesis FM consiste en la modulación de la frecuencia instantánea de una señal portadora mediante una señal moduladora operando en el espectro audible. Este proceso genera componentes espectrales adicionales (bandas laterales) sin necesidad de múltiples osciladores, permitiendo la creación de timbres complejos mediante una interacción no lineal entre señales senoidales.
 
 ### El Problema - El Paradigma del DX7
-Antes de 1983, la creación de espectros acústicos realistas (como los metales, campanas o pianos eléctricos) era una tarea titánica y costosa, limitando la expresividad a osciladores de formas de onda básicas (sierras, cuadradas) y filtros. Con la llegada del Yamaha DX7 en 1983, la industria musical experimentó un sismo estético. En lugar de requerir inmensos bancos de filtros y hardware complejo, el DX7 utilizó la modulación de frecuencia para generar espectros infinitamente ricos con solo 6 osciladores puros (senoidales), denominados "operadores". El DX7 definió el sonido de los años 80, aportando los cristalinos pianos eléctricos de "Take My Breath Away" y las texturas percusivas de "When Doves Cry".
+El límite de la Síntesis Aditiva: Emular instrumentos reales sumando sinusoides individuales exige una enorme carga computacional. En 1983, el Yamaha DX7 definió una década logrando espectros inmensamente ricos utilizando únicamente 6 osciladores interactivos. ¿Cómo se genera tal complejidad espectral con tan pocos recursos computacionales?
 
 ### La Intuición - Del Vibrato al Timbre
 Si aplicamos la salida de un oscilador para modular la frecuencia de otro, el resultado depende estrictamente de la velocidad de esta modulación. Si la frecuencia moduladora ($f_m$) es menor a 20 Hz (el límite inferior de audición humana), el cerebro percibe un LFO clásico: un vibrato donde la altura de la nota ondula en el tiempo.

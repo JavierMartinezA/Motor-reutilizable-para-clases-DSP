@@ -18,6 +18,7 @@ import {
 
 export default function SlideIntuicion() {
   const [fm, setFm] = useState(5);
+  const [inputValue, setInputValue] = useState('5.0');
   const [playing, setPlaying] = useState(false);
   const engine = useFMEngine();
   const { ensure, setRawParams, play, stop, analyser } = engine;
@@ -31,7 +32,31 @@ export default function SlideIntuicion() {
   // Empuja parámetros siempre que f_m cambie (analyser ve la señal aunque mute=0).
   useEffect(() => {
     setRawParams({ fc: 220, fm, I: 5 });
+    setInputValue(fm.toFixed(1));
   }, [fm, setRawParams]);
+
+  const handleInputKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      const val = parseFloat(inputValue);
+      if (!isNaN(val)) {
+        const clamped = Math.max(1, Math.min(500, val));
+        setFm(clamped);
+      } else {
+        setInputValue(fm.toFixed(1));
+      }
+    }
+  };
+
+  const handleInputBlur = () => {
+    const val = parseFloat(inputValue);
+    if (!isNaN(val)) {
+      const clamped = Math.max(1, Math.min(500, val));
+      setFm(clamped);
+      setInputValue(clamped.toFixed(1));
+    } else {
+      setInputValue(fm.toFixed(1));
+    }
+  };
 
   const togglePlay = useCallback(() => {
     if (playing) { stop(); setPlaying(false); }
@@ -119,8 +144,33 @@ export default function SlideIntuicion() {
               <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, letterSpacing: '0.1em', textTransform: 'uppercase', color: INK_MUTED, fontWeight: 700 }}>
                 Frecuencia moduladora f_m
               </span>
-              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 18, color: isVibrato ? RED : BLUE, fontWeight: 700 }}>
-                {fm.toFixed(1)} Hz
+              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 18, color: isVibrato ? RED : BLUE, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 6 }}>
+                <input
+                  type="text"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  onKeyDown={handleInputKeyDown}
+                  onBlur={handleInputBlur}
+                  title="Escribe la frecuencia y presiona Enter"
+                  style={{
+                    width: 72,
+                    background: 'rgba(255, 255, 255, 0.7)',
+                    border: `2px solid ${isVibrato ? 'rgba(192,57,43,0.4)' : 'rgba(37,99,235,0.4)'}`,
+                    borderRadius: 6,
+                    color: 'inherit',
+                    fontFamily: 'inherit',
+                    fontSize: 'inherit',
+                    fontWeight: 'inherit',
+                    textAlign: 'center',
+                    outline: 'none',
+                    padding: '2px 4px',
+                    margin: 0,
+                    transition: 'border-color 0.2s ease',
+                  }}
+                  onFocus={(e) => e.target.style.borderColor = isVibrato ? RED : BLUE}
+                  onBlurCapture={(e) => e.target.style.borderColor = isVibrato ? 'rgba(192,57,43,0.4)' : 'rgba(37,99,235,0.4)'}
+                />
+                <span style={{ fontSize: 15, opacity: 0.8 }}>Hz</span>
               </span>
             </div>
             <div style={{ position: 'relative' }}>

@@ -28,8 +28,8 @@ export default function SlidePortada() {
     <SlideLayout
       sectionId="01"
       sectionLabel="Síntesis FM · Portada y problema"
-      title={<>La magia de la <em>Síntesis FM</em> y el DX7</>}
-      subtitle="Dos osciladores, tres parámetros, infinitos timbres — la paradoja de 1983."
+      title="Síntesis por Modulación de Frecuencia (FM)."
+      subtitle="Modelado tímbrico complejo mediante osciladores acoplados."
     >
       <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
         <SubStepTabs items={SUB_ITEMS} value={sub} onChange={setSub} />
@@ -47,15 +47,16 @@ function PortadaPanel() {
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32, minHeight: 420, alignItems: 'center' }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
         <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, letterSpacing: '0.22em', textTransform: 'uppercase', color: AMBER, fontWeight: 700 }}>
-          Stanford · 1967 · John Chowning
+          Mecanismo de Generación
         </span>
         <h3 style={{ fontFamily: "'Newsreader', serif", fontSize: 38, lineHeight: 1.1, color: INK, margin: 0, fontWeight: 500 }}>
-          Esculpir el espectro<br />
-          <em style={{ color: AMBER }}>con matemática pura</em>.
+          Modulación de frecuencia<br />
+          <em style={{ color: AMBER }}>en el rango de audio</em>.
         </h3>
         <p style={{ fontFamily: "'Newsreader', serif", fontSize: 17, color: INK_MUTED, lineHeight: 1.5, margin: 0 }}>
-          Donde la sustractiva esculpe restando con filtros, la FM construye desde una
-          interacción no-lineal: dos senoides, tres parámetros, infinitos timbres.
+          La síntesis FM genera timbres complejos modulando la frecuencia de una señal
+          portadora con otra de audio. Este proceso no lineal crea bandas laterales
+          cuya distribución define la identidad tímbrica del sonido resultante.
         </p>
         <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13, color: INK_FAINT, marginTop: 8 }}>
           <span style={{ color: BLUE }}>● f_c</span>
@@ -207,7 +208,7 @@ function DX7CleanSchematic() {
       <line x1={byN[2].x} y1={byN[2].y + opR + 2} x2={W / 2} y2={H - 30} stroke={BLUE} strokeWidth={1.2} opacity={0.7} />
       <line x1={byN[1].x} y1={byN[1].y + opR + 2} x2={W / 2} y2={H - 30} stroke={BLUE} strokeWidth={1.2} opacity={0.7} />
       <text x={W / 2} y={H - 14} textAnchor="middle" fontFamily="Inter,sans-serif" fontSize={10} fill={BLUE} fontStyle="italic">
-        profundidad &gt; cantidad — un cincel matemático
+        profundidad &gt; cantidad — interacción no lineal
       </text>
     </svg>
   );
@@ -218,11 +219,11 @@ function ProblemaDX7Panel() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 18, minHeight: 420 }}>
       <div style={{ textAlign: 'center', maxWidth: 920, margin: '0 auto' }}>
         <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase', color: AMBER, fontWeight: 700 }}>
-          La gran provocación · 1983
+          El límite de la Síntesis Aditiva
         </span>
         <h3 style={{ fontFamily: "'Newsreader', serif", fontSize: 26, lineHeight: 1.22, color: INK, margin: '6px 0 0', fontWeight: 500 }}>
-          ¿Cómo hacía el <em style={{ color: AMBER }}>Yamaha DX7</em> para sonar tan rico
-          con <strong>solo 6 osciladores</strong>?
+          Emular instrumentos reales sumando sinusoides individuales <br />
+          exige una <em style={{ color: RED }}>enorme carga computacional</em>.
         </h3>
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.05fr 1fr', gap: 18, alignItems: 'center' }}>
@@ -250,9 +251,9 @@ function ProblemaDX7Panel() {
         ))}
       </div>
       <p style={{ fontFamily: "'Newsreader', serif", fontSize: 13.5, color: INK_MUTED, lineHeight: 1.5, textAlign: 'center', margin: '4px auto 0', maxWidth: 820 }}>
-        A diferencia de la sustractiva (que <em>esculpe restando</em> con filtros), la FM
-        <strong> construye</strong> timbres a partir de la interacción no-lineal entre osciladores.
-        Cinco años bastaron para que esta lámina definiera el sonido de una década entera.
+        <strong>El Paradigma DX7:</strong> En 1983, el Yamaha DX7 definió una década logrando espectros
+        inmensamente ricos utilizando únicamente <strong>6 osciladores interactivos</strong>.
+        ¿Cómo se genera tal complejidad espectral con tan pocos recursos computacionales?
       </p>
     </div>
   );

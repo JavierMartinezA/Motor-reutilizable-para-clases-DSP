@@ -1,13 +1,12 @@
 /**
  * Recreando los 80s — Fun Task 09.
- * Puente entre la teoría matemática (Chowning · Bessel) y la aplicación
- * artística: clonar un timbre icónico (When Doves Cry · Africa) usando
- * síntesis FM 2-operador en NumPy y validar visualmente vía espectrograma.
+ * Reto: recrear un bajo FM percusivo estilo 80s usando sintesis FM
+ * 2-operador en NumPy y revisar el resultado con audio + espectrograma.
  *
  * 3 pasos controlados manualmente por el profesor:
- *   1. Parámetros detectados a oído (f_c, ratio, I_max, ADSR)
- *   2. Lógica de generación (ecuación + código + máster)
- *   3. Validación cruzada (espectrogramas + audio original vs clon)
+ *   1. Sonido elegido
+ *   2. Parametros usados
+ *   3. Resultado generado
  */
 
 import { useState } from 'react';
@@ -28,17 +27,17 @@ const INK_FAINT = '#9e9eb8';
 const TOTAL_STEPS = 3;
 
 const STEP_TITLES = [
-  '1 · Parámetros detectados a oído',
-  '2 · Lógica de generación · NumPy',
-  '3 · Validación · espectrograma + audio',
+  '1 · Sonido elegido',
+  '2 · Parametros usados',
+  '3 · Resultado generado',
 ];
 
 // Sub-pasos internos: cada label revela un nuevo bloque de la slide.
 // La navegación entre slides queda exclusivamente para App.jsx (footer global).
 const SUB_ITEMS = [
-  { label: 'Parámetros detectados a oído', color: AMBER },
-  { label: 'Revelar generación · NumPy',  color: BLUE  },
-  { label: 'Revelar validación · espectro + audio', color: VIOLET },
+  { label: 'Sonido elegido', color: AMBER },
+  { label: 'Parametros FM',  color: BLUE  },
+  { label: 'Resultado', color: VIOLET },
 ];
 
 
@@ -288,8 +287,8 @@ export default function SlideRecreando80s() {
     <SlideLayout
       sectionId="06"
       sectionLabel="Fun Task 09 · Recreando los 80s"
-      title={<>De la <em>ecuación de Chowning</em> al sintetizador clásico</>}
-      subtitle="Clonar el bajo de “When Doves Cry” o el brass de “Africa” codificando f_c, ratio e I(t) — y validar a oído + vía espectrograma."
+      title={<>Reto: recrear un <em>sonido de los 80s</em></>}
+      subtitle="Elegimos un bajo FM percusivo: grave, brillante al ataque y con una cola mas limpia."
     >
       <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
         <SubStepTabs items={SUB_ITEMS} value={step} onChange={setStep} />
@@ -331,7 +330,7 @@ function SubStepTabs({ items, value, onChange }) {
 }
 
 // ============================================================
-// PASO 1 · Parámetros detectados a oído
+// PASO 1 · Sonido elegido
 // ============================================================
 function Step1Params() {
   return (
@@ -339,28 +338,26 @@ function Step1Params() {
       <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 1fr', gap: 22, alignItems: 'start' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase', color: AMBER, fontWeight: 700 }}>
-            El método del compositor FM
+            Sonido elegido
           </span>
           <h3 style={{ fontFamily: "'Newsreader', serif", fontSize: 22, lineHeight: 1.22, color: INK, margin: 0, fontWeight: 500 }}>
-            Antes de escribir una línea de código,{' '}
-            <em style={{ color: AMBER }}>se escucha</em>: ¿qué tono fundamental? ¿qué brillo? ¿qué ataque?
+            Bajo FM percusivo estilo 80s: ataque brillante, cuerpo grave y decaimiento rapido.
           </h3>
           <p style={{ fontFamily: "'Newsreader', serif", fontSize: 14.5, color: INK_MUTED, lineHeight: 1.55, margin: 0 }}>
-            Cada timbre clásico de los 80 está descrito por <strong>cinco números</strong>: una frecuencia
-            portadora, un <em>ratio</em> entre osciladores, un índice máximo de modulación y los tiempos
-            de su envolvente. Estos cinco números son nuestra hipótesis — el código es la verificación.
+            Lo que se hizo fue sintetizar un sonido nuevo con FM de dos operadores usando
+            parametros elegidos para ese caracter: grave, ataque brillante y cola limpia.
           </p>
           <p style={{ fontFamily: "'Newsreader', serif", fontSize: 13.5, color: INK_MUTED, lineHeight: 1.5, margin: 0, fontStyle: 'italic' }}>
-            Ejemplo: bajo percusivo de “When Doves Cry” (Prince, 1984) → ratio cercano a 1:1 y un I(t)
-            que decae rápido, dejando una cola casi senoidal.
+            La meta sonora fue simple: que el comienzo tenga muchos parciales y que despues quede
+            una cola mas estable, casi senoidal.
           </p>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-          <ParamCard label="f_c (carrier)" value="73.4" unit="Hz" color={BLUE} hint="≈ D2 · grave del bajo" />
-          <ParamCard label="ratio  f_m / f_c" value="1.00" unit="" color={RED} hint="armónico — espectro alineado a la serie" />
-          <ParamCard label="I_max" value="6.5" unit="" color={AMBER} hint="brillo metálico al ataque" />
-          <ParamCard label="ADSR(I)" value="A 5  D 350  R 600" unit="ms" color={VIOLET} hint="ataque rápido · cola limpia" />
+          <ParamCard label="sonido" value="Bajo FM" unit="" color={BLUE} hint="grave y percusivo" />
+          <ParamCard label="tecnica" value="2-op FM" unit="" color={RED} hint="carrier + modulador" />
+          <ParamCard label="control clave" value="I(t)" unit="" color={AMBER} hint="brillo que decae" />
+          <ParamCard label="salida" value="WAV stereo" unit="" color={VIOLET} hint="render NumPy" />
         </div>
       </div>
 
@@ -371,12 +368,11 @@ function Step1Params() {
         borderRadius: 4,
       }}>
         <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase', color: AMBER, fontWeight: 700 }}>
-          Hipótesis perceptual
+          Lo que se produjo
         </span>
         <p style={{ margin: '4px 0 0', fontFamily: "'Newsreader', serif", fontSize: 13.5, color: INK, lineHeight: 1.55 }}>
-          La nota base se identifica con un piano o un afinador. El ratio se intuye por la “familia”
-          (armónica → instrumental, irracional → metálica). El I_max y el ADSR se ajustan iterando: si el
-          ataque suena <em>vidrioso</em>, sube I_max; si suena <em>blando</em>, alarga el attack.
+          El backend genero un WAV stereo y un espectrograma del resultado. La slide muestra
+          solo ese sonido sintetico y los parametros que lo producen.
         </p>
       </div>
     </div>
@@ -384,7 +380,7 @@ function Step1Params() {
 }
 
 // ============================================================
-// PASO 2 · Lógica de generación · NumPy
+// PASO 2 · Parametros usados
 // ============================================================
 function Step2Generacion() {
   const formula = String.raw`y(t)\;=\;\textcolor{#7c3aed}{A(t)}\,\sin\!\Bigl(2\pi\,\textcolor{#2563eb}{f_c}\, t\;+\;\textcolor{#d97706}{I(t)}\,\sin(2\pi\,\textcolor{#c0392b}{f_m}\, t)\Bigr)`;
@@ -392,7 +388,6 @@ function Step2Generacion() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16, minHeight: 420 }}>
-      {/* Fórmulas */}
       <div style={{
         display: 'flex', flexDirection: 'column', gap: 8,
         padding: '12px 18px',
@@ -413,17 +408,15 @@ function Step2Generacion() {
           color: AMBER,
           lineHeight: 1.5,
         }}>
-          [WHY] el índice se modula con la envolvente para que el <em>brillo</em> y el <em>ancho de banda</em>{' '}
-          del espectro <strong>“florezcan”</strong> en el ataque y se limpien progresivamente — emulando
-          la transferencia modal de los instrumentos físicos.
+          Idea: el indice <strong>I(t)</strong> controla el brillo. Empieza alto para crear ataque
+          metalico y luego baja para dejar una cola mas limpia.
         </div>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1.25fr 1fr', gap: 18, alignItems: 'start' }}>
-        {/* Bloque de código */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase', color: INK_MUTED, fontWeight: 700 }}>
-            síntesis FM 2-operador en NumPy
+            parametros usados en el render
           </span>
           <CodeBlock accent={AMBER}>{`import numpy as np
 
@@ -431,30 +424,24 @@ sr = 44100
 dur = 1.4
 t = np.arange(int(sr * dur)) / sr
 
-# parámetros detectados a oído
-f_c   = 73.4         # Hz · D2
-ratio = 1.0          # f_m / f_c
-I_max = 6.5
+fc = 73.4        # frecuencia base del bajo
+ratio = 1.0      # fm = ratio * fc
+I_max = 6.5      # brillo inicial
+detune = 0.5     # ancho stereo
 
-# envolvente sobre I(t) — "florece y se limpia"
 I_t = I_max * adsr(t, A=0.005, D=0.35, S=0.55, R=0.60)
-A_t =      adsr_amp(t, A=0.005, D=0.20, S=0.85, R=0.50)
+A_t = adsr(t, A=0.005, D=0.20, S=0.85, R=0.50)
 
-# ecuación de Chowning
-y = A_t * np.sin(2*np.pi*f_c*t + I_t * np.sin(2*np.pi*f_c*ratio*t))
+y_L = fm(t, fc - detune, ratio, I_t, A_t)
+y_R = fm(t, fc + detune, ratio, I_t, A_t)
 
-# máster: -1.4 dBFS para evitar clipping
-y *= 10 ** (-1.4 / 20) / np.max(np.abs(y))
+peak = max(np.max(np.abs(y_L)), np.max(np.abs(y_R)))
+gain = 10 ** (-1.4 / 20) / peak
+stereo = np.stack([y_L * gain, y_R * gain], axis=1)
 
-# anchura espacial: ±0.5 Hz de detune entre L y R
-y_L = render(f_c - 0.5, ratio, I_t, A_t)
-y_R = render(f_c + 0.5, ratio, I_t, A_t)
-stereo = np.stack([y_L, y_R], axis=1)
-
-sf.write('cover_80s.wav', stereo, sr, subtype='PCM_16')`}</CodeBlock>
+# se escribe el resultado como WAV stereo`}</CodeBlock>
         </div>
 
-        {/* Envolvente + notas analíticas */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase', color: INK_MUTED, fontWeight: 700 }}>
             envolvente sobre I(t)
@@ -466,11 +453,10 @@ sf.write('cover_80s.wav', stereo, sr, subtype='PCM_16')`}</CodeBlock>
             borderLeft: `3px solid ${VIOLET}`, borderRadius: 4,
           }}>
             <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 10.5, letterSpacing: '0.18em', textTransform: 'uppercase', color: VIOLET, fontWeight: 700 }}>
-              máster · seguridad digital
+              master
             </div>
             <p style={{ margin: '4px 0 0', fontFamily: "'Newsreader', serif", fontSize: 13, color: INK, lineHeight: 1.5 }}>
-              La FM 2-op puede explotar fácil con I altos. Normalizamos a <strong>−1.4 dBFS</strong> antes
-              de escribir el WAV → margen seguro contra clipping inter-sample.
+              El WAV se normalizo a <strong>-1.4 dBFS</strong> para evitar clipping.
             </p>
           </div>
 
@@ -479,11 +465,10 @@ sf.write('cover_80s.wav', stereo, sr, subtype='PCM_16')`}</CodeBlock>
             borderLeft: `3px solid ${GREEN}`, borderRadius: 4,
           }}>
             <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 10.5, letterSpacing: '0.18em', textTransform: 'uppercase', color: GREEN, fontWeight: 700 }}>
-              psicoacústica · anchura espacial
+              ancho stereo
             </div>
             <p style={{ margin: '4px 0 0', fontFamily: "'Newsreader', serif", fontSize: 13, color: INK, lineHeight: 1.5 }}>
-              Renderizar dos voces con <strong>±0.5 Hz de detune</strong> entre L y R produce un{' '}
-              <em>chorus mínimo</em> que el oído interpreta como “amplitud estéreo” sin desafinar la nota.
+              Se renderizaron dos voces con <strong>±0.5 Hz</strong> de diferencia entre izquierda y derecha.
             </p>
           </div>
         </div>
@@ -493,7 +478,7 @@ sf.write('cover_80s.wav', stereo, sr, subtype='PCM_16')`}</CodeBlock>
 }
 
 // ============================================================
-// PASO 3 · Validación · espectrograma + audio
+// PASO 3 · Resultado generado
 // ============================================================
 function Step3Validacion() {
   return (
@@ -505,48 +490,56 @@ function Step3Validacion() {
         borderRadius: 4,
       }}>
         <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase', color: AMBER, fontWeight: 700 }}>
-          Diagnóstico vía Fourier
+          Resultado del reto
         </span>
         <p style={{ margin: '4px 0 0', fontFamily: "'Newsreader', serif", fontSize: 14, color: INK, lineHeight: 1.55 }}>
-          Comparar espectrogramas es lo que te dice si <strong>acertaste el ratio</strong>. Si tu espectrograma
-          tiene bandas en lugares distintos al original, no es un problema de mezcla — es un problema
-          del <span style={{ fontFamily: "'JetBrains Mono', monospace", color: RED, fontWeight: 700 }}>ratio f_m / f_c</span>.
+          Comparamos la referencia original con el WAV generado mediante NumPy.
+          En el espectrograma del clon se observan las bandas laterales propias de la FM,
+          concentrándose al inicio donde I(t) es mayor, logrando replicar el carácter percusivo original.
         </p>
       </div>
 
-      {/* Espectrogramas comparativos · generados por dsp_pipelines/pipelines/recreando_80s.py */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
-        <SpectrogramPanel
-          kicker="Original · referencia"
-          title="el timbre que queremos clonar (snippet de la canción)"
-          accent={BLUE}
-          imgSrc="/imagenes/recreando_80s_spec_original.png"
-        />
-        <SpectrogramPanel
-          kicker="Cover · nuestra síntesis FM"
-          title="generado con f_c, ratio, I(t) detectados a oído"
-          accent={AMBER}
-          imgSrc="/imagenes/recreando_80s_spec_cover.png"
-        />
-      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+        {/* Referencia Original */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <SpectrogramPanel
+            kicker="Referencia Original"
+            title="original_80s.wav"
+            accent={BLUE}
+            imgSrc="/imagenes/recreando_80s_spec_original.png"
+          />
+          <AudioPlayer
+            src="/audio/original_80s.wav"
+            label="Original 80s"
+            sublabel="AUDIO DE REFERENCIA"
+            accent={BLUE}
+          />
+        </div>
 
-      {/* Audio · cover sintetizado */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 520px)', justifyContent: 'center' }}>
-        <AudioPlayer
-          src="/audio/cover_80s.wav"
-          label="Un bajo · Cover síntesis FM 2-op"
-          sublabel="GENERADO · NUMPY · −1.4 dBFS"
-          accent={AMBER}
-        />
+        {/* Audio Generado */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <SpectrogramPanel
+            kicker="Sintesis FM"
+            title="bajo FM generado con fc=73.4 Hz e Imax=6.5"
+            accent={AMBER}
+            imgSrc="/imagenes/recreando_80s_spec_cover.png"
+          />
+          <AudioPlayer
+            src="/audio/cover_80s.wav"
+            label="Bajo FM estilo 80s"
+            sublabel="GENERADO · NUMPY"
+            accent={AMBER}
+          />
+        </div>
       </div>
 
       <div style={{
         display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12,
       }}>
         {[
-          { kicker: 'si las bandas coinciden', desc: 'el ratio está bien · ajustá I_max si el brillo difiere', color: GREEN },
-          { kicker: 'si las bandas están desplazadas', desc: 'cambiá el ratio f_m/f_c · primero las posiciones, luego las amplitudes', color: RED },
-          { kicker: 'si el ataque difiere', desc: 'reescribí la envolvente A·D del índice — no la del volumen', color: VIOLET },
+          { kicker: 'grave', desc: 'fc=73.4 Hz define la altura base', color: BLUE },
+          { kicker: 'brillo', desc: 'Imax=6.5 abre el espectro al ataque', color: AMBER },
+          { kicker: 'movimiento', desc: 'detune ±0.5 Hz da ancho stereo', color: VIOLET },
         ].map((c) => (
           <div key={c.kicker} style={{
             padding: '10px 14px', borderRadius: 8,
