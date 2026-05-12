@@ -72,6 +72,7 @@
       "outputs": {
         "audio": {
           "cover_80s.wav": "cover_80s.wav",
+          "cover_80s_melody.wav": "cover_80s_melody.wav",
           "original_80s.wav": "original_80s.wav"
         },
         "images": {

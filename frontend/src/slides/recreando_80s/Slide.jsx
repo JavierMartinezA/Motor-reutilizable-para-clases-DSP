@@ -508,14 +508,24 @@ function Step3Validacion() {
         />
       </div>
 
-      {/* Audio Generado */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 520px)', justifyContent: 'center' }}>
-        <AudioPlayer
-          src="/audio/cover_80s.wav"
-          label="Bajo FM estilo 80s"
-          sublabel="GENERADO · NUMPY"
-          accent={AMBER}
-        />
+      {/* Audios Generados */}
+      <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
+        <div style={{ flex: '1 1 250px', maxWidth: 320 }}>
+          <AudioPlayer
+            src="/audio/cover_80s.wav"
+            label="Nota individual"
+            sublabel="GENERADO · NUMPY"
+            accent={AMBER}
+          />
+        </div>
+        <div style={{ flex: '1 1 250px', maxWidth: 320 }}>
+          <AudioPlayer
+            src="/audio/cover_80s_melody.wav"
+            label="Melodía estilo 80s"
+            sublabel="LÍNEA DE BAJO GENERADA"
+            accent={VIOLET}
+          />
+        </div>
       </div>
 
       <div style={{

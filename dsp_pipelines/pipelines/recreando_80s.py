@@ -209,6 +209,63 @@ def synthesize_target_reference(sr: int, dur: float, fc: float) -> np.ndarray:
     y = fm(t, fc=fc, ratio=1.07, I_t=I_t, A_t=A_t)  # ratio levemente desafinado
     return normalize_peak_dbfs(y, dbfs=-1.5)
 
+def synthesize_melody(sr: int, fc_base: float, params: dict) -> np.ndarray:
+    """Genera una melodía de bajo estilo 80s usando los mismos parámetros FM."""
+    notes = [
+        (fc_base, 0.25),         # D2
+        (fc_base * 2, 0.25),     # D3 (octava)
+        (0, 0.125),              # Silencio
+        (fc_base * 1.498, 0.25), # A2 (quinta)
+        (fc_base * 1.498, 0.25), # A2
+        (0, 0.125),              # Silencio
+        (fc_base * 1.781, 0.25), # C3 (séptima menor)
+        (fc_base, 0.5),          # D2 (larga)
+    ]
+    
+    y_L_all = []
+    y_R_all = []
+    
+    ratio = float(params.get("ratio", 1.0))
+    I_max = float(params.get("I_max", 6.5))
+    detune_hz = float(params.get("detune_hz", 0.5))
+    A_env = float(params.get("attack_s", 0.005))
+    D_env = float(params.get("decay_s", 0.35))
+    S_env = float(params.get("sustain", 0.55))
+    R_env = float(params.get("release_s", 0.6))
+    single_note_time = float(params.get("duration_s", 1.4))
+
+    total_time = sum(dur for f, dur in notes)
+    out_length = int(sr * (total_time + single_note_time))
+    
+    y_L_out = np.zeros(out_length, dtype=np.float64)
+    y_R_out = np.zeros(out_length, dtype=np.float64)
+    
+    current_time = 0.0
+    for freq, duration in notes:
+        if freq > 0:
+            n_note = int(sr * single_note_time)
+            t = np.arange(n_note, dtype=np.float64) / sr
+            
+            # Usamos la misma envolvente del parámetro global para clonar el timbre idéntico
+            I_t = I_max * adsr(t, A=A_env, D=D_env, S=S_env, R=R_env)
+            A_t = adsr(t, A=A_env, D=0.20, S=0.85, R=0.50)
+            
+            y_L_note = fm(t, fc=freq - detune_hz, ratio=ratio, I_t=I_t, A_t=A_t)
+            y_R_note = fm(t, fc=freq + detune_hz, ratio=ratio, I_t=I_t, A_t=A_t)
+            
+            start_idx = int(sr * current_time)
+            y_L_out[start_idx:start_idx+n_note] += y_L_note
+            y_R_out[start_idx:start_idx+n_note] += y_R_note
+            
+        current_time += duration
+        
+    trim_idx = int(sr * (total_time + 1.0))
+    y_L_out = y_L_out[:trim_idx]
+    y_R_out = y_R_out[:trim_idx]
+        
+    melody_stereo = np.stack([y_L_out, y_R_out], axis=1)
+    return normalize_peak_dbfs(melody_stereo, dbfs=-1.4)
+
 
 # ============================================================
 # 4. Pipeline principal
@@ -256,6 +313,10 @@ def run(input_wav: Path, out_dir: Path, **params: Any) -> dict[str, Any]:
 
     cover_path = out_dir / "cover_80s.wav"
     sf.write(str(cover_path), cover_stereo, sr, subtype="PCM_16")
+
+    melody_stereo = synthesize_melody(sr, fc, params)
+    melody_path = out_dir / "cover_80s_melody.wav"
+    sf.write(str(melody_path), melody_stereo, sr, subtype="PCM_16")
 
     # ============================================================
     # 4b. Original: si existe el snippet, lo usamos; si no, fallback sintético
@@ -337,10 +398,14 @@ def run(input_wav: Path, out_dir: Path, **params: Any) -> dict[str, Any]:
         sf.write(str(target_path), normalize_peak_dbfs(x_orig_cmp, -2.0), sr, subtype="PCM_16")
         audio_outputs = {
             "cover_80s.wav": cover_path,
+            "cover_80s_melody.wav": melody_path,
             "original_80s.wav": target_path,
         }
     else:
-        audio_outputs = {"cover_80s.wav": cover_path}
+        audio_outputs = {
+            "cover_80s.wav": cover_path,
+            "cover_80s_melody.wav": melody_path
+        }
 
     return {
         "audio": audio_outputs,
