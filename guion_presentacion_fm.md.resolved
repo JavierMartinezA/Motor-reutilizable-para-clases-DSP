@@ -1,0 +1,98 @@
+# Guion de Presentación: Síntesis FM (Diapositivas 1 a 5)
+
+Este guion está diseñado para ser hablado con naturalidad. Puedes adaptar las palabras a tu propio estilo. Las indicaciones entre corchetes `[como esto]` son sugerencias de acción durante la presentación.
+
+---
+
+## Slide 01 · Portada y el Problema
+
+### Paso 1: Portada (El Mecanismo de Generación)
+**[Guion propuesto]**
+"Hola a todos. Hoy vamos a hablar de una de las técnicas más revolucionarias en la historia del procesamiento de audio: la **Síntesis por Modulación de Frecuencia**, o FM. 
+
+A diferencia de otras técnicas, la síntesis FM genera timbres complejos modulando la frecuencia de una señal, llamada *portadora* (f_c), con otra señal de audio, llamada *moduladora* (f_m). Esta interacción matemática genera nuevas frecuencias o *bandas laterales*. La intensidad de este efecto la controlamos con un tercer parámetro clave: el Índice de modulación (I). En esta presentación vamos a desglosar cómo funcionan estos tres elementos."
+
+### Paso 2: El Problema (El paradigma DX7)
+**[Guion propuesto]**
+* [Haz clic en la pestaña "Revelar el problema · DX7 1983"]
+"Pero para entender por qué la FM fue tan importante, pensemos en el problema de la época. Si en los años 80 queríamos emular un instrumento acústico rico usando *Síntesis Aditiva* (es decir, Fourier puro), necesitábamos sumar decenas de osciladores, cada uno con su propia envolvente. Computacionalmente, en hardware de 1983, esto era prohibitivo en tiempo real. 
+
+Y entonces, Yamaha lanza el mítico sintetizador DX7. Este teclado definió el sonido de toda una década (desde Prince hasta baladas pop) logrando espectros inmensamente ricos utilizando **únicamente 6 osciladores interactivos**. La pregunta que vamos a responder hoy es: ¿Cómo se puede generar tanta complejidad espectral con tan pocos recursos matemáticos?"
+
+---
+
+## Slide 02 · La Intuición (Del Vibrato al Timbre)
+**[Guion propuesto]**
+"Para entender cómo funciona, vamos a partir de un efecto que todos conocemos: el vibrato. 
+
+* [Mueve el slider a una frecuencia menor a 20 Hz, o escribe 5 Hz]
+Si modulamos la frecuencia de una nota lentamente —digamos a 5 Hz—, nuestro cerebro es perfectamente capaz de seguir esa ondulación. Escuchamos una nota cuyo tono sube y baja.
+
+* [Sube el slider y cruza el umbral de los 20 Hz, por ejemplo a 150 Hz]
+Pero, ¿qué pasa cuando esa velocidad de modulación entra en el rango del audio, es decir, cruza el umbral psicoacústico de los 20 Hz? Nuestro oído físico y nuestro cerebro ya no son capaces de rastrear esas oscilaciones individuales. En ese instante, nuestra percepción se 'quiebra' y fusiona esa información. El vibrato desaparece y en su lugar escuchamos **un color sonoro nuevo**. La energía acústica se reparte hacia los lados y nacen lo que llamamos 'bandas laterales'."
+
+---
+
+## Slide 03 · La Ecuación y el Plano FM
+**[Guion propuesto]**
+"Matemáticamente, el corazón de este universo tímbrico se rige por una ecuación sorprendentemente sencilla, desarrollada originalmente por John Chowning en la Universidad de Stanford. 
+
+Aquí entran en juego tres actores principales:
+1. **La Portadora ($f_c$)**: Que es la frecuencia base y define el tono que percibimos.
+2. **La Moduladora ($f_m$)**: Que es la frecuencia que 'agita' a la portadora y dicta qué tan espaciados van a estar los armónicos.
+3. **El Índice de Modulación ($I$)**: Que es nuestro cincel. Mientras mayor es el índice, más brillante y rico es el sonido.
+
+*Nota curiosa para los más técnicos:* Aunque el mundo lo conoce como Síntesis FM, el Yamaha DX7 implementó en realidad Modulación de Fase (PM). Modular la fase con un seno es matemáticamente equivalente a modular la frecuencia con un coseno. Yamaha lo hizo así porque evita que la afinación del sintetizador se desvíe si la señal moduladora tiene un componente continuo (DC)."
+
+---
+
+## Slide 04 · Funciones de Bessel sin álgebra
+**[Guion propuesto]**
+"Cuando aumentamos el Índice de Modulación, la energía se empieza a 'robar' de la portadora y se transfiere a estas nuevas bandas laterales. Pero esta distribución no es una línea recta; sigue un patrón matemático complejo llamado **Funciones de Bessel de primera especie**.
+
+No necesitamos resolver estas ecuaciones en tiempo real para hacer música. A nivel práctico de ingeniería de audio, utilizamos la **Regla de Carson**. Esta regla nos dice que el ancho de banda del sonido es aproximadamente $2f_m(I + 1)$. 
+
+En términos simples: por cada punto que subimos el Índice de Modulación, agregamos un par de armónicos audibles a cada lado. Y lo fascinante ocurre en las frecuencias graves: cuando estas bandas laterales cruzan los 0 Hz, 'rebotan' hacia el lado positivo invertidas de fase, creando interferencias constructivas y destructivas que le dan a la FM ese sonido metálico y vivo tan característico."
+
+---
+
+## Slide 05 · El Plano FM en vivo
+**[Guion propuesto]**
+"Veamos todo esto en acción. Todo nuestro timbre se controla moviéndonos en un plano de dos dimensiones: el **Ratio** (la relación entre la moduladora y la portadora) y el **Índice**.
+
+* [Demostrar Ratio 1:1, subiendo el Índice lentamente]
+Si usamos un Ratio racional, como 1:1 o 1:2, las bandas laterales caen exactamente en los múltiplos enteros de la fundamental. El espectro se abre simétricamente y logramos sonidos armónicos, como clarinetes o bronces. 
+
+* [Cambiar Ratio a un número irracional como 1.414 (raíz de 2)]
+Pero si cambiamos el ratio a un número irracional como la raíz de dos, las matemáticas se rompen armónicamente. Las bandas laterales caen entre los armónicos naturales, chocando entre sí. El resultado es un timbre completamente inarmónico, ideal para sintetizar campanas, gongs y percusiones complejas. Todo esto, logrando con solo dos osciladores lo que a la síntesis aditiva le tomaría docenas."
+
+---
+
+<br>
+
+# 💡 Posibles Preguntas del Profesor (y cómo responderlas)
+
+> [!IMPORTANT] 
+> Los profesores suelen hacer preguntas para validar que no solo memorizaste el texto, sino que entiendes la matemática y el razonamiento físico detrás de la señal.
+
+### 1. "Mencionaste que el DX7 usaba Modulación de Fase (PM) en lugar de FM. ¿Cuál es la ventaja práctica real de esto en términos de Procesamiento de Señales?"
+**Respuesta sugerida:** 
+"La ventaja principal es la estabilidad de la afinación (pitch drift). La frecuencia es la derivada de la fase. Si inyectamos una señal moduladora en un oscilador de FM real que por alguna razón tiene un offset o componente DC (incluso por errores de cuantización en los 80s), la frecuencia portadora se desplazaría de su centro permanentemente, desafinando el teclado. En Modulación de Fase, un DC offset solo causa un corrimiento estático en la fase, pero la derivada a largo plazo no cambia, por lo que la frecuencia fundamental ($f_c$) se mantiene perfectamente afinada."
+
+### 2. "Si la síntesis FM es tan eficiente, ¿por qué no genera aliasing masivo (frecuencias fantasmas que rebotan en Nyquist) cuando aumentas mucho el Índice de Modulación?"
+**Respuesta sugerida:** 
+"Sí genera aliasing si no se controla. La Regla de Carson nos dice que el ancho de banda tiende a infinito, aunque la amplitud de las bandas caiga según las funciones de Bessel. En sintetizadores reales (y en nuestro código), si el índice $I$ es muy alto y la portadora es muy aguda, las bandas superiores chocan con la frecuencia de Nyquist ($f_s/2$) y rebotan hacia abajo creando artefactos inarmónicos molestos. Los motores profesionales previenen esto limitando el $I$ dinámicamente en las notas más altas del teclado (lo que se conoce como *keyboard tracking* sobre el índice)."
+
+### 3. "¿Qué sucede matemáticamente cuando una banda lateral rebota en los 0 Hz, o las frecuencias negativas?"
+**Respuesta sugerida:** 
+"El concepto de frecuencia negativa es una conveniencia matemática de la transformada de Fourier. En el dominio real del tiempo, una senoide con frecuencia negativa equivale a la misma senoide pero invertida en fase (porque $\sin(-\theta) = -\sin(\theta)$). Por lo tanto, cuando una banda lateral generada por la FM se expande más allá del 0 Hz hacia el lado negativo, 'rebota' de vuelta al lado positivo pero con un cambio de signo. Al superponerse con los armónicos que ya existen en esas frecuencias positivas, se producen sumas y restas (interferencias constructivas y destructivas), lo que explica por qué los espectros de FM tienen picos y valles tan complejos."
+
+### 4. "Me mostraste la Regla de Carson para estimar el Ancho de Banda. Si tengo $f_m = 100\text{ Hz}$ y un índice $I = 4$, ¿hasta qué frecuencia aproximada llega mi espectro si $f_c$ es 400 Hz?"
+**Respuesta sugerida:**
+"Según la Regla de Carson, el ancho de banda total es $BW \approx 2f_m(I + 1)$. 
+Sustituyendo: $BW = 2(100)(4 + 1) = 200 \times 5 = 1000\text{ Hz}$.
+Dado que este ancho de banda está centrado en la portadora ($f_c = 400\text{ Hz}$), el espectro se extendería $500\text{ Hz}$ hacia arriba y $500\text{ Hz}$ hacia abajo. Es decir, llegaría aproximadamente hasta los $900\text{ Hz}$ en el límite superior."
+
+### 5. "Mencionaste que con un Ratio de $\sqrt{2}$ obtienes un sonido de campana. Si yo analizo el espectrograma de tu campana, ¿veré una serie armónica o inarmónica?"
+**Respuesta sugerida:**
+"Se verá una serie completamente inarmónica. Las bandas laterales se generan en $f_c \pm n \cdot f_m$. Como $f_m$ es $f_c \cdot \sqrt{2}$, los parciales estarán ubicados en $f_c \pm n \cdot 1.414 f_c$. Como $\sqrt{2}$ es irracional, estas frecuencias jamás serán múltiplos enteros exactos de $f_c$. Esta ausencia de una serie armónica ordenada es exactamente lo que el cerebro interpreta como 'metal' o percusión, similar a los modos de vibración bidimensionales de un plato o una campana real."

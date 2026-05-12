@@ -11,6 +11,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import SlideLayout from '../../components/SlideLayout';
+import MathFormula from '../../components/MathFormula';
 import {
   AMBER, BLUE, RED, INK, INK_MUTED, INK_FAINT,
   PillButton, LiveSpectrum, LiveWaveform, useFMEngine,
@@ -65,6 +66,8 @@ export default function SlideIntuicion() {
 
   const isVibrato = fm < 20;
 
+  const formulaStr = `y(t) = \\sin\\bigl(2\\pi \\cdot \\textcolor{${BLUE}}{220} t + \\textcolor{${AMBER}}{5} \\sin(2\\pi \\cdot \\textcolor{${RED}}{${fm.toFixed(1)}} t)\\bigr)`;
+
   return (
     <SlideLayout
       sectionId="02"
@@ -97,6 +100,13 @@ export default function SlideIntuicion() {
                 instantáneamente hacia los lados — nacen las <strong style={{ color: AMBER }}>bandas laterales</strong>.
               </li>
             </ul>
+
+            <div style={{ marginTop: 12, padding: '12px 18px', background: 'rgba(255,255,255,0.7)', borderRadius: 8, border: `1px solid ${INK_FAINT}`, textAlign: 'center' }}>
+              <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase', color: INK_MUTED, fontWeight: 700, display: 'block', marginBottom: 4 }}>
+                Ecuación de Fase Instantánea
+              </span>
+              <MathFormula t={formulaStr} display={true} />
+            </div>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
