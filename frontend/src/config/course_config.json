@@ -1,11 +1,11 @@
 {
   "$schema": "./course_config.schema.json",
   "course": {
-    "title": "Clase de Procesamiento de Audio",
-    "shortTitle": "DSP",
-    "subtitle": "Boilerplate genérico — reemplazar con contenido real.",
+    "title": "Agente Autónomo de Diseño Paramétrico de Sonido",
+    "shortTitle": "Hito 2",
+    "subtitle": "Síntesis FM y Descriptores MIR · IEE3736-1",
     "institution": "Pontificia Universidad Católica de Chile",
-    "term": "—"
+    "term": "Hito 2"
   },
   "theme": {
     "background": "cream",
@@ -16,38 +16,33 @@
   },
   "slides": [
     {
-      "id": "sintesis_fm",
-      "label": "01 · Portada y el problema (DX7)",
+      "id": "pivote_proyecto",
+      "label": "01 · Pivote del proyecto",
       "props": {}
     },
     {
-      "id": "fm_intuicion",
-      "label": "02 · La intuición · vibrato → timbre",
+      "id": "sound_matching_fm",
+      "label": "02 · Sound matching en FM",
       "props": {}
     },
     {
-      "id": "fm_ecuacion",
-      "label": "03 · La ecuación y el plano FM",
+      "id": "rl_mdp",
+      "label": "03 · RL como solución + MDP",
       "props": {}
     },
     {
-      "id": "fm_bessel",
-      "label": "04 · Funciones de Bessel sin álgebra",
+      "id": "implementacion_prototipo",
+      "label": "04 · Implementación del prototipo",
       "props": {}
     },
     {
-      "id": "fm_vivo",
-      "label": "05 · El plano FM en vivo",
+      "id": "resultados",
+      "label": "05 · Resultados",
       "props": {}
     },
     {
-      "id": "recreando_80s",
-      "label": "06 · Fun Task 09 · Recreando los 80s",
-      "props": {}
-    },
-    {
-      "id": "fm_debate",
-      "label": "07 · Debate de cierre · el vacío de Bessel",
+      "id": "conclusiones",
+      "label": "06 · Conclusiones y próximos pasos",
       "props": {}
     }
   ],

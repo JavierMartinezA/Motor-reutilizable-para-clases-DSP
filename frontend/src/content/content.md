@@ -130,3 +130,132 @@ Cada slide id se enumera junto con la sección teórica que consume:
 - `fm_vivo` (05): Audio en Vivo (La Revelación del Espectro)
 - `recreando_80s` (06): Fun Task 09 · Clon FM 2-op de timbres icónicos
 - `fm_debate` (07): El Caos y los Nulos de Bessel
+
+---
+
+## pivote_proyecto
+
+### Idea
+**De Transfer de Timbre Neuronal a Sound Matching Paramétrico.** El proyecto original proponía replicar el timbre de instrumentos mediante modelos neuronales (RAVE / DDSP). Esa ruta exigía GPU dedicada y operaba sobre parámetros latentes sin interpretación musical directa. El pivote opta por **síntesis FM clásica** (Chowning, 1973): ocho parámetros con significado físico — frecuencia portadora, ratio, índice de modulación, feedback y envolvente ADSR — sobre los cuales un agente puede razonar de forma transparente.
+
+### Justificación
+| Eje | Propuesta original (descartada) | Propuesta actual |
+|---|---|---|
+| Tecnología base | RAVE / DDSP | Síntesis FM clásica (Chowning, 1973) |
+| Interpretabilidad | Latente, no musical | Significado físico directo |
+| Cómputo requerido | GPU dedicada | CPU only (Intel Core i7) |
+| Foco metodológico | Generación neuronal end-to-end | DSP + MIR — núcleo del curso |
+
+> El cambio no fue retroceso: fue elegir interpretabilidad y alineación con el curso sobre complejidad computacional.
+
+---
+
+## sound_matching_fm
+
+### Idea
+**Sound Matching** = dado un audio objetivo, encontrar automáticamente los parámetros del sintetizador que lo repliquen. En síntesis FM esta tarea es difícil porque el espacio paramétrico es **no lineal y no diferenciable**: pequeños cambios en `ratio` o en el índice de modulación `I` bifurcan el espectro entre un timbre armónico y ruido inarmónico.
+
+### Flujo del problema
+$$
+\text{Audio objetivo} \;\to\; [\,?\,] \;\to\; \text{Sintetizador FM} \;\to\; \text{Audio sintetizado} \approx \text{objetivo}
+$$
+
+### Bifurcación espectral
+- Con `fc = 440 Hz` y `ratio = 1.0`, las bandas laterales caen exactamente sobre la serie armónica → timbre **armónico** (madera, órgano).
+- Con `ratio = 3.5`, las bandas caen entre armónicos → timbre **inarmónico** (campana, gong).
+
+**Conclusión:** No se puede aplicar gradiente directo → se necesita **optimización de caja negra**.
+
+---
+
+## rl_mdp
+
+### Idea
+Reinforcement Learning permite optimizar un sintetizador no diferenciable usando únicamente una **métrica de similitud acústica** como señal de aprendizaje.
+
+### Tabla comparativa
+
+| Método | Limitación principal |
+|---|---|
+| Algoritmos evolutivos (CMA-ES) | Comienza desde cero ante cada nuevo sonido objetivo |
+| Deep Learning supervisado (InverSynth) | Requiere miles de pares (audio, parámetros) etiquetados |
+| **RL — este proyecto** | **Solo necesita una métrica de similitud acústica** |
+
+### MDP formal
+- **Estado** $s_t \in \mathbb{R}^{54}$: descriptores MIR del audio actual concatenados con los del audio objetivo (no audio crudo).
+- **Acción** $\theta = (f_c,\, \text{ratio},\, I,\, \text{feedback},\, A,\, D,\, S,\, R)$: los 8 parámetros del sintetizador.
+- **Recompensa** $r = f_{\text{sim}}(x_{\text{synth}},\, x_{\text{target}})$: combinación ponderada de distancias STFT y MFCC.
+
+### Algoritmo
+**Soft Actor-Critic (SAC)** — política estocástica, espacio de acción continuo, robusto a recompensas escasas.
+
+---
+
+## implementacion_prototipo
+
+### Idea
+Tres módulos desacoplados componen el pipeline: el sintetizador (`synth.py`), la función de recompensa (`reward.py`) y el entorno Gym (`env.py`). El agente SAC interactúa con el entorno por episodios de 50 pasos.
+
+### Sintetizador (`synth.py`)
+2 operadores FM al estilo Chowning, envolvente ADSR completa, feedback en el modulador, NumPy puro, `sr = 22050 Hz`, duración `1 s`.
+
+$$
+x(t) = A(t)\,\sin\!\bigl(2\pi f_c t + I(t)\sin(2\pi f_m t + \beta\, y_{n-1})\bigr)
+$$
+
+donde `β` es la ganancia de feedback sobre la propia salida del modulador.
+
+### Función de recompensa (`reward.py`)
+$$
+d = 0.4 \cdot \text{LogSpecMAE} + 0.4 \cdot \text{MFCC\_MAE} + 0.2 \cdot \text{SpecConv}
+$$
+$$
+r = e^{-2.0 \cdot d}
+$$
+
+### Entorno (`env.py`)
+API Gymnasium, acción continua normalizada a $[-1, 1]^8$, 50 pasos por episodio, termina anticipadamente si $r > 0.95$. **Target fijo por entrenamiento** (validación deliberada del pipeline antes de generalizar).
+
+---
+
+## resultados
+
+### Idea
+Tras 200k pasos de entrenamiento contra un target inarmónico (`ratio = 3.5`, `I = 8.0`, `fc = 440 Hz`), el agente converge a una política con **recompensa final $r = 0.294$** — perceptualmente distinta del objetivo.
+
+### Tabla de resultados
+
+| Parámetro | Target | SAC | Resultado |
+|---|---|---|---|
+| `fc` (Hz) | 440.0 | 432.4 | ✅ Error < 2% |
+| `ratio` | 3.5 | 1.0 | ❌ Error = 2.49 |
+| `I` | 8.0 | 9.47 | ⚠️ Error = 1.47 |
+| **Recompensa final** | — | — | **r = 0.294** |
+
+### Hallazgo central — degeneración de la función de recompensa
+El agente encontró un **mínimo local**: `ratio = 1.0` + `I = 9.47` genera un espectro armónico de alta energía que, promediado en MFCC y STFT, produce un MAE comparable al objetivo inarmónico.
+
+> Sonidos distintos → descriptores similares.
+
+Esto confirma empíricamente lo reportado por **Salimi et al. (2024)**: las métricas espectrales globales no discriminan suficientemente.
+
+---
+
+## conclusiones
+
+### Lo que se demostró
+- Pipeline completo funcional **end-to-end** en CPU.
+- El agente **converge correctamente en pitch** (`fc`).
+- La función de recompensa STFT+MFCC genera mínimos locales explotables.
+- Las métricas espectrales globales son **condición necesaria pero no suficiente**.
+
+### Hoja de ruta
+
+| Paso | Acción | Objetivo |
+|---|---|---|
+| **Inmediato** | Agregar F0 vía `pyin` en recompensa | Romper la degeneración del ratio |
+| **Corto plazo** | Randomizar target en cada episodio | Política generalizable in-domain |
+| **Futuro** | Sonidos reales (dataset NSynth) | Generalización out-of-domain |
+
+### Cierre
+> El agente actual valida el pipeline. El siguiente paso no requiere cambiar la arquitectura — solo **enriquecer lo que el agente puede escuchar**.

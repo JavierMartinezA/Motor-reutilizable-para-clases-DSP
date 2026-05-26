@@ -84,22 +84,20 @@ El backend (FastAPI) ejecuta pipelines DSP genéricos en
 - Referenciar con rutas absolutas: `/audio/foo.wav`.
 - Web Audio API solo cuando se necesite síntesis en cliente.
 
-## Cómo añadir una nueva slide
+## Cómo añadir una nueva presentación (Workflow del Agente)
 
-1. `cp -r frontend/src/slides/_template frontend/src/slides/<mi-id>`
-2. Editar `frontend/src/slides/<mi-id>/Slide.jsx`.
-3. Registrar en `frontend/src/slides/index.js`:
-   ```js
-   import SlideX from './<mi-id>/Slide.jsx';
-   export const SLIDE_REGISTRY = { ..., '<mi-id>': SlideX };
-   ```
-4. Declarar en `frontend/src/config/course_config.json` bajo `slides[]`:
-   ```json
-   { "id": "<mi-id>", "label": "Mi Slide", "props": {} }
-   ```
-5. Texto/fórmulas en `frontend/src/content/content.md` bajo `## <mi-id>`.
+Cuando el usuario pida crear una nueva presentación, proveerá un archivo `.md` en la raíz (ej. `Plan_presentacionACTUAL.md`) con las especificaciones y detalles de cada slide. El agente debe:
 
-> **No tocar `frontend/src/App.jsx`** para añadir/quitar slides. Es parte del motor.
+1. **Leer el plan:** Analizar el archivo `.md` (ej. `Plan_presentacionACTUAL.md`) en la raíz del proyecto para entender las slides requeridas.
+2. **Construir iterativamente:** Crear las slides una por una según el plan:
+   - `cp -r frontend/src/slides/_template frontend/src/slides/<mi-id>`
+   - Editar `frontend/src/slides/<mi-id>/Slide.jsx` con el contenido correspondiente.
+   - Registrar en `frontend/src/slides/index.js` agregándolo al `SLIDE_REGISTRY`.
+   - Declarar en `frontend/src/config/course_config.json` dentro del array `slides`.
+   - Añadir texto/fórmulas en `frontend/src/content/content.md` bajo el encabezado `## <mi-id>`.
+3. **Pausar para feedback:** Al terminar de construir la presentación según el plan, informar al usuario y esperar instrucciones para refinar slides específicas.
+
+> **No tocar `frontend/src/App.jsx`** para añadir/quitar slides. Es parte del motor..
 
 ## Cómo añadir un pipeline DSP
 

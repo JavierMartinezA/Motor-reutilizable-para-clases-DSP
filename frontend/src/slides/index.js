@@ -23,6 +23,14 @@ import SlidePlanoVivo   from './fm_vivo/Slide.jsx';        // 05 plano en vivo
 import SlideRecreando80s from './recreando_80s/Slide.jsx'; // 06 Fun Task 09
 import SlideDebate      from './fm_debate/Slide.jsx';      // 07 vacío de Bessel
 
+// Hito 2 — Sound matching FM con RL (6 slides).
+import SlidePivote               from './pivote_proyecto/Slide.jsx';        // 01 pivote del proyecto
+import SlideSoundMatchingFM      from './sound_matching_fm/Slide.jsx';      // 02 problema sound matching
+import SlideRLMDP                from './rl_mdp/Slide.jsx';                 // 03 RL + MDP
+import SlideImplementacionProto  from './implementacion_prototipo/Slide.jsx'; // 04 prototipo
+import SlideResultados           from './resultados/Slide.jsx';             // 05 resultados
+import SlideConclusiones         from './conclusiones/Slide.jsx';           // 06 conclusiones
+
 export const SLIDE_REGISTRY = {
   'sintesis_fm':   SlidePortada,
   'fm_intuicion':  SlideIntuicion,
@@ -31,6 +39,14 @@ export const SLIDE_REGISTRY = {
   'fm_vivo':       SlidePlanoVivo,
   'recreando_80s': SlideRecreando80s,
   'fm_debate':     SlideDebate,
+
+  // Hito 2
+  'pivote_proyecto':         SlidePivote,
+  'sound_matching_fm':       SlideSoundMatchingFM,
+  'rl_mdp':                  SlideRLMDP,
+  'implementacion_prototipo': SlideImplementacionProto,
+  'resultados':              SlideResultados,
+  'conclusiones':            SlideConclusiones,
 };
 
 export function getSlideComponent(id) {
