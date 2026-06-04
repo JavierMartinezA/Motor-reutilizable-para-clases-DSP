@@ -1,11 +1,11 @@
 {
   "$schema": "./course_config.schema.json",
   "course": {
-    "title": "Agente Autónomo de Diseño Paramétrico de Sonido",
-    "shortTitle": "Hito 2",
-    "subtitle": "Síntesis FM y Descriptores MIR · IEE3736-1",
+    "title": "Síntesis FM",
+    "shortTitle": "Sesión 09",
+    "subtitle": "Modulación de Frecuencia · IEE3736-1",
     "institution": "Pontificia Universidad Católica de Chile",
-    "term": "Hito 2"
+    "term": "Sesión 09"
   },
   "theme": {
     "background": "cream",
@@ -16,33 +16,38 @@
   },
   "slides": [
     {
-      "id": "pivote_proyecto",
-      "label": "01 · Pivote del proyecto",
+      "id": "sintesis_fm",
+      "label": "01 · Portada y el DX7",
       "props": {}
     },
     {
-      "id": "sound_matching_fm",
-      "label": "02 · Sound matching en FM",
+      "id": "fm_intuicion",
+      "label": "02 · Vibrato → Timbre",
       "props": {}
     },
     {
-      "id": "rl_mdp",
-      "label": "03 · RL como solución + MDP",
+      "id": "fm_ecuacion",
+      "label": "03 · Ecuación y plano",
       "props": {}
     },
     {
-      "id": "implementacion_prototipo",
-      "label": "04 · Implementación del prototipo",
+      "id": "fm_bessel",
+      "label": "04 · Bessel sin álgebra",
       "props": {}
     },
     {
-      "id": "resultados",
-      "label": "05 · Resultados",
+      "id": "fm_vivo",
+      "label": "05 · Plano FM en vivo",
       "props": {}
     },
     {
-      "id": "conclusiones",
-      "label": "06 · Conclusiones y próximos pasos",
+      "id": "recreando_80s",
+      "label": "06 · Fun Task — Recreando los 80s",
+      "props": {}
+    },
+    {
+      "id": "fm_debate",
+      "label": "07 · El vacío de Bessel",
       "props": {}
     }
   ],
