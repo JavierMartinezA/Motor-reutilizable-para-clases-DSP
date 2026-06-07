@@ -45,6 +45,11 @@ export default function MathFormula({
         expr = expr.replace(rx, `\\textcolor{${hex}}{\\${name}}`);
       }
     }
+    // El CSS global fija `.katex { color: ink !important }`. Para fondos oscuros
+    // no basta heredar color en el wrapper: hay que emitir un \textcolor inline
+    // en un span hijo (que sí gana al !important del root). Los \textcolor
+    // específicos del interior siguen sobrescribiendo cada variable.
+    if (color) expr = `\\textcolor{${color}}{${expr}}`;
     try {
       return katex.renderToString(expr, {
         throwOnError: false,
@@ -55,10 +60,9 @@ export default function MathFormula({
     } catch {
       return expr;
     }
-  }, [t, display, colors]);
+  }, [t, display, colors, color]);
 
   const style = {};
-  if (color) style.color = color;
   if (size != null) style.fontSize = typeof size === 'number' ? `${size}em` : size;
 
   const Tag = display ? 'div' : 'span';
