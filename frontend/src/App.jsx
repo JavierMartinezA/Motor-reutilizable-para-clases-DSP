@@ -2,8 +2,15 @@
  * App.jsx
  * =======
  * Host config-driven. NO hardcodea slides. Lee:
- *   - src/config/course_config.json   → metadata + lista de slides
+ *   - src/config/course_config.json   → decks (metadata + lista de slides)
  *   - src/slides/index.js             → registry id → componente
+ *
+ * MULTI-DECK: cada clase es un "deck" dentro de course_config.decks. El deck
+ * activo se elige por el hash de la URL:
+ *     https://host/#fm    → deck "fm"
+ *     https://host/#mir   → deck "mir"
+ *     https://host/       → courseConfig.defaultDeck
+ * Así un único deploy sirve todas las clases con URLs estables y distintas.
  *
  * Para añadir/quitar/reordenar slides: editar SOLO course_config.json + el
  * registry. Este archivo es parte del Motor; no debería tocarse al cambiar
@@ -55,12 +62,40 @@ function EmptyCourse() {
   );
 }
 
+/** Lee el id de deck desde el hash (`#mir`) o `?deck=mir`, con fallback. */
+function readDeckId() {
+  const decks = courseConfig.decks ?? {};
+  const fallback = courseConfig.defaultDeck ?? Object.keys(decks)[0];
+  if (typeof window === 'undefined') return fallback;
+  const hash = window.location.hash.replace(/^#\/?/, '').trim();
+  if (hash && decks[hash]) return hash;
+  const qp = new URLSearchParams(window.location.search).get('deck');
+  if (qp && decks[qp]) return qp;
+  return fallback;
+}
+
 export default function App() {
-  const slides = courseConfig.slides ?? [];
-  const theme = courseConfig.theme ?? {};
-  const course = courseConfig.course ?? {};
+  const [deckId, setDeckId] = useState(readDeckId);
+
+  // Cambiar de clase = cambiar el hash de la URL, sin recargar.
+  useEffect(() => {
+    const onHash = () => setDeckId(readDeckId());
+    window.addEventListener('hashchange', onHash);
+    return () => window.removeEventListener('hashchange', onHash);
+  }, []);
+
+  const deck = (courseConfig.decks ?? {})[deckId] ?? {};
+  const slides = deck.slides ?? [];
+  const theme = deck.theme ?? {};
+  const course = deck.course ?? {};
   const [current, setCurrent] = useState(0);
   const [slideKey, setSlideKey] = useState(0);
+
+  // Al cambiar de deck, volver a la primera slide.
+  useEffect(() => {
+    setCurrent(0);
+    setSlideKey((k) => k + 1);
+  }, [deckId]);
 
   const total = slides.length;
   const safeCurrent = Math.min(current, Math.max(0, total - 1));

@@ -31,6 +31,17 @@ import SlideImplementacionProto  from './implementacion_prototipo/Slide.jsx'; //
 import SlideResultados           from './resultados/Slide.jsx';             // 05 resultados
 import SlideConclusiones         from './conclusiones/Slide.jsx';           // 06 conclusiones
 
+// Clase 11 — MIR & Audio Fingerprinting / Shazam (9 slides).
+import SlidePortadaMIR        from './portada_mir/Slide.jsx';        // 01 portada
+import SlideProblemaShazam    from './problema_shazam/Slide.jsx';    // 02 el problema
+import SlideFeaturesAudio     from './features_audio/Slide.jsx';     // 03 descriptores
+import SlideOnsetBPM          from './onset_bpm/Slide.jsx';          // 04 onsets & BPM
+import SlidePipelineShazam    from './pipeline_shazam/Slide.jsx';    // 05 pipeline Shazam
+import SlideDemoMIR           from './demo_mir/Slide.jsx';           // 06 demo en vivo
+import SlideHistogramaOffsets from './histograma_offsets/Slide.jsx'; // 07 histograma offsets
+import SlideLimitesShazam     from './limites_shazam/Slide.jsx';     // 08 fun task & límites
+import SlideDiscusionMIR      from './discusion_mir/Slide.jsx';      // 09 discusión & Q&A
+
 export const SLIDE_REGISTRY = {
   'sintesis_fm':   SlidePortada,
   'fm_intuicion':  SlideIntuicion,
@@ -47,6 +58,17 @@ export const SLIDE_REGISTRY = {
   'implementacion_prototipo': SlideImplementacionProto,
   'resultados':              SlideResultados,
   'conclusiones':            SlideConclusiones,
+
+  // Clase 11 — MIR & Shazam
+  'portada_mir':        SlidePortadaMIR,
+  'problema_shazam':    SlideProblemaShazam,
+  'features_audio':     SlideFeaturesAudio,
+  'onset_bpm':          SlideOnsetBPM,
+  'pipeline_shazam':    SlidePipelineShazam,
+  'demo_mir':           SlideDemoMIR,
+  'histograma_offsets': SlideHistogramaOffsets,
+  'limites_shazam':     SlideLimitesShazam,
+  'discusion_mir':      SlideDiscusionMIR,
 };
 
 export function getSlideComponent(id) {

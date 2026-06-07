@@ -257,5 +257,177 @@ Esto confirma empíricamente lo reportado por **Salimi et al. (2024)**: las mét
 | **Corto plazo** | Randomizar target en cada episodio | Política generalizable in-domain |
 | **Futuro** | Sonidos reales (dataset NSynth) | Generalización out-of-domain |
 
+---
+
+# Clase 11 — MIR & Audio Fingerprinting (Shazam)
+
+> Objetivos: (1) qué es un descriptor de audio (feature) y cómo deja al
+> computador "entender" el sonido; (2) cómo funciona el fingerprinting de
+> Shazam a nivel estructural y matemático.
+
+---
+
+## portada_mir
+
+### Idea
+*De producir sonido a entenderlo.* Hasta la sesión 10 sintetizábamos y
+transformábamos audio; ahora le enseñamos al computador a "escuchar" y extraer
+significado semántico de un archivo WAV. La ciencia detrás de Shazam y Spotify.
+
+---
+
+## problema_shazam
+
+### Idea
+*El "milagro" de Shazam.* Grabas 10 s de una canción en un bar ruidoso y el
+sistema la identifica en ≈3 s comparándola contra **millones** de canciones.
+
+### El reto
+- Reconocer sin escuchar la canción completa.
+- Superar ruido de fondo y ecualizaciones.
+- Sin años de tiempo de cómputo.
+
+### Respuesta rápida
+No compara audio muestra a muestra. Compara **huellas digitales**
+(*fingerprints*) altamente robustas y comprimidas.
+
+---
+
+## features_audio
+
+### Idea
+Para clasificar o entender audio extraemos **features** (descriptores), de bajo
+nivel (basados en la señal) y de alto nivel (semánticos).
+
+### Bajo nivel
+- **ZCR (Zero-Crossing Rate):** tasa de cruces por cero — mide "ruidosidad".
+$$
+ZCR = \frac{1}{N-1} \sum_{n=1}^{N-1} \mathbb{I}\{\,\text{sgn}(x[n]) \neq \text{sgn}(x[n-1])\,\}
+$$
+- **Centroide espectral:** "centro de masa" del espectro, correlacionado con el *brillo*.
+$$
+C = \frac{\sum_{k} f_k\,|X(k)|}{\sum_{k} |X(k)|}
+$$
+- **Rolloff espectral:** frecuencia bajo la cual se concentra el 85–95 % de la energía.
+
+### Tabla de referencia
+| Sonido | ZCR | Centroide | Comportamiento |
+|---|---|---|---|
+| Violín (arco, A4) | Bajo | ≈1500 Hz | Tonos armónicos estables |
+| Hi-Hat | Muy alto | ≈8000+ Hz | Energía en agudos |
+| Voz humana | Bajo/Medio | ≈2000 Hz | Formantes dinámicos |
+
+### Alto nivel
+BPM (tempo), tonalidad (key), género, mood. Se construyen **agregando
+estadísticamente** los descriptores de bajo nivel (ej. con Machine Learning).
+
+---
+
+## onset_bpm
+
+### Idea
+Un **onset** es el inicio de un evento musical (golpe de bombo, ataque de piano).
+
+### Spectral Flux
+Se detecta con el *flujo espectral* — la "derivada del espectro" — midiendo la
+diferencia de energía positiva entre frames adyacentes:
+$$
+SF(m) = \sum_{k} \max\bigl(0,\ |X(m,k)| - |X(m-1,k)|\bigr)
+$$
+
+### Conexión con el ritmo
+Los picos de la *onset novelty* dan pulsos espaciados en el tiempo. Analizando su
+periodicidad (autocorrelación o Fourier) el computador deduce el **BPM** y
+estructura recomendaciones por energía o *danceability*.
+
+---
+
+## pipeline_shazam
+
+### Idea
+*Anatomía de un buscador acústico* (Avery Wang, 2003) — diagrama de bloques.
+
+### Etapas
+1. **Audio → STFT:** del dominio del tiempo al tiempo-frecuencia (espectrograma).
+2. **Constelación de picos:** máximos locales en vecindarios 2D; la canción se
+   vuelve una nube dispersa de puntos (filtramos todo salvo donde $|X(m,k)|$ es pico).
+3. **Formación de pares (hashes):** un pico solo es frágil; emparejamos un pico
+   *ancla* $(t_1, f_1)$ con un *target* $(t_2, f_2)$ dentro de una zona objetivo.
+$$
+H = (f_1,\, f_2,\, \Delta t) \ \rightarrow\ (\text{ID\_canción},\, t_1)
+$$
+4. **Hash table:** búsquedas $O(1)$ contra millones de canciones.
+
+---
+
+## demo_mir
+
+### Idea
+*Laboratorio: MIR en el navegador* (port de `demo_mir.html`). Corazón de la clase.
+
+### Guion del presentador
+1. **Mini-Shazam en vivo:** "Identificar" con audio original vs ruidoso; ver las barras de score.
+2. **Constelación:** picos amarillos emergiendo; slider de *picos por frame* y su trade-off.
+3. **Hashes:** pares ancla→target con *target zone* punteada; combinatoria y *fan-out*.
+4. **Robustez al ruido:** slider de SNR; el sistema sobrevive hasta ≈ −10/−15 dB.
+5. **Features:** ZCR y centroide reaccionando en tiempo real a tono/ruido/percusivo.
+
+---
+
+## histograma_offsets
+
+### Idea
+*El truco maestro.* La diferencia entre "casi funciona" y "producción".
+
+### El problema
+Contar solo coincidencias de hashes hace explotar los falsos positivos: hashes
+espurios coinciden por azar en una DB de millones.
+
+### El filtro espacial
+Ante un match calculamos el **offset temporal**:
+$$
+\Delta t_{\text{offset}} = t_{db} - t_{query}
+$$
+
+### El momento "ahá"
+- **Canción correcta:** todas las coincidencias válidas comparten el *mismo* offset → **pico de Dirac** en el histograma.
+- **Canción incorrecta:** alineaciones aleatorias → **nube plana** (ruido).
+
+> Shazam no busca la canción con más hashes en común, busca la que genere el
+> pico más alto en el histograma de offsets.
+
+---
+
+## limites_shazam
+
+### Idea
+*Rompiendo nuestro propio Shazam.*
+
+### Fun Task de la semana
+Programar un "Mini-Shazam" funcional y medir su curva de **Precisión vs SNR**.
+
+### Puntos ciegos del algoritmo
+- **Time-stretching:** $\Delta t$ cambia → destruye los hashes.
+- **Pitch-shifting:** $f_1, f_2$ cambian → cambia la "llave" del diccionario.
+- **Reverb/eco severo:** picos "fantasma" que ensucian la constelación.
+
+---
+
+## discusion_mir
+
+### Idea
+*Q&A y evolución del modelo.* Para debatir con la clase.
+
+### Pregunta 1 — ¿Dos canciones con el mismo fingerprint?
+A nivel de hash individual: sí (colisión). Pero la probabilidad de que una
+*secuencia* de hashes se alinee temporalmente es astronómicamente baja: el
+espacio $f_1 \times f_2 \times \Delta t$ tiene millones de cubetas.
+
+### Pregunta 2 — ¿Y un cover transpuesto un semitono?
+El algoritmo de Wang fracasa: los picos cambian de bin de frecuencia absoluta.
+La solución moderna — **AcoustID** (MusicBrainz) — usa *Chroma features* (energía
+mapeada a las 12 notas, ignorando octava) o **relative-pitch hashes** (guardar la
+proporción $f_2/f_1$ en vez de valores absolutos) → robusto a transposiciones.
+
 ### Cierre
 > El agente actual valida el pipeline. El siguiente paso no requiere cambiar la arquitectura — solo **enriquecer lo que el agente puede escuchar**.

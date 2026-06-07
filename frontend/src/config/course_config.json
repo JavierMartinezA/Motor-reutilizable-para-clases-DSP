@@ -1,56 +1,60 @@
 {
   "$schema": "./course_config.schema.json",
-  "course": {
-    "title": "Síntesis FM",
-    "shortTitle": "Sesión 09",
-    "subtitle": "Modulación de Frecuencia · IEE3736-1",
-    "institution": "Pontificia Universidad Católica de Chile",
-    "term": "Sesión 09"
-  },
-  "theme": {
-    "background": "cream",
-    "accent": "#2563eb",
-    "showHeaderTitle": true,
-    "showProgressDots": true,
-    "showSlideCounter": true
-  },
-  "slides": [
-    {
-      "id": "sintesis_fm",
-      "label": "01 · Portada y el DX7",
-      "props": {}
+  "defaultDeck": "mir",
+  "decks": {
+    "fm": {
+      "course": {
+        "title": "Síntesis FM",
+        "shortTitle": "Sesión 09",
+        "subtitle": "Modulación de Frecuencia · IEE3736-1",
+        "institution": "Pontificia Universidad Católica de Chile",
+        "term": "Sesión 09"
+      },
+      "theme": {
+        "background": "cream",
+        "accent": "#2563eb",
+        "showHeaderTitle": true,
+        "showProgressDots": true,
+        "showSlideCounter": true
+      },
+      "slides": [
+        { "id": "sintesis_fm", "label": "01 · Portada y el DX7", "props": {} },
+        { "id": "fm_intuicion", "label": "02 · Vibrato → Timbre", "props": {} },
+        { "id": "fm_ecuacion", "label": "03 · Ecuación y plano", "props": {} },
+        { "id": "fm_bessel", "label": "04 · Bessel sin álgebra", "props": {} },
+        { "id": "fm_vivo", "label": "05 · Plano FM en vivo", "props": {} },
+        { "id": "recreando_80s", "label": "06 · Fun Task — Recreando los 80s", "props": {} },
+        { "id": "fm_debate", "label": "07 · El vacío de Bessel", "props": {} }
+      ]
     },
-    {
-      "id": "fm_intuicion",
-      "label": "02 · Vibrato → Timbre",
-      "props": {}
-    },
-    {
-      "id": "fm_ecuacion",
-      "label": "03 · Ecuación y plano",
-      "props": {}
-    },
-    {
-      "id": "fm_bessel",
-      "label": "04 · Bessel sin álgebra",
-      "props": {}
-    },
-    {
-      "id": "fm_vivo",
-      "label": "05 · Plano FM en vivo",
-      "props": {}
-    },
-    {
-      "id": "recreando_80s",
-      "label": "06 · Fun Task — Recreando los 80s",
-      "props": {}
-    },
-    {
-      "id": "fm_debate",
-      "label": "07 · El vacío de Bessel",
-      "props": {}
+    "mir": {
+      "course": {
+        "title": "MIR & Audio Fingerprinting",
+        "shortTitle": "Clase 11",
+        "subtitle": "Music Information Retrieval y el algoritmo de Shazam · IEE3736-1",
+        "institution": "Pontificia Universidad Católica de Chile",
+        "term": "Clase 11"
+      },
+      "theme": {
+        "background": "cream",
+        "accent": "#7c3aed",
+        "showHeaderTitle": true,
+        "showProgressDots": true,
+        "showSlideCounter": true
+      },
+      "slides": [
+        { "id": "portada_mir", "label": "01 · Portada — MIR & Fingerprinting", "props": {} },
+        { "id": "problema_shazam", "label": "02 · El Milagro de Shazam", "props": {} },
+        { "id": "features_audio", "label": "03 · Descriptores de Audio", "props": {} },
+        { "id": "onset_bpm", "label": "04 · Onset Detection y BPM", "props": {} },
+        { "id": "pipeline_shazam", "label": "05 · Pipeline de Shazam", "props": {} },
+        { "id": "demo_mir", "label": "06 · Demo en Vivo — MIR en el navegador", "props": {} },
+        { "id": "histograma_offsets", "label": "07 · Histograma de Offsets", "props": {} },
+        { "id": "limites_shazam", "label": "08 · Fun Task y Límites", "props": {} },
+        { "id": "discusion_mir", "label": "09 · Discusión y Q&A", "props": {} }
+      ]
     }
-  ],
+  },
   "pipelines": {
     "recreando_80s": {
       "module": "recreando_80s",
@@ -108,10 +112,16 @@
     }
   },
   "_doc": {
-    "slides[]": {
-      "id": "string · clave única; debe coincidir con la entrada en src/slides/index.js y con el ## anchor en content.md",
-      "label": "string · texto mostrado en tooltips/dots",
-      "props": "object opcional · pasado como props al componente (audio, imágenes, parámetros)"
+    "defaultDeck": "string · id del deck mostrado cuando la URL no trae #hash",
+    "decks.<deckId>": {
+      "_url": "Se selecciona con el hash de la URL: https://host/#<deckId>",
+      "course": "object · metadata (title, shortTitle, subtitle, institution, term)",
+      "theme": "object · flags visuales (accent, showProgressDots, ...)",
+      "slides[]": {
+        "id": "string · clave única; debe coincidir con src/slides/index.js y con el ## anchor en content.md",
+        "label": "string · texto en tooltips/dots",
+        "props": "object opcional · pasado como props al componente"
+      }
     },
     "pipelines.<id>": {
       "module": "string · nombre del módulo en dsp_pipelines/pipelines/",
