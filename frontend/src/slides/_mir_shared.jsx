@@ -523,10 +523,10 @@ export function Spectrogram({
       }
     }
 
-    ctx.fillStyle = 'rgba(255,255,255,0.5)'; ctx.font = '10px monospace';
-    ctx.fillText('t →', W - 26, H - 6);
-    ctx.fillText('Hz', 4, 12);
-    ctx.fillText(`${Math.floor(Y_MAX_BIN * FS / N_FFT)} Hz`, 4, 24);
+    ctx.fillStyle = 'rgba(255,255,255,0.62)'; ctx.font = 'bold 18px monospace';
+    ctx.fillText('t →', W - 48, H - 10);
+    ctx.fillText('Hz', 6, 22);
+    ctx.fillText(`${Math.floor(Y_MAX_BIN * FS / N_FFT)} Hz`, 6, 44);
   }, [spec, peaks, peakColor, anchorIdx, fanOut, dtMax, dfMax]);
 
   return (
@@ -572,7 +572,7 @@ export function OffsetHistogram({ hists, height = 160 }) {
     let allOffsets = [];
     for (const h of Object.values(hists)) for (const o of h.keys()) allOffsets.push(o);
     if (!allOffsets.length) {
-      ctx.fillStyle = 'rgba(255,255,255,0.4)'; ctx.font = '13px monospace';
+      ctx.fillStyle = 'rgba(255,255,255,0.5)'; ctx.font = '20px monospace';
       ctx.fillText('sin matches — corre una identificación', 12, H / 2);
       return;
     }
@@ -584,8 +584,8 @@ export function OffsetHistogram({ hists, height = 160 }) {
     const sectionH = H / dbNames.length;
     dbNames.forEach((name, idx) => {
       ctx.fillStyle = colors[idx % colors.length];
-      ctx.font = '11px monospace';
-      ctx.fillText(name, 6, idx * sectionH + 14);
+      ctx.font = 'bold 18px monospace';
+      ctx.fillText(name, 8, idx * sectionH + 22);
       const hist = hists[name];
       for (const [o, c] of hist) {
         const x = ((o - minO) / range) * W;
@@ -683,9 +683,9 @@ export function FluxNovelty({ audio, spec, flux, peaks, height = 220 }) {
       }
     }
 
-    ctx.fillStyle = 'rgba(255,255,255,0.55)'; ctx.font = '10px monospace';
-    ctx.fillText('forma de onda', 6, 12);
-    ctx.fillText('spectral flux + onsets', 6, midY + 14);
+    ctx.fillStyle = 'rgba(255,255,255,0.62)'; ctx.font = 'bold 17px monospace';
+    ctx.fillText('forma de onda', 8, 20);
+    ctx.fillText('spectral flux + onsets', 8, midY + 22);
   }, [audio, spec, flux, peaks]);
   return (
     <canvas ref={ref} width={1100} height={height}

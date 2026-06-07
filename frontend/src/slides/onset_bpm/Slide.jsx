@@ -44,31 +44,31 @@ export default function SlideOnsetBPM() {
             ))}
           </div>
           <FluxNovelty audio={audio} spec={spec} flux={flux} peaks={peaks} height={230} />
-          <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10.5, color: INK_FAINT, textAlign: 'center' }}>
+          <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12.5, color: INK_FAINT, textAlign: 'center' }}>
             cian = forma de onda · ámbar = spectral flux · verde = onsets detectados (picos de novelty)
           </div>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-          <div style={{ background: '#08111d', borderRadius: 10, padding: '14px 16px', color: '#ffd9a8' }}>
-            <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9e9eb8', fontWeight: 700, marginBottom: 6 }}>
+          <div style={{ background: '#08111d', borderRadius: 10, padding: '16px 18px', color: '#ffd9a8' }}>
+            <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 11.5, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#c7c7d6', fontWeight: 700, marginBottom: 8 }}>
               Spectral Flux · derivada positiva
             </div>
-            <MathFormula t="SF(m) = \sum_{k} \max\bigl(0,\ |X(m,k)| - |X(m\!-\!1,k)|\bigr)" display />
+            <MathFormula t="SF(m) = \sum_{k} \max\bigl(0,\ |X(m,k)| - |X(m\!-\!1,k)|\bigr)" color="#ffd9a8" size={1.2} display />
           </div>
 
           <div style={{ display: 'flex', gap: 12 }}>
             <div style={{ flex: 1, textAlign: 'center', padding: '14px 10px', borderRadius: 10, background: '#eefcf2', border: `1px solid ${GREEN}44` }}>
-              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 30, fontWeight: 800, color: GREEN }}>{peaks.length}</div>
-              <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 11.5, color: INK_MUTED }}>onsets detectados</div>
+              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 32, fontWeight: 800, color: GREEN }}>{peaks.length}</div>
+              <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 13.5, color: INK_MUTED }}>onsets detectados</div>
             </div>
             <div style={{ flex: 1, textAlign: 'center', padding: '14px 10px', borderRadius: 10, background: '#eef4fc', border: `1px solid ${BLUE}44` }}>
-              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 30, fontWeight: 800, color: BLUE }}>{bpm ?? '—'}</div>
-              <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 11.5, color: INK_MUTED }}>BPM estimado</div>
+              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 32, fontWeight: 800, color: BLUE }}>{bpm ?? '—'}</div>
+              <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 13.5, color: INK_MUTED }}>BPM estimado</div>
             </div>
           </div>
 
-          <div style={{ padding: '12px 16px', background: '#fffbf2', borderLeft: `3px solid ${AMBER}`, borderRadius: 6, fontFamily: "'Inter', sans-serif", fontSize: 13, color: INK, lineHeight: 1.55 }}>
+          <div style={{ padding: '14px 18px', background: '#fffbf2', borderLeft: `3px solid ${AMBER}`, borderRadius: 6, fontFamily: "'Inter', sans-serif", fontSize: 14.5, color: INK, lineHeight: 1.55 }}>
             Los picos de la <em>onset novelty</em> son pulsos en el tiempo. Su <strong>periodicidad</strong>
             {' '}(autocorrelación o Fourier) da el BPM. Onsets = puerta a tempo, segmentación y sincronía audio/MIDI/video.
           </div>

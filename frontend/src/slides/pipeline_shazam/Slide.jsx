@@ -61,7 +61,7 @@ export default function SlidePipelineShazam() {
                   <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 14.5, fontWeight: 700, color: INK }}>{s.tag}</span>
                 </div>
                 {active && (
-                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 12.5, color: INK_MUTED, marginTop: 6, lineHeight: 1.45 }}>{s.desc}</p>
+                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: INK_MUTED, marginTop: 6, lineHeight: 1.45 }}>{s.desc}</p>
                 )}
               </div>
             );
@@ -79,7 +79,7 @@ export default function SlidePipelineShazam() {
                 fanOut={5} dtMax={15}
                 height={300}
               />
-              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: INK_FAINT, textAlign: 'center' }}>
+              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12.5, color: INK_FAINT, textAlign: 'center' }}>
                 {step === 0 && 'espectrograma de la Melodía A — magnitud en dB'}
                 {step === 1 && 'puntos amarillos = constelación de picos (la huella)'}
                 {step === 2 && 'rojo = ancla · líneas verdes = pares dentro de la zona objetivo punteada'}
@@ -87,30 +87,30 @@ export default function SlidePipelineShazam() {
             </>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <div style={{ background: '#08111d', borderRadius: 10, padding: '18px 16px', color: '#d9c4ff', textAlign: 'center' }}>
-                <MathFormula t="H = (\textcolor{#2563eb}{f_1},\ \textcolor{#16a34a}{f_2},\ \textcolor{#d97706}{\Delta t})\ \longrightarrow\ (\text{ID\_canción},\ t_1)" display />
+              <div style={{ background: '#08111d', borderRadius: 10, padding: '20px 18px', color: '#e3d4ff', textAlign: 'center' }}>
+                <MathFormula t="H = (\textcolor{#5b9bff}{f_1},\ \textcolor{#4ade80}{f_2},\ \textcolor{#fbbf24}{\Delta t})\ \longrightarrow\ (\text{ID\_canción},\ t_1)" color="#e3d4ff" size={1.25} display />
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '6px 16px', fontFamily: "'JetBrains Mono', monospace", fontSize: 13, padding: '14px 18px', background: '#fbf9f5', borderRadius: 10, border: '1px solid #e8e3d8', color: INK_MUTED }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '6px 16px', fontFamily: "'JetBrains Mono', monospace", fontSize: 14.5, padding: '14px 18px', background: '#fbf9f5', borderRadius: 10, border: '1px solid #e8e3d8', color: INK_MUTED }}>
                 <span style={{ color: INK, fontWeight: 700 }}>(112, 140, 7)</span><span>→ (Melodía A, t=6)</span>
                 <span style={{ color: INK, fontWeight: 700 }}>(98, 165, 11)</span><span>→ (Melodía A, t=6)</span>
                 <span style={{ color: INK, fontWeight: 700 }}>(140, 112, 4)</span><span>→ (Melodía B, t=22)</span>
               </div>
               <div style={{ display: 'flex', gap: 12 }}>
                 <div style={{ flex: 1, textAlign: 'center', padding: '10px', borderRadius: 8, background: '#f3eefc' }}>
-                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 18, fontWeight: 800, color: VIOLET }}>≈ 17M</div>
-                  <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 11, color: INK_MUTED }}>cubetas posibles</div>
+                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 20, fontWeight: 800, color: VIOLET }}>≈ 17M</div>
+                  <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 12.5, color: INK_MUTED }}>cubetas posibles</div>
                 </div>
                 <div style={{ flex: 1, textAlign: 'center', padding: '10px', borderRadius: 8, background: '#eefcf2' }}>
-                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 18, fontWeight: 800, color: GREEN }}>O(1)</div>
-                  <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 11, color: INK_MUTED }}>look-up por hash</div>
+                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 20, fontWeight: 800, color: GREEN }}>O(1)</div>
+                  <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 12.5, color: INK_MUTED }}>look-up por hash</div>
                 </div>
               </div>
             </div>
           )}
 
-          <div style={{ padding: '11px 16px', background: '#f3eefc', borderLeft: `3px solid ${VIOLET}`, borderRadius: 6, fontFamily: "'Newsreader', serif", fontSize: 14, color: INK, lineHeight: 1.5, fontStyle: 'italic' }}>
+          <div style={{ padding: '13px 18px', background: '#f3eefc', borderLeft: `3px solid ${VIOLET}`, borderRadius: 6, fontFamily: "'Newsreader', serif", fontSize: 15.5, color: INK, lineHeight: 1.5, fontStyle: 'italic' }}>
             "Una estrella sola no identifica una constelación. Dos estrellas, con su distancia y orientación, sí."
-            {' '}<span style={{ color: INK_MUTED, fontStyle: 'normal', fontFamily: "'Inter', sans-serif", fontSize: 12 }}>— A. Wang. Por eso el hash es un <strong>par</strong>, no un pico suelto.</span>
+            {' '}<span style={{ color: INK_MUTED, fontStyle: 'normal', fontFamily: "'Inter', sans-serif", fontSize: 13 }}>— A. Wang. Por eso el hash es un <strong>par</strong>, no un pico suelto.</span>
           </div>
         </div>
       </div>

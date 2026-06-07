@@ -54,35 +54,35 @@ export default function SlideFeaturesAudio() {
             ))}
           </div>
           <FeatureWaveform audio={audio} height={190} />
-          <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10.5, color: INK_FAINT, textAlign: 'center' }}>
+          <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12.5, color: INK_FAINT, textAlign: 'center' }}>
             forma de onda (cian) + envolvente de energía RMS (naranja)
           </div>
 
           <div style={{ display: 'flex', gap: 16, marginTop: 4 }}>
-            <div style={{ flex: 1, background: '#08111d', borderRadius: 8, padding: '10px 14px' }}>
-              <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#9e9eb8', fontWeight: 700, marginBottom: 4 }}>ZCR</div>
-              <MathFormula t="\tfrac{1}{2(N-1)}\sum_n |\,\mathrm{sgn}\,x[n]-\mathrm{sgn}\,x[n\!-\!1]|\,f_s" />
+            <div style={{ flex: 1, background: '#08111d', borderRadius: 8, padding: '12px 16px' }}>
+              <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 11.5, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#c7c7d6', fontWeight: 700, marginBottom: 6 }}>ZCR</div>
+              <MathFormula t="\tfrac{1}{2(N-1)}\sum_n |\,\mathrm{sgn}\,x[n]-\mathrm{sgn}\,x[n\!-\!1]|\,f_s" color="#eef1f6" size={1.1} />
             </div>
-            <div style={{ flex: 1, background: '#08111d', borderRadius: 8, padding: '10px 14px' }}>
-              <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#9e9eb8', fontWeight: 700, marginBottom: 4 }}>Centroide · centro de masa</div>
-              <MathFormula t="\mu_f = \frac{\sum_k \textcolor{#2563eb}{f_k}\,|X_k|}{\sum_k |X_k|}" />
+            <div style={{ flex: 1, background: '#08111d', borderRadius: 8, padding: '12px 16px' }}>
+              <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 11.5, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#c7c7d6', fontWeight: 700, marginBottom: 6 }}>Centroide · centro de masa</div>
+              <MathFormula t="\mu_f = \frac{\sum_k \textcolor{#5b9bff}{f_k}\,|X_k|}{\sum_k |X_k|}" color="#eef1f6" size={1.25} />
             </div>
           </div>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-          <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase', color: INK_MUTED, fontWeight: 700 }}>
+          <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 12.5, letterSpacing: '0.18em', textTransform: 'uppercase', color: INK_MUTED, fontWeight: 700 }}>
             Valores en vivo
           </span>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             {FEATS.map((f) => (
-              <div key={f.key} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', padding: '9px 14px', borderRadius: 8, background: '#fbf9f5', border: '1px solid #e8e3d8' }}>
-                <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, color: INK_MUTED }}>{f.label}</span>
-                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 17, fontWeight: 700, color: f.color }}>{f.fmt(feats[f.key])}</span>
+              <div key={f.key} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', padding: '10px 16px', borderRadius: 8, background: '#fbf9f5', border: '1px solid #e8e3d8' }}>
+                <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 15, color: INK_MUTED }}>{f.label}</span>
+                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 21, fontWeight: 700, color: f.color }}>{f.fmt(feats[f.key])}</span>
               </div>
             ))}
           </div>
-          <div style={{ padding: '12px 16px', background: '#f3eefc', borderLeft: `3px solid ${VIOLET}`, borderRadius: 6, fontFamily: "'Inter', sans-serif", fontSize: 12.5, color: INK, lineHeight: 1.55 }}>
+          <div style={{ padding: '14px 18px', background: '#f3eefc', borderLeft: `3px solid ${VIOLET}`, borderRadius: 6, fontFamily: "'Inter', sans-serif", fontSize: 14.5, color: INK, lineHeight: 1.55 }}>
             <strong>ZCR alto</strong> → percusión/agudos. <strong>Centroide alto</strong> → brillo (hi-hat).
             {' '}<strong>Flatness ≈ 1</strong> → ruido (espectro plano); <strong>≈ 0</strong> → tonal (armónico).
             <br /><span style={{ color: INK_MUTED }}>Con 3–5 features así puedes clasificar audios con un k-NN. Alto nivel = agregarlos (MFCCs + ML).</span>

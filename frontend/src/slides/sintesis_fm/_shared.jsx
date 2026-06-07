@@ -565,8 +565,8 @@ export function Slider({ label, value, min, max, step, onChange, color = INK, fo
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: INK_MUTED, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{label}</span>
-        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13, color, fontWeight: 700 }}>{format(value)}{unit}</span>
+        <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 13.5, color: INK_MUTED, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{label}</span>
+        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 15, color, fontWeight: 700 }}>{format(value)}{unit}</span>
       </div>
       <input type="range" min={min} max={max} step={step} value={value}
         onChange={(e) => onChange(parseFloat(e.target.value))}
@@ -591,7 +591,7 @@ export function SubStepTabs({ items, value, onChange }) {
               border: `1.5px solid ${active ? it.color : INK_FAINT}`,
               background: active ? it.color : 'transparent',
               color: active ? '#fff' : INK_MUTED,
-              fontFamily: "'Inter', sans-serif", fontSize: 11.5, fontWeight: 700,
+              fontFamily: "'Inter', sans-serif", fontSize: 13, fontWeight: 700,
               letterSpacing: '0.06em', cursor: 'pointer', transition: 'all 0.2s ease',
             }}>
             <span style={{ fontFamily: "'JetBrains Mono', monospace", marginRight: 8, opacity: 0.85 }}>

@@ -39,7 +39,7 @@ export default function SlidePortadaMIR() {
               Dado un audio, ¿qué puedo decir sobre él?
             </p>
           </div>
-          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14.5, lineHeight: 1.5, color: INK_MUTED }}>
+          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 15.5, lineHeight: 1.5, color: INK_MUTED }}>
             La pregunta más humilde de <strong>MIR</strong> (Music Information Retrieval): <em>¿qué canción es esta?</em>
             {' '}El hilo conductor será uno solo — <strong style={{ color: BLUE }}>el espectrograma es la materia prima de casi todo MIR</strong>.
           </p>
@@ -56,12 +56,12 @@ export default function SlidePortadaMIR() {
               background: s.tone === VIOLET ? '#f3eefc' : '#fbf9f5',
               border: `1px solid ${s.tone === VIOLET ? VIOLET + '55' : '#e8e3d8'}`,
             }}>
-              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13, fontWeight: 700, color: s.tone }}>{s.id}</span>
+              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 14, fontWeight: 700, color: s.tone }}>{s.id}</span>
               <div>
-                <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 14.5, fontWeight: 700, color: INK }}>{s.label}</div>
-                <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: INK_MUTED }}>{s.note}</div>
+                <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 15.5, fontWeight: 700, color: INK }}>{s.label}</div>
+                <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 13.5, color: INK_MUTED }}>{s.note}</div>
               </div>
-              <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 9.5, letterSpacing: '0.12em', textTransform: 'uppercase', color: s.tone, fontWeight: 800 }}>{s.phase}</span>
+              <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: s.tone, fontWeight: 800 }}>{s.phase}</span>
             </div>
           ))}
         </div>

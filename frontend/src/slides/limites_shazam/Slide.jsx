@@ -35,16 +35,16 @@ function Curve() {
       <line x1={pad} y1={H - pad} x2={W - 6} y2={H - pad} stroke="#cfcabd" strokeWidth="1" />
       <line x1={pad} y1={12} x2={pad} y2={H - pad} stroke="#cfcabd" strokeWidth="1" />
       <line x1={pad} y1={yToPx(1)} x2={W - 6} y2={yToPx(1)} stroke={INK_FAINT} strokeWidth="1" strokeDasharray="3 3" />
-      <text x={W - 8} y={yToPx(1) - 5} fontSize="9" fill={INK_FAINT} fontFamily="monospace" textAnchor="end">ratio = 1 (ambiguo)</text>
+      <text x={W - 8} y={yToPx(1) - 5} fontSize="11" fill={INK_FAINT} fontFamily="monospace" textAnchor="end">ratio = 1 (ambiguo)</text>
       <path d={path(simple)} fill="none" stroke={INK_MUTED} strokeWidth="2" />
       <path d={path(hist)} fill="none" stroke={VIOLET} strokeWidth="2.5" />
-      <text x={xToPx(30)} y={H - pad + 14} fontSize="9" fill={INK_MUTED} fontFamily="monospace">+30</text>
-      <text x={xToPx(0)} y={H - pad + 14} fontSize="9" fill={INK_MUTED} fontFamily="monospace">0</text>
-      <text x={xToPx(-20)} y={H - pad + 14} fontSize="9" fill={INK_MUTED} fontFamily="monospace">−20 dB</text>
-      <text x={pad - 6} y={yToPx(3.5)} fontSize="9" fill={INK_MUTED} fontFamily="monospace" textAnchor="end">ratio</text>
+      <text x={xToPx(30)} y={H - pad + 14} fontSize="11" fill={INK_MUTED} fontFamily="monospace">+30</text>
+      <text x={xToPx(0)} y={H - pad + 14} fontSize="11" fill={INK_MUTED} fontFamily="monospace">0</text>
+      <text x={xToPx(-20)} y={H - pad + 14} fontSize="11" fill={INK_MUTED} fontFamily="monospace">−20 dB</text>
+      <text x={pad - 6} y={yToPx(3.5)} fontSize="11" fill={INK_MUTED} fontFamily="monospace" textAnchor="end">ratio</text>
       <circle cx={xToPx(30)} cy={yToPx(hist[0])} r="3" fill={VIOLET} />
-      <text x={xToPx(20)} y={yToPx(3.9)} fontSize="10" fill={VIOLET} fontFamily="monospace" fontWeight="700">histograma</text>
-      <text x={xToPx(15)} y={yToPx(1.9)} fontSize="10" fill={INK_MUTED} fontFamily="monospace" fontWeight="700">simple</text>
+      <text x={xToPx(20)} y={yToPx(3.9)} fontSize="12" fill={VIOLET} fontFamily="monospace" fontWeight="700">histograma</text>
+      <text x={xToPx(15)} y={yToPx(1.9)} fontSize="12" fill={INK_MUTED} fontFamily="monospace" fontWeight="700">simple</text>
     </svg>
   );
 }
@@ -66,14 +66,14 @@ export default function SlideLimitesShazam() {
             <div key={t.n} style={{ display: 'grid', gridTemplateColumns: '34px 1fr', gap: 12, alignItems: 'start', padding: '11px 14px', borderRadius: 10, background: '#fbf9f5', border: `1px solid ${t.color}33` }}>
               <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 20, fontWeight: 800, color: t.color }}>{t.n}</span>
               <div>
-                <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 14.5, fontWeight: 700, color: INK }}>{t.title}</div>
-                <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 12.5, color: INK_MUTED, lineHeight: 1.4, marginTop: 2 }}>{t.desc}</div>
+                <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 15.5, fontWeight: 700, color: INK }}>{t.title}</div>
+                <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: INK_MUTED, lineHeight: 1.4, marginTop: 2 }}>{t.desc}</div>
               </div>
             </div>
           ))}
           <div style={{ display: 'flex', gap: 10, marginTop: 2 }}>
-            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11.5, color: INK, background: '#f0ece2', padding: '6px 10px', borderRadius: 6 }}>tol = ±2 bins, ±1 frame</span>
-            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11.5, color: INK, background: '#f0ece2', padding: '6px 10px', borderRadius: 6 }}>cada decisión lleva [WHY]</span>
+            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13, color: INK, background: '#f0ece2', padding: '7px 11px', borderRadius: 6 }}>tol = ±2 bins, ±1 frame</span>
+            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13, color: INK, background: '#f0ece2', padding: '7px 11px', borderRadius: 6 }}>cada decisión lleva [WHY]</span>
           </div>
         </div>
 
@@ -88,9 +88,9 @@ export default function SlideLimitesShazam() {
           </span>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             {ATTACKS.map(([a, why, c]) => (
-              <div key={a} style={{ display: 'grid', gridTemplateColumns: '150px 1fr', gap: 12, alignItems: 'baseline', padding: '7px 12px', borderRadius: 8, background: '#fbf9f5', borderLeft: `3px solid ${c}` }}>
-                <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 12.5, fontWeight: 700, color: INK }}>{a}</span>
-                <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: INK_MUTED, lineHeight: 1.35 }}>{why}</span>
+              <div key={a} style={{ display: 'grid', gridTemplateColumns: '165px 1fr', gap: 12, alignItems: 'baseline', padding: '8px 14px', borderRadius: 8, background: '#fbf9f5', borderLeft: `3px solid ${c}` }}>
+                <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, fontWeight: 700, color: INK }}>{a}</span>
+                <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 13.5, color: INK_MUTED, lineHeight: 1.35 }}>{why}</span>
               </div>
             ))}
           </div>

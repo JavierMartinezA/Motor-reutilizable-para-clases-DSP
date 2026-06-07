@@ -43,9 +43,9 @@ export default function SlideProblemaShazam() {
             Las cuatro restricciones
           </span>
           {RETOS.map(([k, v]) => (
-            <div key={k} style={{ display: 'grid', gridTemplateColumns: '130px 1fr', gap: 14, alignItems: 'baseline', padding: '10px 14px', borderRadius: 10, background: '#fbf9f5', border: '1px solid #e8e3d8' }}>
-              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 14, fontWeight: 700, color: INK }}>{k}</span>
-              <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 13.5, color: INK_MUTED, lineHeight: 1.4 }}>{v}</span>
+            <div key={k} style={{ display: 'grid', gridTemplateColumns: '140px 1fr', gap: 14, alignItems: 'baseline', padding: '11px 16px', borderRadius: 10, background: '#fbf9f5', border: '1px solid #e8e3d8' }}>
+              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 15.5, fontWeight: 700, color: INK }}>{k}</span>
+              <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 15, color: INK_MUTED, lineHeight: 1.4 }}>{v}</span>
             </div>
           ))}
         </div>
@@ -60,17 +60,17 @@ export default function SlideProblemaShazam() {
             <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: RED, fontWeight: 800 }}>
               ⚠ La trampa
             </span>
-            <p style={{ fontFamily: "'Newsreader', serif", fontSize: 17, color: INK, marginTop: 6, lineHeight: 1.45 }}>
+            <p style={{ fontFamily: "'Newsreader', serif", fontSize: 18.5, color: INK, marginTop: 6, lineHeight: 1.45 }}>
               "Calculemos correlación cruzada entre el query y <em>cada</em> canción de la base de datos."
             </p>
           </div>
 
           {/* Paso 2: el muro numérico */}
           <div style={{ opacity: step >= 2 ? 1 : 0.25, transition: 'opacity 0.4s', textAlign: 'center' }}>
-            <div style={{ background: '#08111d', borderRadius: 10, padding: '16px 12px', color: '#ff8a8a' }}>
-              <MathFormula t="\underbrace{10^{7}}_{\text{canciones}}\times\ \underbrace{240\,\text{s}}_{\text{duración}}\times\ \underbrace{44100}_{f_s}\ \approx\ 10^{14}\ \text{ops/query}" display />
+            <div style={{ background: '#08111d', borderRadius: 10, padding: '18px 14px', color: '#ffb3b3' }}>
+              <MathFormula t="\underbrace{10^{7}}_{\text{canciones}}\times\ \underbrace{240\,\text{s}}_{\text{duración}}\times\ \underbrace{44100}_{f_s}\ \approx\ 10^{14}\ \text{ops/query}" color="#ffb3b3" size={1.15} display />
             </div>
-            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, color: RED, fontWeight: 700, marginTop: 8 }}>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14.5, color: RED, fontWeight: 700, marginTop: 8 }}>
               Inviable. Ni con todos los servidores del mundo.
             </p>
           </div>
@@ -84,7 +84,7 @@ export default function SlideProblemaShazam() {
             <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: GREEN, fontWeight: 800 }}>
               ✓ La idea correcta
             </span>
-            <p style={{ fontFamily: "'Newsreader', serif", fontSize: 17, color: INK, marginTop: 6, lineHeight: 1.45 }}>
+            <p style={{ fontFamily: "'Newsreader', serif", fontSize: 18.5, color: INK, marginTop: 6, lineHeight: 1.45 }}>
               No compara audio muestra a muestra. Compara <strong style={{ color: VIOLET }}>huellas digitales</strong>
               {' '}(<em>fingerprints</em>) — robustas, comprimidas, con búsqueda <strong>O(1)</strong>.
             </p>

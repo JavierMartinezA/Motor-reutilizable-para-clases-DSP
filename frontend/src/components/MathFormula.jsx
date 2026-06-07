@@ -4,10 +4,15 @@
  * Wrapper KaTeX agnóstico de dominio. Reemplaza al antiguo `Math.jsx`.
  *
  * Props:
- *   t          string    expresión LaTeX (sin $ delimitadores)
- *   display    boolean   true → bloque centrado; false → inline
- *   colors     object    { varName: "#hex" } — inyecta \textcolor automático
- *   className  string    extra classes
+ *   t          string         expresión LaTeX (sin $ delimitadores)
+ *   display    boolean        true → bloque centrado; false → inline
+ *   colors     object         { varName: "#hex" } — inyecta \textcolor automático
+ *   color      string         color base de la fórmula (CSS currentColor de KaTeX).
+ *                             Úsalo sobre fondos oscuros: color="#e8e3d8".
+ *   size       number|string  escala tipográfica. Número → em (1.2 = 120%);
+ *                             string → valor CSS directo ("1.3rem"). Default legible
+ *                             para proyector de sala.
+ *   className  string         extra classes
  *
  * Renderiza con `trust: true, strict: false` para permitir `\textcolor{#hex}{...}`.
  *
@@ -26,6 +31,8 @@ export default function MathFormula({
   t,
   display = false,
   colors = null,
+  color = null,
+  size = null,
   className = '',
 }) {
   const html = useMemo(() => {
@@ -50,8 +57,18 @@ export default function MathFormula({
     }
   }, [t, display, colors]);
 
+  const style = {};
+  if (color) style.color = color;
+  if (size != null) style.fontSize = typeof size === 'number' ? `${size}em` : size;
+
   const Tag = display ? 'div' : 'span';
-  return <Tag className={className} dangerouslySetInnerHTML={{ __html: html }} />;
+  return (
+    <Tag
+      className={className}
+      style={style}
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  );
 }
 
 // Alias retro-compatible con el viejo `<M />`

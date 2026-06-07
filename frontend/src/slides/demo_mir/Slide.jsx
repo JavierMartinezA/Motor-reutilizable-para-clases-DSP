@@ -25,8 +25,8 @@ const TABS = [
   { label: '📊 Features', color: BLUE },
 ];
 
-const cap = { fontFamily: "'JetBrains Mono', monospace", fontSize: 10.5, color: INK_FAINT, textAlign: 'center' };
-const kicker = { fontFamily: "'Inter', sans-serif", fontSize: 11, letterSpacing: '0.16em', textTransform: 'uppercase', color: INK_MUTED, fontWeight: 700 };
+const cap = { fontFamily: "'JetBrains Mono', monospace", fontSize: 12.5, color: INK_FAINT, textAlign: 'center' };
+const kicker = { fontFamily: "'Inter', sans-serif", fontSize: 12.5, letterSpacing: '0.16em', textTransform: 'uppercase', color: INK_MUTED, fontWeight: 700 };
 
 export default function SlideDemoMIR() {
   const [tab, setTab] = useState(0);
@@ -104,7 +104,7 @@ function MiniShazam({ audio }) {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         <div style={{
-          padding: '12px 16px', borderRadius: 10, fontFamily: "'Inter', sans-serif", fontSize: 13.5, lineHeight: 1.45,
+          padding: '14px 18px', borderRadius: 10, fontFamily: "'Inter', sans-serif", fontSize: 15, lineHeight: 1.45,
           background: result ? (result.ok ? '#eefcf2' : '#fbeeee') : '#f3eefc',
           border: `1px solid ${result ? (result.ok ? GREEN : RED) : VIOLET}44`, color: INK,
         }}>
@@ -115,11 +115,11 @@ function MiniShazam({ audio }) {
         {result && (
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
             <div>
-              <span style={{ ...kicker, fontSize: 10 }}>conteo simple</span>
+              <span style={{ ...kicker, fontSize: 11.5 }}>conteo simple</span>
               <div style={{ marginTop: 6 }}><ScoreBars scores={result.simple} winner={result.winnerS} accent={INK_MUTED} /></div>
             </div>
             <div>
-              <span style={{ ...kicker, fontSize: 10 }}>histograma de offsets</span>
+              <span style={{ ...kicker, fontSize: 11.5 }}>histograma de offsets</span>
               <div style={{ marginTop: 6 }}><ScoreBars scores={result.hist} winner={result.winnerH} accent={VIOLET} /></div>
             </div>
           </div>
@@ -155,12 +155,12 @@ function Constelacion({ audio }) {
         <span style={kicker}>parámetros de detección</span>
         <Slider label="picos por frame" value={nPeaks} min={1} max={8} step={1} onChange={setNPeaks} color={AMBER} format={(v) => v.toFixed(0)} />
         <Slider label="umbral mínimo" value={thr} min={-50} max={0} step={1} onChange={setThr} color={AMBER} unit=" dB" format={(v) => v.toFixed(0)} />
-        <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '6px 14px', fontFamily: "'JetBrains Mono', monospace", fontSize: 13, color: INK_MUTED, padding: '12px 16px', background: '#fbf9f5', borderRadius: 10, border: '1px solid #e8e3d8' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '6px 14px', fontFamily: "'JetBrains Mono', monospace", fontSize: 14.5, color: INK_MUTED, padding: '12px 16px', background: '#fbf9f5', borderRadius: 10, border: '1px solid #e8e3d8' }}>
           <span style={{ color: INK, fontWeight: 700 }}>frames</span><span>{spec.nFrames}</span>
           <span style={{ color: INK, fontWeight: 700 }}>picos</span><span>{peaks.length}</span>
           <span style={{ color: INK, fontWeight: 700 }}>densidad</span><span>{density} /s</span>
         </div>
-        <div style={{ padding: '12px 16px', background: '#fffbf2', borderLeft: `3px solid ${AMBER}`, borderRadius: 6, fontFamily: "'Inter', sans-serif", fontSize: 12.5, color: INK, lineHeight: 1.5 }}>
+        <div style={{ padding: '12px 16px', background: '#fffbf2', borderLeft: `3px solid ${AMBER}`, borderRadius: 6, fontFamily: "'Inter', sans-serif", fontSize: 14, color: INK, lineHeight: 1.5 }}>
           <strong>Trade-off:</strong> más picos/frame = más información pero también más ruido y una DB gigante. Wang recomienda ~3.
         </div>
       </div>
@@ -204,11 +204,11 @@ function Hashes() {
         <Slider label="ancla (índice)" value={anchorIdx} min={0} max={Math.max(1, peaks.length - 1)} step={1} onChange={setAnchor} color={GREEN} format={(v) => v.toFixed(0)} />
         <Slider label="fan-out (pares/ancla)" value={fanout} min={1} max={20} step={1} onChange={setFanout} color={GREEN} format={(v) => v.toFixed(0)} />
         <Slider label="zona objetivo Δt máx" value={dtMax} min={3} max={40} step={1} onChange={setDtMax} color={GREEN} unit=" fr" format={(v) => v.toFixed(0)} />
-        <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '6px 14px', fontFamily: "'JetBrains Mono', monospace", fontSize: 13, color: INK_MUTED, padding: '12px 16px', background: '#fbf9f5', borderRadius: 10, border: '1px solid #e8e3d8' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '6px 14px', fontFamily: "'JetBrains Mono', monospace", fontSize: 14.5, color: INK_MUTED, padding: '12px 16px', background: '#fbf9f5', borderRadius: 10, border: '1px solid #e8e3d8' }}>
           <span style={{ color: INK, fontWeight: 700 }}>total hashes</span><span>{total}</span>
           <span style={{ color: INK, fontWeight: 700 }}>hash actual</span><span style={{ color: GREEN, fontWeight: 700 }}>{cur ?? '(sin pares)'}</span>
         </div>
-        <div style={{ padding: '12px 16px', background: '#eefcf2', borderLeft: `3px solid ${GREEN}`, borderRadius: 6, fontFamily: "'Inter', sans-serif", fontSize: 12.5, color: INK, lineHeight: 1.5 }}>
+        <div style={{ padding: '12px 16px', background: '#eefcf2', borderLeft: `3px solid ${GREEN}`, borderRadius: 6, fontFamily: "'Inter', sans-serif", fontSize: 14, color: INK, lineHeight: 1.5 }}>
           El espacio es enorme: 1024×1024×16 ≈ <strong>17M cubetas</strong>. Cada canción usa ~10k. Colisiones casuales: raras.
         </div>
       </div>
@@ -247,23 +247,23 @@ function Ruido({ audio }) {
           ))}
           <PillButton color={RED} onClick={run}>🔎 Identificar con este SNR</PillButton>
         </div>
-        {res ? <Spectrogram spec={res.specN} peaks={res.peaksN} height={250} /> : <div style={{ height: 250, borderRadius: 8, background: '#08111d', display: 'flex', alignItems: 'center', justifyContent: 'center', color: INK_FAINT, fontFamily: "'JetBrains Mono', monospace", fontSize: 12 }}>aprieta Identificar</div>}
+        {res ? <Spectrogram spec={res.specN} peaks={res.peaksN} height={250} /> : <div style={{ height: 250, borderRadius: 8, background: '#08111d', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#c7c7d6', fontFamily: "'JetBrains Mono', monospace", fontSize: 14 }}>aprieta Identificar</div>}
         <div style={cap}>picos válidos mezclados con falsos picos de ruido</div>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
         <span style={kicker}>nivel de ruido</span>
         <Slider label="SNR" value={snr} min={-20} max={30} step={1} onChange={setSnr} color={RED} unit=" dB" format={(v) => v.toFixed(0)} />
-        <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 11.5, color: INK_FAINT, lineHeight: 1.4 }}>
+        <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, color: INK_FAINT, lineHeight: 1.4 }}>
           +30 = casi sin ruido · 0 = ruido al nivel de la señal · −10 = ruido domina.
         </div>
         {res && (
-          <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '6px 14px', fontFamily: "'JetBrains Mono', monospace", fontSize: 13, color: INK_MUTED, padding: '12px 16px', background: '#fbf9f5', borderRadius: 10, border: '1px solid #e8e3d8' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '6px 14px', fontFamily: "'JetBrains Mono', monospace", fontSize: 14.5, color: INK_MUTED, padding: '12px 16px', background: '#fbf9f5', borderRadius: 10, border: '1px solid #e8e3d8' }}>
             <span style={{ color: INK, fontWeight: 700 }}>identificada</span><span style={{ color: res.ok ? GREEN : RED, fontWeight: 700 }}>{res.winner} {res.ok ? '✓' : '✗'}</span>
             <span style={{ color: INK, fontWeight: 700 }}>score relativo</span><span>{isFinite(res.ratio) ? res.ratio.toFixed(2) + '×' : '∞'}</span>
             <span style={{ color: INK, fontWeight: 700 }}>picos query</span><span>{res.npks}</span>
           </div>
         )}
-        <div style={{ padding: '12px 16px', background: '#fbeeee', borderLeft: `3px solid ${RED}`, borderRadius: 6, fontFamily: "'Inter', sans-serif", fontSize: 12.5, color: INK, lineHeight: 1.5 }}>
+        <div style={{ padding: '12px 16px', background: '#fbeeee', borderLeft: `3px solid ${RED}`, borderRadius: 6, fontFamily: "'Inter', sans-serif", fontSize: 14, color: INK, lineHeight: 1.5 }}>
           Desafío: <strong>¿a qué SNR se rompe?</strong> Baja el slider lentamente — suele sobrevivir hasta ≈ −10/−15 dB, porque los pares son <em>geométricos</em>, no espectrales.
         </div>
       </div>
@@ -298,12 +298,12 @@ function Features({ audio }) {
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
         <span style={kicker}>valores en vivo</span>
         {ROWS.map(([label, val, color]) => (
-          <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', padding: '9px 14px', borderRadius: 8, background: '#fbf9f5', border: '1px solid #e8e3d8' }}>
-            <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, color: INK_MUTED }}>{label}</span>
-            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 16, fontWeight: 700, color }}>{val}</span>
+          <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', padding: '10px 16px', borderRadius: 8, background: '#fbf9f5', border: '1px solid #e8e3d8' }}>
+            <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 14.5, color: INK_MUTED }}>{label}</span>
+            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 19, fontWeight: 700, color }}>{val}</span>
           </div>
         ))}
-        <div style={{ padding: '11px 14px', background: '#eef4fc', borderLeft: `3px solid ${BLUE}`, borderRadius: 6, fontFamily: "'Inter', sans-serif", fontSize: 12, color: INK, lineHeight: 1.5 }}>
+        <div style={{ padding: '12px 16px', background: '#eef4fc', borderLeft: `3px solid ${BLUE}`, borderRadius: 6, fontFamily: "'Inter', sans-serif", fontSize: 13.5, color: INK, lineHeight: 1.5 }}>
           Refuerza el slide 3: el ruido lleva flatness→1, el percusivo sube ZCR, el armónico baja el centroide.
         </div>
       </div>
