@@ -97,11 +97,11 @@ export default function SlideShazamPipeline() {
           )}
           
           {/* Image Visual based on stage */}
-          <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'center', width: '100%', height: 200, borderRadius: 8, overflow: 'hidden' }}>
+          <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'center', width: '100%', height: 280, borderRadius: 8, overflow: 'hidden' }}>
              <img 
                src={`/imagenes/pipeline_${step + 1}.png`} 
                alt={activeStage.label}
-               style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+               style={{ width: '100%', height: '100%', objectFit: 'contain', mixBlendMode: 'multiply' }}
              />
           </div>
 
