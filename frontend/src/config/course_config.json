@@ -54,9 +54,7 @@
         { "id": "hashing_combinatorio", "label": "09 · Hashing + índice invertido", "props": {} },
         { "id": "wang_coherencia", "label": "09b · Coherencia temporal (Wang)", "props": {} },
         { "id": "histograma_offsets", "label": "10 · Histograma de offsets", "props": {} },
-        { "id": "limites_shazam", "label": "11 · Robustez y límites", "props": {} },
-        { "id": "shazam_pipeline", "label": "12 · Pipeline Completo", "props": {} },
-        { "id": "discusion_mir", "label": "13 · Síntesis & Q&A", "props": {} }
+        { "id": "shazam_pipeline", "label": "12 · Pipeline Completo", "props": {} }
       ]
     }
   },
