@@ -54,6 +54,7 @@
         { "id": "hashing_combinatorio", "label": "09 · Hashing + índice invertido", "props": {} },
         { "id": "wang_coherencia", "label": "10 · Coherencia temporal (Wang)", "props": {} },
         { "id": "histograma_offsets", "label": "11 · Histograma de offsets", "props": {} },
+        { "id": "relative_pitch", "label": "11b · Hash relativo y transposición", "props": {} },
         { "id": "shazam_pipeline", "label": "12 · Pipeline Completo", "props": {} }
       ]
     }

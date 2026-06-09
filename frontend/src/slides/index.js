@@ -42,6 +42,7 @@ import SlideConstelacionWang    from './constelacion_wang/Slide.jsx';    // 07 c
 import SlideHashingCombinatorio from './hashing_combinatorio/Slide.jsx'; // 08 hashing + índice
 import SlideWangCoherencia     from './wang_coherencia/Slide.jsx';      // 08b coherencia temporal (Wang)
 import SlideHistogramaOffsets   from './histograma_offsets/Slide.jsx';   // 09 histograma de offsets
+import SlideRelativePitch       from './relative_pitch/Slide.jsx';       // 11b hash relativo y transposición
 import SlideLimitesShazam       from './limites_shazam/Slide.jsx';       // 10 rompiendo el algoritmo
 import SlideShazamPipeline      from './shazam_pipeline/Slide.jsx';      // 12 pipeline completo
 // Apéndices / backup (fuera del flujo principal).
@@ -77,6 +78,7 @@ export const SLIDE_REGISTRY = {
   'hashing_combinatorio': SlideHashingCombinatorio,
   'wang_coherencia':      SlideWangCoherencia,
   'histograma_offsets':   SlideHistogramaOffsets,
+  'relative_pitch':       SlideRelativePitch,
   'limites_shazam':       SlideLimitesShazam,
   'shazam_pipeline':      SlideShazamPipeline,
   // Apéndices / backup
