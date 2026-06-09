@@ -3,6 +3,27 @@
 > Convención: cada entrada incluye **Síntoma**, **Causa raíz** y **Remedio**.
 > Mantener orden cronológico inverso (más reciente arriba).
 
+## 2026-06-09 · El webhook GitHub→Render free tier se cae silenciosamente
+
+**Síntoma:** Dos commits (`716ee9c` "Remove 3D STFT view" y `678a250` "Add cliffhanger step") fueron pusheados a `origin/main` correctamente y apareció en GitHub. Sin embargo, el bundle vivo en `dsp-frontend-qchl.onrender.com` no se actualizó: seguía con "Ver 3D" (que debería haberse removido) y faltaba "¿solución definitiva?" (que se agregó). Los hashes de `index-*.js` también diferían: local `B4_T8Zlk.js` vs live `DMPjJNKG.js`.
+
+**Causa raíz:** El webhook de auto-deploy de GitHub→Render dejó de funcionar después del commit `1a8390a` (2:36 PM). Al revisar el **Events log** de Render dashboard, el último evento era "Deploy live for `1a8390a`" sin ningún "Deploy started" ni "Deploy live" para los dos commits posteriores. El free tier de Render a veces desactiva o pierde webhooks sin notificar; asumir que "push = auto-deploy" es falso.
+
+**Remedio:** Disparo un **deploy manual** desde Render dashboard:
+1. Servicio `dsp-frontend` → botón **Manual Deploy** (arriba a la derecha).
+2. Elegir **"Deploy latest commit"** (apunta a `HEAD = 678a250`).
+3. Render reconstruyó el bundle y en 2 min quedó "live" con los cambios correctos.
+4. Verificación: el nuevo bundle (`index-*.js`) contiene "solución definitiva" y NO contiene "Ver 3D".
+
+**Prevención a futuro:**
+- Revisar **Settings → Build & Deploy** para confirmar **Auto-Deploy = On** y **Branch = main**.
+- Si vuelve a saltarse pushes automáticos, reconectar el webhook GitHub desde **Settings** (botón "Reconnect repository").
+- Hacer un **manual deploy cada semana** como sanity check si el proyecto es crítico.
+
+**Anti-patrón a evitar:** No asumir que el push a GitHub = automáticamente vivo en producción. En free tiers, el webhook es frágil. Siempre revisar los **Events logs** del servicio de deploy para confirmar que cada push desencadenó un build.
+
+---
+
 ## 2026-04-30 · Rename `sms-slides/` → `frontend/` y servicios Render
 
 **Síntoma:** El directorio raíz seguía llamándose `sms-slides/` y los nombres
