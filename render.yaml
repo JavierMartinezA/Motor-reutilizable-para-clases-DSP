@@ -11,16 +11,10 @@ services:
 
   - type: web
     name: dsp-frontend
-    env: static
+    env: node
+    plan: free
     buildCommand: cd frontend && npm install && npm run build
-    staticPublishPath: frontend/dist
-    # SPA fallback: cualquier ruta sin archivo físico (ej. /mir, /fm) se
-    # reescribe a index.html para que App.jsx resuelva el deck por pathname.
-    # Render NO aplica esta regla a rutas con recurso real (JS/CSS/audio).
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
+    startCommand: node frontend/server.js
     envVars:
       - key: NODE_VERSION
         value: 20
