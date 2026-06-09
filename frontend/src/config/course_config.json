@@ -57,6 +57,30 @@
         { "id": "relative_pitch", "label": "11b · Hash relativo y transposición", "props": {} },
         { "id": "shazam_pipeline", "label": "12 · Pipeline Completo", "props": {} }
       ]
+    },
+    "rl": {
+      "course": {
+        "title": "Agente Autónomo de Diseño Paramétrico de Sonido",
+        "shortTitle": "Hito 2",
+        "subtitle": "Sound Matching FM con Reinforcement Learning · IEE3736-1",
+        "institution": "Pontificia Universidad Católica de Chile",
+        "term": "Hito 2"
+      },
+      "theme": {
+        "background": "cream",
+        "accent": "#16a34a",
+        "showHeaderTitle": true,
+        "showProgressDots": true,
+        "showSlideCounter": true
+      },
+      "slides": [
+        { "id": "pivote_proyecto", "label": "01 · Pivote del proyecto", "props": {} },
+        { "id": "sound_matching_fm", "label": "02 · Sound matching en FM", "props": {} },
+        { "id": "rl_mdp", "label": "03 · RL como solución + MDP", "props": {} },
+        { "id": "implementacion_prototipo", "label": "04 · Implementación del prototipo", "props": {} },
+        { "id": "resultados", "label": "05 · Resultados", "props": {} },
+        { "id": "conclusiones", "label": "06 · Conclusiones y próximos pasos", "props": {} }
+      ]
     }
   },
   "pipelines": {
