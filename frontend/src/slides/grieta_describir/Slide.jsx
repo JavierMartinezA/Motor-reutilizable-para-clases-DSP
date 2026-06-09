@@ -29,10 +29,10 @@ export default function SlideGrietaDescribir() {
 
   return (
     <SlideLayout
-      sectionId="06"
+      sectionId="07"
       sectionLabel="MIR · Límite de los descriptores"
-      title={<>¿Por qué Shazam <em>no</em> usa el centroide?</>}
-      subtitle="Los descriptores caracterizan la textura — pero son promedios globales. Un promedio se contamina con el ruido."
+      title={<>¿Qué descriptor necesita Shazam (y por qué <em>no</em> el centroide)?</>}
+      subtitle="ZCR, Rolloff o Centroide caracterizan la textura, pero son métricas agregadas. Todo promedio global se destruye con ruido aditivo."
       footer={
         <RevealButton
           step={step}
@@ -44,40 +44,35 @@ export default function SlideGrietaDescribir() {
       }
     >
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.15fr', gap: 28, alignItems: 'start', minHeight: 392 }}>
-        {/* ── El experimento mental: el centroide se desplaza ── */}
+        {/* ── El experimento mental: los descriptores globales colapsan ── */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 11, letterSpacing: '0.16em', textTransform: 'uppercase', color: INK_MUTED, fontWeight: 700 }}>
-            El experimento mental
+            La trampa de la masa espectral
           </span>
           <p style={{ fontFamily: "'Newsreader', serif", fontSize: 18, lineHeight: 1.5, color: INK }}>
-            <em>¿Buscarías una grabación comparando un único número —su centroide
-            espectral— contra millones de canciones?</em>
+            <em>¿Buscarías una grabación comparando un promedio global (como el centroide o ZCR) contra millones de canciones?</em>
           </p>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <div style={{ flex: 1, textAlign: 'center', padding: '14px 10px', borderRadius: 10, background: '#eef4fc', border: `1px solid ${BLUE}55` }}>
-              <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 11.5, color: INK_MUTED, textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 700 }}>canción limpia</div>
+              <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 11.5, color: INK_MUTED, textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 700 }}>audio original</div>
               <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 26, fontWeight: 800, color: BLUE, marginTop: 4 }}>1200 Hz</div>
             </div>
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 22, color: RED, fontWeight: 800 }}>+ bar →</div>
+            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 22, color: RED, fontWeight: 800 }}>+ ruido →</div>
             <div style={{ flex: 1, textAlign: 'center', padding: '14px 10px', borderRadius: 10, background: '#fbeeee', border: `1px solid ${RED}55` }}>
-              <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 11.5, color: INK_MUTED, textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 700 }}>+ voces / ruido</div>
+              <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 11.5, color: INK_MUTED, textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 700 }}>voces en un bar</div>
               <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 26, fontWeight: 800, color: RED, marginTop: 4 }}>1850 Hz</div>
             </div>
           </div>
           <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 13.5, color: INK_MUTED, textAlign: 'center', lineHeight: 1.4 }}>
-            mismo audio subyacente, el descriptor cambió 650 Hz: <strong>el valor no es reproducible</strong>.
+            El ruido suma energía y desplaza el centro de masa. Los valores <strong>no son reproducibles</strong> fuera del estudio.
           </div>
 
-          {/* Mención de 30 s: alto nivel tampoco salva */}
+          {/* Mención a otros descriptores: ZCR, Rolloff, Flux */}
           <div style={{ marginTop: 4, padding: '12px 16px', background: '#fbf9f5', borderRadius: 10, border: '1px solid #e8e3d8' }}>
-            <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, fontWeight: 800, color: INK }}>¿Y subir a alto nivel? (Flujo Espectral → onsets → BPM)</div>
-            <div style={{ background: '#08111d', borderRadius: 8, padding: '10px 14px', margin: '8px 0', color: '#cfe0ff', textAlign: 'center' }}>
-              <MathFormula t="\mathrm{SF}[m] = \sum_k \big(\,|X[k,m]| - |X[k,m\!-\!1]|\,\big)_{+}" color="#cfe0ff" size={0.98} />
-            </div>
-            <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, color: INK_MUTED, lineHeight: 1.45 }}>
-              Sigue siendo una <strong>suma agregada</strong> sobre el espectro: útil para describir el ritmo,
-              pero igual de frágil al ruido. No identifica una grabación.
+            <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, fontWeight: 800, color: INK }}>¿Y el Flujo Espectral o el Rolloff?</div>
+            <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, color: INK_MUTED, lineHeight: 1.45, marginTop: 6 }}>
+              Padecen la misma vulnerabilidad. Incluso el <em>Flujo Espectral</em> calcula un diferencial sumando todas las frecuencias juntas. Cualquier ruido de fondo enmascara la señal y destruye la métrica. Necesitamos algo que sobreviva al <strong>ruido aditivo</strong>.
             </div>
           </div>
         </div>

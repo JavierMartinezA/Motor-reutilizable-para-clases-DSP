@@ -188,15 +188,15 @@ Si tomamos todos esos onsets a lo largo del tiempo, son como los latidos de la c
 
 ---
 
-## 07 · grieta_describir — "¿Por qué Shazam no usa el centroide?"
+## 07 · grieta_describir — "¿Qué descriptor necesita Shazam?"
 
 **[Texto visible en pantalla]**
-- Título-pregunta: **¿Por qué Shazam *no* usa el centroide?**
-- Experimento mental: *¿Buscarías una grabación con un solo número contra millones?*
-- Demostración del desplazamiento:
-  - canción limpia → **1200 Hz**  `+ bar →`  + voces/ruido → **1850 Hz**
-  - mismo audio, Δ = 650 Hz → **el valor no es reproducible**
-- Nota "alto nivel tampoco salva": Flujo Espectral $\mathrm{SF}[m]=\sum_k(|X[k,m]|-|X[k,m-1]|)_+$ → sigue siendo suma agregada
+- Título-pregunta: **¿Qué descriptor necesita Shazam (y por qué *no* el centroide)?**
+- Experimento mental: *¿Buscarías una grabación comparando un promedio global (como el centroide o ZCR) contra millones de canciones?*
+- Demostración del colapso:
+  - audio original → **1200 Hz**  `+ ruido →`  + voces en un bar → **1850 Hz**
+  - El ruido suma energía y desplaza el centro de masa → **el valor no es reproducible**
+- Nota "¿Y el Flujo Espectral o el Rolloff?": Padecen la misma vulnerabilidad. Todo promedio global se destruye con ruido aditivo.
 - Rúbrica · columna DESCRIBIR → **✗ en los 4 criterios**
 - Qué necesitamos: una representación **local, reproducible y robusta** (Wang 2003)
 
@@ -206,14 +206,15 @@ Si tomamos todos esos onsets a lo largo del tiempo, son como los latidos de la c
 3. *Clic 2:* aparece la conclusión (local/reproducible/robusto).
 
 **[Guion hablado]**
-"Llegamos al momento del quiebre. Si los descriptores son tan buenos, ¿por qué Shazam no los usa para buscar?
-Hagamos un experimento mental. El centroide y el ZCR son promedios globales sobre el frame. Y los promedios se contaminan súper fácil. Si la canción limpia tiene un centroide de 1200 Hz, en el momento que alguien habla en el bar, la energía de la voz se suma y el promedio se corre a 1850 Hz.
-Es la misma canción, pero el número cambió en 650 Hz. Ya no es reproducible, y si no es reproducible, no me sirve como llave de búsqueda. 
-Si revisamos nuestra rúbrica, usar features globales nos da 4 cruces rojas: no hay localización temporal porque un ruido lejano ensucia todo el bloque; no hay invariancia; no hay robustez al ruido; y tiene muy poca entropía, ya que millones de canciones pueden compartir un centroide de 1200 Hz. Ni siquiera descriptores avanzados que detectan el ritmo sirven, porque el ritmo también se distorsiona con el ruido.
-Necesitamos lo opuesto a un promedio: una representación local, reproducible y extremadamente robusta."
+"Llegamos al momento del quiebre. Si descriptores como el ZCR o el Centroide son tan útiles para clasificar audio, ¿por qué Shazam no los usa para buscar e identificar una canción en un bar?
+La respuesta corta es: porque son 'promedios globales' calculados sobre toda la masa espectral del momento. Y los promedios se contaminan extremadamente fácil. 
+Hagamos un experimento mental. Si la canción limpia en el estudio tiene un centroide de 1200 Hz, en el momento que alguien habla en el bar o suena el viento, el ruido aditivo inyecta energía caótica en todo el espectro. El centro de masa se desplaza de inmediato, digamos a 1850 Hz.
+Es la misma canción de fondo, pero el número cambió drásticamente. Lo mismo pasa con el Rolloff o el Flujo Espectral. Cualquier ruido los destruye. Ya no son reproducibles, y si no son reproducibles, no nos sirven como llaves de búsqueda.
+Si revisamos nuestra rúbrica, usar features globales nos da 4 cruces rojas: no hay localización temporal, no hay invariancia, no hay robustez al ruido aditivo, y no tienen suficiente especificidad.
+Para identificar en el mundo real, necesitamos abandonar los promedios y buscar una representación matemática estrictamente local, reproducible y extremadamente robusta."
 
 **[Conceptos por si preguntan]**
-- **Flujo Espectral (Spectral Flux):** Mide qué tan rápido cambia el espectro de un frame a otro. Picos en el flujo suelen indicar ataques (onsets) de notas o percusiones.
+- **Ruido aditivo (Additive noise):** Cualquier sonido ambiental que se superpone a la señal de interés. Suma energía de manera destructiva para descriptores basados en estadística descriptiva (promedios, masas, desviaciones).
 - **Reproducibilidad:** En este contexto, significa que al extraer características de un audio modificado o ruidoso, obtengamos exactamente los mismos números clave que en el audio original de estudio.
 
 ---
