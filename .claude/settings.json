@@ -1,13 +1,12 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "_doc": [
-    "Hook PostToolUse: tras cualquier ejecución de un pipeline DSP en",
-    "dsp_pipelines/, dispara automáticamente sync_to_public.py para",
-    "copiar los .wav y .png al frontend (zero-touch).",
-    "El matcher captura llamadas a Bash que invoquen pipelines o el script",
-    "demo (cualquier python en dsp_pipelines/) y mutaciones de archivos",
-    "dentro de dsp_pipelines/outputs/ o backend/sessions/."
-  ],
+  "permissions": {
+    "allow": [
+      "Bash(git push *)",
+      "Bash(git commit -m 'fix: use CommonJS in server.js and simplify startCommand *)",
+      "PowerShell(cd \"C:\\\\Users\\\\javie\\\\OneDrive - Universidad Católica de Chile\\\\Escritorio\\\\ClasesAnalisis - copia\"; Get-ChildItem -Force | Select-Object Name, @{Name='Type';Expression={if\\($_.PSIsContainer\\){'DIR'}else{'FILE'}}} | Sort-Object Name)"
+    ]
+  },
   "hooks": {
     "PostToolUse": [
       {
@@ -29,5 +28,13 @@
         ]
       }
     ]
-  }
+  },
+  "_doc": [
+    "Hook PostToolUse: tras cualquier ejecución de un pipeline DSP en",
+    "dsp_pipelines/, dispara automáticamente sync_to_public.py para",
+    "copiar los .wav y .png al frontend (zero-touch).",
+    "El matcher captura llamadas a Bash que invoquen pipelines o el script",
+    "demo (cualquier python en dsp_pipelines/) y mutaciones de archivos",
+    "dentro de dsp_pipelines/outputs/ o backend/sessions/."
+  ]
 }
