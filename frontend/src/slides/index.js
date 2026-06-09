@@ -31,16 +31,23 @@ import SlideImplementacionProto  from './implementacion_prototipo/Slide.jsx'; //
 import SlideResultados           from './resultados/Slide.jsx';             // 05 resultados
 import SlideConclusiones         from './conclusiones/Slide.jsx';           // 06 conclusiones
 
-// Clase 11 — MIR & Audio Fingerprinting / Shazam (9 slides).
-import SlidePortadaMIR        from './portada_mir/Slide.jsx';        // 01 portada
-import SlideProblemaShazam    from './problema_shazam/Slide.jsx';    // 02 el problema
-import SlideFeaturesAudio     from './features_audio/Slide.jsx';     // 03 descriptores
-import SlideOnsetBPM          from './onset_bpm/Slide.jsx';          // 04 onsets & BPM
-import SlidePipelineShazam    from './pipeline_shazam/Slide.jsx';    // 05 pipeline Shazam
-import SlideDemoMIR           from './demo_mir/Slide.jsx';           // 06 demo en vivo
-import SlideHistogramaOffsets from './histograma_offsets/Slide.jsx'; // 07 histograma offsets
-import SlideLimitesShazam     from './limites_shazam/Slide.jsx';     // 08 fun task & límites
-import SlideDiscusionMIR      from './discusion_mir/Slide.jsx';      // 09 discusión & Q&A
+// Clase 11 — MIR & Audio Fingerprinting / Shazam (refactor narrativo · 11 beats).
+import SlidePortadaMIR          from './portada_mir/Slide.jsx';          // 01 portada
+import SlideProblemaShazam      from './problema_shazam/Slide.jsx';      // 02 el misterio
+import SlideShazamTeaser        from './shazam_teaser/Slide.jsx';        // 03 truco de magia (teaser)
+import SlideBifurcacion         from './bifurcacion/Slide.jsx';          // 04 tronco común + fork
+import SlideFeaturesAudio       from './features_audio/Slide.jsx';       // 05 DESCRIBIR: features
+import SlideGrietaDescribir     from './grieta_describir/Slide.jsx';     // 06 la grieta de describir
+import SlideConstelacionWang    from './constelacion_wang/Slide.jsx';    // 07 constelación de Wang
+import SlideHashingCombinatorio from './hashing_combinatorio/Slide.jsx'; // 08 hashing + índice
+import SlideWangCoherencia     from './wang_coherencia/Slide.jsx';      // 08b coherencia temporal (Wang)
+import SlideHistogramaOffsets   from './histograma_offsets/Slide.jsx';   // 09 histograma de offsets
+import SlideLimitesShazam       from './limites_shazam/Slide.jsx';       // 10 rompiendo el algoritmo
+import SlideDiscusionMIR        from './discusion_mir/Slide.jsx';        // 11 veredicto & Q&A
+// Apéndices / backup (fuera del flujo principal).
+import SlideOnsetBPM            from './onset_bpm/Slide.jsx';            // A · onsets & BPM
+import SlidePipelineShazam      from './pipeline_shazam/Slide.jsx';      // A · pipeline (stepper)
+import SlideDemoMIR             from './demo_mir/Slide.jsx';             // A · laboratorio libre
 
 export const SLIDE_REGISTRY = {
   'sintesis_fm':   SlidePortada,
@@ -59,16 +66,23 @@ export const SLIDE_REGISTRY = {
   'resultados':              SlideResultados,
   'conclusiones':            SlideConclusiones,
 
-  // Clase 11 — MIR & Shazam
-  'portada_mir':        SlidePortadaMIR,
-  'problema_shazam':    SlideProblemaShazam,
-  'features_audio':     SlideFeaturesAudio,
-  'onset_bpm':          SlideOnsetBPM,
-  'pipeline_shazam':    SlidePipelineShazam,
-  'demo_mir':           SlideDemoMIR,
-  'histograma_offsets': SlideHistogramaOffsets,
-  'limites_shazam':     SlideLimitesShazam,
-  'discusion_mir':      SlideDiscusionMIR,
+  // Clase 11 — MIR & Shazam (refactor narrativo)
+  'portada_mir':          SlidePortadaMIR,
+  'problema_shazam':      SlideProblemaShazam,
+  'shazam_teaser':        SlideShazamTeaser,
+  'bifurcacion':          SlideBifurcacion,
+  'features_audio':       SlideFeaturesAudio,
+  'grieta_describir':     SlideGrietaDescribir,
+  'constelacion_wang':    SlideConstelacionWang,
+  'hashing_combinatorio': SlideHashingCombinatorio,
+  'wang_coherencia':      SlideWangCoherencia,
+  'histograma_offsets':   SlideHistogramaOffsets,
+  'limites_shazam':       SlideLimitesShazam,
+  'discusion_mir':        SlideDiscusionMIR,
+  // Apéndices / backup
+  'onset_bpm':            SlideOnsetBPM,
+  'pipeline_shazam':      SlidePipelineShazam,
+  'demo_mir':             SlideDemoMIR,
 };
 
 export function getSlideComponent(id) {

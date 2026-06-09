@@ -44,14 +44,19 @@
       },
       "slides": [
         { "id": "portada_mir", "label": "01 · Portada — MIR & Fingerprinting", "props": {} },
-        { "id": "problema_shazam", "label": "02 · El Milagro de Shazam", "props": {} },
-        { "id": "features_audio", "label": "03 · Descriptores de Audio", "props": {} },
-        { "id": "onset_bpm", "label": "04 · Onset Detection y BPM", "props": {} },
-        { "id": "pipeline_shazam", "label": "05 · Pipeline de Shazam", "props": {} },
-        { "id": "demo_mir", "label": "06 · Demo en Vivo — MIR en el navegador", "props": {} },
-        { "id": "histograma_offsets", "label": "07 · Histograma de Offsets", "props": {} },
-        { "id": "limites_shazam", "label": "08 · Fun Task y Límites", "props": {} },
-        { "id": "discusion_mir", "label": "09 · Discusión y Q&A", "props": {} }
+        { "id": "problema_shazam", "label": "02 · El misterio de Shazam", "props": {} },
+        { "id": "shazam_teaser", "label": "03 · Demostración en vivo", "props": {} },
+        { "id": "bifurcacion", "label": "04 · Dos tareas sobre el espectrograma", "props": {} },
+        { "id": "features_audio", "label": "05 · DESCRIBIR — descriptores de audio", "props": {} },
+        { "id": "grieta_describir", "label": "06 · El límite de los descriptores", "props": {} },
+        { "id": "constelacion_wang", "label": "07 · La constelación de Wang", "props": {} },
+        { "id": "hashing_combinatorio", "label": "08 · Hashing + índice invertido", "props": {} },
+        { "id": "wang_coherencia", "label": "08b · Coherencia temporal (Wang)", "props": {} },
+        { "id": "histograma_offsets", "label": "09 · Histograma de offsets", "props": {} },
+        { "id": "limites_shazam", "label": "10 · Robustez y límites", "props": {} },
+        { "id": "discusion_mir", "label": "11 · Síntesis & Q&A", "props": {} },
+        { "id": "demo_mir", "label": "A · Laboratorio libre (apéndice)", "props": {} },
+        { "id": "onset_bpm", "label": "A · Onset & BPM (apéndice)", "props": {} }
       ]
     }
   },

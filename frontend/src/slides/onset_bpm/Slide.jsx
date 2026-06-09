@@ -43,7 +43,7 @@ export default function SlideOnsetBPM() {
               </PillButton>
             ))}
           </div>
-          <FluxNovelty audio={audio} spec={spec} flux={flux} peaks={peaks} height={230} />
+          <FluxNovelty audio={audio} spec={spec} flux={flux} peaks={peaks} height={440} />
           <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12.5, color: INK_FAINT, textAlign: 'center' }}>
             cian = forma de onda · ámbar = spectral flux · verde = onsets detectados (picos de novelty)
           </div>

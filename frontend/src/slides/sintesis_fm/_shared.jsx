@@ -610,7 +610,10 @@ export function SubStepTabs({ items, value, onChange }) {
 // (úsalo cuando la slide tiene una progresión lineal sin tabs)
 // ============================================================
 export function RevealButton({ step, total, onAdvance, onReset, labels }) {
-  const atEnd = step >= total - 1;
+  // `total` = número de revelaciones (clicks). Hay `total` pasos revelables
+  // (contenido en step 1..total); cuando step===total ya no queda nada por
+  // revelar → se ofrece reiniciar.
+  const atEnd = step >= total;
   if (atEnd) {
     return (
       <PillButton kind="outline" color={INK_MUTED} onClick={onReset}>

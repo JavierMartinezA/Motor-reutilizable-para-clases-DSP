@@ -77,7 +77,7 @@ export default function SlidePipelineShazam() {
                 peaks={step >= 1 ? peaks : null}
                 anchorIdx={step >= 2 ? anchorIdx : null}
                 fanOut={5} dtMax={15}
-                height={300}
+                height={560}
               />
               <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12.5, color: INK_FAINT, textAlign: 'center' }}>
                 {step === 0 && 'espectrograma de la Melodía A — magnitud en dB'}

@@ -25,7 +25,7 @@ export default function SlideProblemaShazam() {
     <SlideLayout
       sectionId="02"
       sectionLabel="MIR · El Problema"
-      title={<>El <em>"milagro"</em> de Shazam</>}
+      title={<>El problema de <em>Shazam</em></>}
       subtitle="Identificar una canción en ~3 s contra millones, desde 10 s grabados en un bar ruidoso."
       footer={
         <RevealButton
@@ -58,7 +58,7 @@ export default function SlideProblemaShazam() {
             transition: 'opacity 0.4s',
           }}>
             <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: RED, fontWeight: 800 }}>
-              ⚠ La trampa
+              El enfoque ingenuo
             </span>
             <p style={{ fontFamily: "'Newsreader', serif", fontSize: 18.5, color: INK, marginTop: 6, lineHeight: 1.45 }}>
               "Calculemos correlación cruzada entre el query y <em>cada</em> canción de la base de datos."
@@ -71,7 +71,7 @@ export default function SlideProblemaShazam() {
               <MathFormula t="\underbrace{10^{7}}_{\text{canciones}}\times\ \underbrace{240\,\text{s}}_{\text{duración}}\times\ \underbrace{44100}_{f_s}\ \approx\ 10^{14}\ \text{ops/query}" color="#ffb3b3" size={1.15} display />
             </div>
             <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14.5, color: RED, fontWeight: 700, marginTop: 8 }}>
-              Inviable. Ni con todos los servidores del mundo.
+              Inviable a escala real: el costo crece con el catálogo entero.
             </p>
           </div>
 

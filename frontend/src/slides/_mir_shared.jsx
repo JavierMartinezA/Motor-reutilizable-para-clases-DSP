@@ -236,6 +236,32 @@ export function matchHistogram(queryHashes, dbHashes, dfTol = 0, dtTol = 0) {
   return { score: peak, hist: counts };
 }
 
+// Igual al loop de matchHistogram, pero conserva el PAR 2D (t_db, t_query) en
+// lugar de colapsarlo a δt = t_db − t_query. Es la materia prima del
+// scatterplot de Wang: los aciertos verdaderos caen sobre una diagonal de
+// pendiente 1 (mismo δt); el histograma de offsets es la proyección 1D de
+// estos mismos puntos. No altera matchHistogram: solo reúne lo que aquélla
+// descarta, para la capa de visualización.
+export function matchScatter(queryHashes, dbHashes, dfTol = 0, dtTol = 0) {
+  const dbIndex = buildIndex(dbHashes, dfTol, dtTol);
+  const points = [];
+  for (const qh of queryHashes) {
+    const bx = Math.floor(qh.f1 / (dfTol || 1)), by = Math.floor(qh.f2 / (dfTol || 1)), bz = Math.floor(qh.dt / (dtTol || 1));
+    for (let dx = -1; dx <= 1; dx++)
+      for (let dy = -1; dy <= 1; dy++)
+        for (let dz = -1; dz <= 1; dz++) {
+          const arr = dbIndex.get(`${bx + dx},${by + dy},${bz + dz}`);
+          if (!arr) continue;
+          for (const dh of arr) {
+            if (Math.abs(qh.f1 - dh.f1) <= dfTol && Math.abs(qh.f2 - dh.f2) <= dfTol && Math.abs(qh.dt - dh.dt) <= dtTol) {
+              points.push({ tDb: dh.t1, tQuery: qh.t1 });
+            }
+          }
+        }
+  }
+  return points;
+}
+
 // ============================================================
 // Ruido blanco a un SNR objetivo (dB).
 // ============================================================
@@ -440,24 +466,36 @@ export function useMirAudio() {
 // CANVAS COMPONENTS
 // ============================================================
 const SPEC_BG = '#08111d';
-const Y_MAX_BIN = 220; // límite visible del espectrograma (≈ 9.5 kHz a N_FFT=1024)
+// Zoom a graves/medios: la melodía (fundamentales 146–523 Hz + 3 armónicos)
+// vive bajo ~1.6 kHz. Limitar a ≈2 kHz dispersa los picos por todo el alto del
+// canvas en vez de aplastarlos en el 20 % inferior.
+const Y_MAX_BIN = 48; // ≈ 2067 Hz a N_FFT=1024 / FS=44100
 
-function paintSpectrogram(ctx, W, H, spec, { yMaxBin = Y_MAX_BIN } = {}) {
+// dim ∈ [0,1] atenúa el magma: 1 = pleno, ~0.22 = fondo fantasma (modo hashes,
+// para que la geometría de pares no compita con el espectrograma).
+// [frMin, frMax) recorta una ventana temporal (zoom en X); por defecto, todo.
+function paintSpectrogram(ctx, W, H, spec, { yMaxBin = Y_MAX_BIN, dim = 1, frMin = 0, frMax = null } = {}) {
   ctx.fillStyle = SPEC_BG; ctx.fillRect(0, 0, W, H);
   const { nFrames, nBins } = spec;
+  const f0 = frMin, f1 = frMax == null ? nFrames : frMax;
+  const span = Math.max(1, f1 - f0);
   const img = ctx.createImageData(W, H);
   for (let x = 0; x < W; x++) {
-    const fr = Math.floor(x / W * nFrames);
-    if (fr >= nFrames) continue;
+    const fr = Math.floor(f0 + (x / W) * span);
+    if (fr < 0 || fr >= nFrames) continue;
     for (let y = 0; y < H; y++) {
       const bin = Math.floor((1 - y / H) * yMaxBin);
       const db = spec.data[fr * nBins + bin];
       const v = Math.max(0, Math.min(1, (db + 60) / 70));
-      const r = Math.floor(255 * Math.pow(v, 0.7));
-      const g = Math.floor(60 * v + 30 * Math.pow(v, 3));
-      const b = Math.floor(120 * (1 - v) * v * 4 + 30 * (1 - v));
+      const r = Math.floor(255 * Math.pow(v, 0.7) * dim);
+      const g = Math.floor((60 * v + 30 * Math.pow(v, 3)) * dim);
+      const b = Math.floor((120 * (1 - v) * v * 4 + 30 * (1 - v)) * dim);
       const idx = (y * W + x) * 4;
-      img.data[idx] = r; img.data[idx + 1] = g; img.data[idx + 2] = b; img.data[idx + 3] = 255;
+      // base oscura mínima para que el fondo no quede negro puro al atenuar
+      img.data[idx] = r + Math.floor(8 * (1 - dim));
+      img.data[idx + 1] = g + Math.floor(17 * (1 - dim));
+      img.data[idx + 2] = b + Math.floor(29 * (1 - dim));
+      img.data[idx + 3] = 255;
     }
   }
   ctx.putImageData(img, 0, 0);
@@ -476,7 +514,7 @@ function paintSpectrogram(ctx, W, H, spec, { yMaxBin = Y_MAX_BIN } = {}) {
 export function Spectrogram({
   spec, peaks = null, peakColor = PEAK_YELLOW,
   anchorIdx = null, fanOut = 5, dtMax = 15, dfMax = 60,
-  height = 300,
+  yMaxBin = Y_MAX_BIN, height = 300,
 }) {
   const ref = useRef(null);
   useEffect(() => {
@@ -484,50 +522,97 @@ export function Spectrogram({
     if (!canvas || !spec) return;
     const ctx = canvas.getContext('2d');
     const W = canvas.width, H = canvas.height;
-    paintSpectrogram(ctx, W, H, spec);
     const { nFrames } = spec;
+    const hashesMode = anchorIdx != null && peaks && anchorIdx >= 0 && anchorIdx < peaks.length;
 
+    // Zoom en X en modo hashes: ventana que sigue al ancla y abarca su zona
+    // objetivo (Δt ≤ dtMax) + un margen, para que los pares se abran en el
+    // tiempo y el Δt sea legible en vez de un haz casi vertical.
+    let frMin = 0, frMax = nFrames;
+    if (hashesMode) {
+      const a = peaks[anchorIdx];
+      const margin = Math.max(2, Math.round(dtMax * 0.35));
+      frMin = Math.max(0, a.fr - margin);
+      frMax = Math.min(nFrames, a.fr + dtMax + margin);
+    }
+    const span = Math.max(1, frMax - frMin);
+    const X = (fr) => ((fr - frMin) / span) * W;
+    const Y = (bin) => (1 - bin / yMaxBin) * H;
+
+    // En modo hashes el espectrograma pasa a fondo fantasma para que la
+    // geometría (ancla + vectores) sea la figura dominante.
+    paintSpectrogram(ctx, W, H, spec, { yMaxBin, dim: hashesMode ? 0.2 : 1, frMin, frMax });
+
+    // Constelación. Fuera de modo hashes son la huella (amarillo pleno);
+    // en modo hashes quedan tenues para no robar atención a los pares.
     if (peaks && peaks.length) {
-      ctx.fillStyle = peakColor;
       for (const p of peaks) {
-        if (p.bin >= Y_MAX_BIN) continue;
-        const x = (p.fr / nFrames) * W;
-        const y = (1 - p.bin / Y_MAX_BIN) * H;
-        ctx.beginPath(); ctx.arc(x, y, 2.5, 0, 2 * Math.PI); ctx.fill();
+        if (p.bin >= yMaxBin) continue;
+        if (p.fr < frMin || p.fr > frMax) continue;
+        ctx.fillStyle = hashesMode ? 'rgba(255,235,59,0.22)' : peakColor;
+        ctx.beginPath(); ctx.arc(X(p.fr), Y(p.bin), hashesMode ? 2 : 2.8, 0, 2 * Math.PI); ctx.fill();
       }
     }
 
-    if (anchorIdx != null && peaks && anchorIdx >= 0 && anchorIdx < peaks.length) {
+    if (hashesMode) {
       const anchor = peaks[anchorIdx];
-      const x1 = (anchor.fr / nFrames) * W;
-      const y1 = (1 - anchor.bin / Y_MAX_BIN) * H;
-      ctx.strokeStyle = 'rgba(255,255,255,0.4)';
-      ctx.setLineDash([4, 4]);
-      ctx.strokeRect(x1, Math.max(0, y1 - 50), (dtMax / nFrames) * W, 100);
+      const x1 = X(anchor.fr), y1 = Y(anchor.bin);
+
+      // Zona objetivo: ventana (Δt ≤ dtMax) × (Δf ≤ dfMax) hacia adelante.
+      const halfBox = Math.min(H * 0.46, (dfMax / yMaxBin) * H);
+      const boxY = Math.max(0, y1 - halfBox);
+      const boxH = Math.min(H - boxY, halfBox * 2);
+      const boxW = X(anchor.fr + dtMax) - x1;
+      ctx.fillStyle = 'rgba(109,219,122,0.08)';
+      ctx.fillRect(x1, boxY, boxW, boxH);
+      ctx.strokeStyle = 'rgba(125,235,145,0.95)'; ctx.lineWidth = 1.6;
+      ctx.setLineDash([6, 4]);
+      ctx.strokeRect(x1, boxY, boxW, boxH);
       ctx.setLineDash([]);
-      ctx.fillStyle = ANCHOR_RED;
-      ctx.beginPath(); ctx.arc(x1, y1, 6, 0, 2 * Math.PI); ctx.fill();
+      ctx.fillStyle = 'rgba(170,245,185,0.95)'; ctx.font = 'bold 13px monospace';
+      ctx.fillText('zona objetivo', x1 + 6, boxY + 16);
+
+      // Pares ancla→target: trazos finos y traslúcidos (sin glow) para que,
+      // con fan-out alto y targets casi alineados, no se fundan en un bloque
+      // y se distinga cada vector. Los nodos van encima con borde oscuro.
       let count = 0;
+      const targets = [];
+      ctx.save();
+      ctx.lineCap = 'round';
+      ctx.strokeStyle = 'rgba(109,219,122,0.6)'; ctx.lineWidth = 1.5;
       for (let j = anchorIdx + 1; j < peaks.length && count < fanOut; j++) {
         const dt = peaks[j].fr - anchor.fr;
         if (dt === 0) continue;
         if (dt > dtMax) break;
         if (Math.abs(peaks[j].bin - anchor.bin) > dfMax) continue;
-        const x2 = (peaks[j].fr / nFrames) * W;
-        const y2 = (1 - peaks[j].bin / Y_MAX_BIN) * H;
-        ctx.strokeStyle = PAIR_GREEN; ctx.lineWidth = 1.4;
+        const x2 = X(peaks[j].fr), y2 = Y(peaks[j].bin);
         ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
-        ctx.fillStyle = PAIR_GREEN;
-        ctx.beginPath(); ctx.arc(x2, y2, 3.5, 0, 2 * Math.PI); ctx.fill();
+        targets.push([x2, y2]);
         count++;
       }
+      // Nodos target: relleno claro + borde oscuro → se separan del enjambre.
+      ctx.lineWidth = 1.5; ctx.strokeStyle = 'rgba(8,17,29,0.9)';
+      for (const [x2, y2] of targets) {
+        ctx.fillStyle = '#aef5b8';
+        ctx.beginPath(); ctx.arc(x2, y2, 3.5, 0, 2 * Math.PI); ctx.fill(); ctx.stroke();
+      }
+      ctx.restore();
+
+      // Ancla: grande, con halo, núcleo blanco; va encima de los vectores.
+      ctx.save();
+      ctx.shadowColor = ANCHOR_RED; ctx.shadowBlur = 16;
+      ctx.fillStyle = ANCHOR_RED;
+      ctx.beginPath(); ctx.arc(x1, y1, 9, 0, 2 * Math.PI); ctx.fill();
+      ctx.shadowBlur = 0; ctx.fillStyle = '#ffffff';
+      ctx.beginPath(); ctx.arc(x1, y1, 3.5, 0, 2 * Math.PI); ctx.fill();
+      ctx.restore();
     }
 
     ctx.fillStyle = 'rgba(255,255,255,0.62)'; ctx.font = 'bold 18px monospace';
     ctx.fillText('t →', W - 48, H - 10);
     ctx.fillText('Hz', 6, 22);
-    ctx.fillText(`${Math.floor(Y_MAX_BIN * FS / N_FFT)} Hz`, 6, 44);
-  }, [spec, peaks, peakColor, anchorIdx, fanOut, dtMax, dfMax]);
+    ctx.fillText(`${Math.floor(yMaxBin * FS / N_FFT)} Hz`, 6, 44);
+  }, [spec, peaks, peakColor, anchorIdx, fanOut, dtMax, dfMax, yMaxBin]);
 
   return (
     <canvas ref={ref} width={1100} height={height}
@@ -558,8 +643,10 @@ export function ScoreBars({ scores, winner, accent = MIR_VIOLET }) {
   );
 }
 
-/** <OffsetHistogram> — histograma de t_db − t_query por canción (canvas oscuro). */
-export function OffsetHistogram({ hists, height = 160 }) {
+/** <OffsetHistogram> — histograma de Δ = t_db − t_query por canción (canvas oscuro).
+ *  Clímax de la clase: la canción correcta acumula sus aciertos en un mismo Δ
+ *  (un "pico Dirac" → barra con glow); las demás quedan como ruido bajo. */
+export function OffsetHistogram({ hists, height = 200 }) {
   const ref = useRef(null);
   useEffect(() => {
     const canvas = ref.current;
@@ -578,24 +665,165 @@ export function OffsetHistogram({ hists, height = 160 }) {
     }
     const minO = Math.min(...allOffsets), maxO = Math.max(...allOffsets);
     const range = Math.max(1, maxO - minO);
-    let maxCount = 0;
-    for (const h of Object.values(hists)) for (const c of h.values()) if (c > maxCount) maxCount = c;
+    // Pico global → canción ganadora y su offset (el Δ que delata la canción).
+    let maxCount = 0, winIdx = -1, winOffset = null;
+    Object.values(hists).forEach((h, idx) => {
+      for (const [o, c] of h) if (c > maxCount) { maxCount = c; winIdx = idx; winOffset = o; }
+    });
+    const axisH = 34;                 // margen inferior para el rótulo del eje X
+    const plotH = H - axisH;
     const barW = W / range;
-    const sectionH = H / dbNames.length;
+    const sectionH = plotH / dbNames.length;
+
+    // Línea guía vertical en el offset ganador (atraviesa todas las pistas:
+    // deja ver que solo una canción se alinea ahí).
+    if (winOffset != null) {
+      const xw = ((winOffset - minO) / range) * W;
+      ctx.strokeStyle = 'rgba(174,245,184,0.55)'; ctx.setLineDash([3, 4]); ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(xw, 0); ctx.lineTo(xw, plotH); ctx.stroke(); ctx.setLineDash([]);
+    }
+
     dbNames.forEach((name, idx) => {
-      ctx.fillStyle = colors[idx % colors.length];
+      const isWin = idx === winIdx;
+      const base = colors[idx % colors.length];
+      const baseY = (idx + 1) * sectionH;
+
+      // Etiqueta de la pista (apagada si es ruido).
+      ctx.fillStyle = isWin ? base : 'rgba(255,255,255,0.42)';
       ctx.font = 'bold 18px monospace';
       ctx.fillText(name, 8, idx * sectionH + 22);
-      const hist = hists[name];
-      for (const [o, c] of hist) {
-        const x = ((o - minO) / range) * W;
-        const h = (c / maxCount) * (sectionH - 18);
-        ctx.fillRect(x, (idx + 1) * sectionH - h, Math.max(1, barW), h);
+      if (isWin) {
+        ctx.fillStyle = 'rgba(174,245,184,0.92)'; ctx.font = '12px monospace';
+        ctx.fillText('pico dominante', 30, idx * sectionH + 21);
       }
-      ctx.strokeStyle = 'rgba(255,255,255,0.06)';
-      ctx.beginPath(); ctx.moveTo(0, (idx + 1) * sectionH); ctx.lineTo(W, (idx + 1) * sectionH); ctx.stroke();
+
+      for (const [o, c] of hists[name]) {
+        const x = ((o - minO) / range) * W;
+        const bh = (c / maxCount) * (sectionH - 22);
+        const isPeak = isWin && c === maxCount;
+        if (isPeak) {
+          // Veredicto: barra blanca con halo del color de la canción.
+          ctx.save();
+          ctx.shadowColor = base; ctx.shadowBlur = 22;
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(x, baseY - bh, Math.max(3, barW), bh);
+          ctx.restore();
+        } else {
+          ctx.globalAlpha = isWin ? 0.85 : 0.3;   // ruido de fondo atenuado
+          ctx.fillStyle = base;
+          ctx.fillRect(x, baseY - bh, Math.max(1, barW), bh);
+          ctx.globalAlpha = 1;
+        }
+      }
+      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+      ctx.beginPath(); ctx.moveTo(0, baseY); ctx.lineTo(W, baseY); ctx.stroke();
     });
+
+    // Eje X + rótulo Δ = t_db − t_query.
+    ctx.strokeStyle = 'rgba(255,255,255,0.25)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(0, plotH); ctx.lineTo(W, plotH); ctx.stroke();
+    ctx.fillStyle = 'rgba(255,255,255,0.85)'; ctx.font = 'bold 15px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('Δ = t_db − t_query   (desfase grabación ↔ query, en frames)', W / 2, H - 11);
+    ctx.textAlign = 'left';
   }, [hists]);
+  return (
+    <canvas ref={ref} width={1300} height={height}
+      style={{ width: '100%', height: 'auto', display: 'block', borderRadius: 8, border: '1px solid #292e4a' }} />
+  );
+}
+
+/**
+ * <OffsetScatter> — scatterplot (t_db, t_query) de los matches de UNA canción.
+ * Puente cognitivo hacia el histograma: los aciertos verdaderos caen sobre la
+ * diagonal de pendiente 1 (comparten δt = t_db − t_query); las colisiones por
+ * azar se esparcen. El histograma de offsets de abajo es la proyección 1D de
+ * esta nube — toda la diagonal apila sus puntos en una sola barra.
+ */
+export function OffsetScatter({ points, label, height = 280 }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    const canvas = ref.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    ctx.fillStyle = SPEC_BG; ctx.fillRect(0, 0, W, H);
+    const pad = { l: 58, r: 18, t: 16, b: 42 };
+    const plotW = W - pad.l - pad.r, plotH = H - pad.t - pad.b;
+
+    if (!points || !points.length) {
+      ctx.fillStyle = 'rgba(255,255,255,0.5)'; ctx.font = '18px monospace';
+      ctx.fillText('sin matches — corre una identificación', pad.l, H / 2);
+      return;
+    }
+
+    // Rango común para ambos ejes → la pendiente 1 se ve a 45° en pantalla.
+    let minDb = Infinity, maxDb = -Infinity, minQ = Infinity, maxQ = -Infinity;
+    for (const p of points) {
+      if (p.tDb < minDb) minDb = p.tDb; if (p.tDb > maxDb) maxDb = p.tDb;
+      if (p.tQuery < minQ) minQ = p.tQuery; if (p.tQuery > maxQ) maxQ = p.tQuery;
+    }
+    const span = Math.max(1, maxDb - minDb, maxQ - minQ);
+    const X = (tDb) => pad.l + ((tDb - minDb) / span) * plotW;
+    const Y = (tQ) => pad.t + (1 - (tQ - minQ) / span) * plotH;  // t_query crece hacia arriba
+
+    // δt dominante (la moda) → define la diagonal verdadera y el pico del histograma.
+    const counts = new Map();
+    for (const p of points) { const d = p.tDb - p.tQuery; counts.set(d, (counts.get(d) || 0) + 1); }
+    let domDt = null, domC = 0;
+    for (const [d, c] of counts) if (c > domC) { domC = c; domDt = d; }
+
+    // Ejes.
+    ctx.strokeStyle = 'rgba(255,255,255,0.25)'; ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(pad.l, pad.t); ctx.lineTo(pad.l, pad.t + plotH); ctx.lineTo(pad.l + plotW, pad.t + plotH);
+    ctx.stroke();
+
+    // Diagonal dominante: t_query = t_db − domDt (recta de pendiente 1).
+    if (domDt != null) {
+      // Intersección de la recta con el rango visible.
+      const segs = [];
+      const tqAt = (tDb) => tDb - domDt;
+      for (let tDb = minDb; tDb <= minDb + span; tDb += span) {
+        segs.push({ tDb, tQ: tqAt(tDb) });
+      }
+      ctx.strokeStyle = 'rgba(109,219,122,0.55)'; ctx.setLineDash([6, 5]); ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(X(segs[0].tDb), Y(segs[0].tQ)); ctx.lineTo(X(segs[1].tDb), Y(segs[1].tQ)); ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    // Puntos: primero las colisiones por azar (gris tenue), luego los de la
+    // diagonal (verde luminoso) por encima.
+    const onDiag = [];
+    for (const p of points) {
+      if (domDt != null && Math.abs((p.tDb - p.tQuery) - domDt) <= 1) { onDiag.push(p); continue; }
+      ctx.fillStyle = 'rgba(180,186,210,0.32)';
+      ctx.beginPath(); ctx.arc(X(p.tDb), Y(p.tQuery), 1.6, 0, 2 * Math.PI); ctx.fill();
+    }
+    ctx.save();
+    ctx.shadowColor = '#6ddb7a'; ctx.shadowBlur = 6;
+    ctx.fillStyle = '#aef5b8';
+    for (const p of onDiag) {
+      ctx.beginPath(); ctx.arc(X(p.tDb), Y(p.tQuery), 2.3, 0, 2 * Math.PI); ctx.fill();
+    }
+    ctx.restore();
+
+    // Rótulos de ejes + etiqueta.
+    ctx.fillStyle = 'rgba(255,255,255,0.85)'; ctx.font = 'bold 14px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('t_db  (tiempo en la canción de la base)  →', pad.l + plotW / 2, H - 12);
+    ctx.save();
+    ctx.translate(16, pad.t + plotH / 2); ctx.rotate(-Math.PI / 2);
+    ctx.fillText('t_query  ↑', 0, 0);
+    ctx.restore();
+    ctx.textAlign = 'left';
+    if (label) {
+      ctx.fillStyle = 'rgba(174,245,184,0.92)'; ctx.font = 'bold 16px monospace';
+      ctx.fillText(label, pad.l + 8, pad.t + 20);
+    }
+    ctx.fillStyle = 'rgba(180,186,210,0.7)'; ctx.font = '12px monospace';
+    ctx.fillText(`${onDiag.length} sobre la diagonal · ${points.length - onDiag.length} dispersos`, pad.l + 8, pad.t + 38);
+  }, [points, label]);
   return (
     <canvas ref={ref} width={1300} height={height}
       style={{ width: '100%', height: 'auto', display: 'block', borderRadius: 8, border: '1px solid #292e4a' }} />

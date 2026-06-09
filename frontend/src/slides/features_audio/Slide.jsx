@@ -39,10 +39,10 @@ export default function SlideFeaturesAudio() {
 
   return (
     <SlideLayout
-      sectionId="03"
-      sectionLabel="MIR · Features"
-      title={<>Extrayendo significado: <em>features</em> de audio</>}
-      subtitle="Bajo nivel (ZCR, centroide, rolloff) → alto nivel (BPM, key, género). Toca un sonido y mira los números."
+      sectionId="05"
+      sectionLabel="MIR · DESCRIBIR"
+      title={<>Tarea 1 · <em>describir</em> la textura</>}
+      subtitle="Bajo nivel (ZCR, centroide, rolloff) → alto nivel (BPM, key, género). Antes de reproducir cada sonido, predice: ¿ZCR alto o bajo? ¿flatness cerca de 0 o de 1?"
     >
       <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: 22, alignItems: 'start' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -53,7 +53,7 @@ export default function SlideFeaturesAudio() {
               </PillButton>
             ))}
           </div>
-          <FeatureWaveform audio={audio} height={190} />
+          <FeatureWaveform audio={audio} height={380} />
           <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12.5, color: INK_FAINT, textAlign: 'center' }}>
             forma de onda (cian) + envolvente de energía RMS (naranja)
           </div>
