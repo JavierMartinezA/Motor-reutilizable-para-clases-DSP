@@ -324,6 +324,88 @@ Esta es la magia operando detrás. El sistema puede distinguir de forma inequív
 
 ---
 
+## 11b · relative_pitch — "Si subo el tono, ¿sigue siendo la misma canción?"
+
+**[Texto visible en pantalla]**
+- Título: **Si subo el tono, ¿sigue siendo *la misma canción*?**
+- Subtítulo: *El hash de Wang guarda hercios exactos y se rompe al transponer. Tu cerebro —y AcoustID— guarda proporciones. Primero, escúchalo.*
+
+**Card violeta — Hero de audio (siempre visible, sin clics previos):**
+> El motivo de *Star Wars*, en dos alturas
+> *Tu oído la reconoce igual. ¿Por qué una máquina no?*
+
+- `▶ Tono original` — suena el incipit real de John Williams: Re·Re·Re → Sol → Re → Do·Si·La → Sol agudo → Re
+- `▶ Una octava más arriba ↑` — mismas notas, todos los Hz ×2
+
+**Panel izquierdo — Shazam guarda los hercios** *(revela en Clic 1)*
+
+| | Hz almacenados |
+|---|---|
+| Original | `(196, 294) Hz` |
+| +1 octava | `(392, 588) Hz` ← todo ×2 |
+
+```
+(196, 294) ≠ (392, 588) → otro hash
+```
+Cambian los hercios → **no la reconoce**. ✗
+
+**Panel derecho — Tu cerebro guarda la proporción** *(revela en Clic 2)*
+
+*(imagen del cerebro con notas musicales fluyendo)*
+
+```
+294 ÷ 196 =  1,5
+588 ÷ 392 =  1,5
+```
+misma **Quinta Justa** → **la reconoce**. ✓
+
+**Cierre violeta (Clic 2):**
+*"**AcoustID** (el motor de MusicBrainz) hace justo esto: relative-pitch hashes y Chroma features. Al guardar proporciones y no hercios, queda invariante a la transposición — como tu oído."*
+
+---
+
+**[Animación / clics]**
+- **Estado inicial:** Card de audio violeta completamente activa (los botones de audio funcionan desde el primer momento, sin necesidad de pasos). Los dos paneles inferiores están en gris tenue (opacidad 0.5).
+- **Audio** *(sin clic de paso):* El profesor puede pulsar `▶ Tono original` en cualquier momento — suena el incipit real de Star Wars (~4 s). Luego `▶ Una octava más arriba ↑` (mismas notas, todo ×2). El botón activo muestra "♪ sonando…" y bloquea ambos mientras dura.
+- **Clic 1 — "① ¿Por qué la máquina falla? →":** Panel izquierdo se ilumina en rojo: badge ✗ rojo, fondo rosado, borde rojo. Aparecen las dos filas de pares de Hz y el bloque `(196, 294) ≠ (392, 588)`.
+- **Clic 2 — "② ¿Cómo lo hace tu cerebro? →":** Panel derecho se ilumina en verde: badge ✓ verde, fondo verde pálido, borde verde. Aparece el cerebro con las ecuaciones de proporción y el bloque "Quinta Justa". Aparece también el cierre violeta inferior. Botón cambia a rojo "← Reiniciar".
+- **Clic 3 — "← Reiniciar":** Vuelve a step 0. Los botones de audio siguen activos.
+
+---
+
+**[Guion hablado]**
+
+*[Card de audio visible, paneles grises al fondo]*
+
+"Antes de que les explique nada, quiero que escuchen esto."
+
+*[Pulsar ▶ Tono original — suena el incipit de Star Wars]*
+
+"¿Lo reconocen? Ahora escuchen esto."
+
+*[Pulsar ▶ Una octava más arriba — suena la misma melodía, todos los Hz ×2]*
+
+"Es la misma canción, ¿verdad? Su oído no tiene ninguna duda. Ahora bien, eso que acaban de escuchar es el problema central de esta slide: transponer una canción — subirla de tono — la hace irreconocible para Shazam."
+
+*[Clic 1 — se ilumina el panel rojo]*
+
+"El hash de Wang almacena pares de frecuencias en hercios exactos. El gran salto de ese tema — Sol a Re — ocurre en el tono original entre 196 Hz y 294 Hz. Una octava más arriba, ese mismo salto ocurre entre 392 y 588. Todo se multiplicó por 2. Y el hash que almacenó la base de datos dice: 196 con 294. El que llega de la grabación transpuesta dice: 392 con 588. Son hashes distintos. Shazam no encuentra coincidencia. Falla."
+
+*[Clic 2 — se ilumina el panel verde con la imagen del cerebro]*
+
+"Sin embargo, ustedes sí la reconocieron. ¿Qué hizo su cerebro? No memorizó hercios. Memorizó la *proporción*. Tomen 294 y divídanlo por 196: da 1,5. Tomen 588 y divídanlo por 392: también da 1,5. Esa proporción de 1,5 es lo que los músicos llaman una Quinta Justa — el intervalo más estable de la armonía occidental. No importa en qué tono toquen 'Star Wars' — la proporción entre Sol y Re siempre es 1,5. El cerebro lo reconoce. Esto es exactamente lo que implementa AcoustID: guarda proporciones, no hercios. Se llaman Chroma features o relative-pitch hashes, y son invariantes a la transposición."
+
+---
+
+**[Conceptos por si preguntan]**
+- **¿Por qué una octava es ×2?** Por la física de las cuerdas vibrantes (Pitágoras, s. VI a.C.): doblar la tensión duplica la frecuencia. Los 12 semitonos de la escala cromática son 12 pasos de $2^{1/12} \approx 1{,}0595$. Una octava = 12 pasos = $2^{12/12} = 2$ exactamente.
+- **¿Qué es una Quinta Justa?** Intervalo con razón exacta 3:2 (= 1,5). Es el segundo armónico de la serie natural, y el más consonante junto con la octava. Sol→Re, La→Mi, Do→Sol, etc.
+- **¿Shazam nunca reconoce canciones transpuestas?** Correcto para el algoritmo original de Wang. Servicios modernos como AcoustID o SoundHound que usan Chroma features sí lo logran. Son trade-offs distintos: Shazam optimiza velocidad y baja tasa de falsos positivos para grabaciones comerciales exactas.
+- **¿Qué son los Chroma features?** Vectores de 12 dimensiones (una por semitono) que acumulan energía espectral sin importar la octava. Proyectan el espectrograma a un espacio invariante a la transposición. Estándar en cover song identification y detección de acordes.
+- **¿El cerebro realmente divide frecuencias?** No exactamente — el sistema auditivo procesa intervalos por la disposición logarítmica de la cóclea (escala de Bark/ERB). Pero el efecto es equivalente: reconoce proporciones, no hercios absolutos. Se demostró que los niños reconocen melodías transpuestas desde los 3 años de edad.
+
+---
+
 ## 11 · limites_shazam — "Robustez y modos de falla"
 
 **[Texto visible en pantalla]**
