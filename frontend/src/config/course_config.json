@@ -52,8 +52,8 @@
         { "id": "grieta_describir", "label": "07 · El límite de los descriptores", "props": {} },
         { "id": "constelacion_wang", "label": "08 · La constelación de Wang", "props": {} },
         { "id": "hashing_combinatorio", "label": "09 · Hashing + índice invertido", "props": {} },
-        { "id": "wang_coherencia", "label": "09b · Coherencia temporal (Wang)", "props": {} },
-        { "id": "histograma_offsets", "label": "10 · Histograma de offsets", "props": {} },
+        { "id": "wang_coherencia", "label": "10 · Coherencia temporal (Wang)", "props": {} },
+        { "id": "histograma_offsets", "label": "11 · Histograma de offsets", "props": {} },
         { "id": "shazam_pipeline", "label": "12 · Pipeline Completo", "props": {} }
       ]
     }
