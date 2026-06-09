@@ -62,26 +62,33 @@ function EmptyCourse() {
   );
 }
 
-/** Lee el id de deck desde el hash (`#mir`) o `?deck=mir`, con fallback. */
+/** Lee el id de deck desde el pathname (`/mir`, `/fm`) con fallback. */
 function readDeckId() {
   const decks = courseConfig.decks ?? {};
   const fallback = courseConfig.defaultDeck ?? Object.keys(decks)[0];
   if (typeof window === 'undefined') return fallback;
-  const hash = window.location.hash.replace(/^#\/?/, '').trim();
-  if (hash && decks[hash]) return hash;
+
+  // Extrae el primer segmento del pathname (ej. "/mir/slide-3" → "mir")
+  const pathParts = window.location.pathname.split('/').filter(Boolean);
+  const pathDeck = pathParts[0];
+
+  if (pathDeck && decks[pathDeck]) return pathDeck;
+
+  // Fallback a query param ?deck=... si existe
   const qp = new URLSearchParams(window.location.search).get('deck');
   if (qp && decks[qp]) return qp;
+
   return fallback;
 }
 
 export default function App() {
   const [deckId, setDeckId] = useState(readDeckId);
 
-  // Cambiar de clase = cambiar el hash de la URL, sin recargar.
+  // Cambiar de clase = cambiar el pathname de la URL, sin recargar.
   useEffect(() => {
-    const onHash = () => setDeckId(readDeckId());
-    window.addEventListener('hashchange', onHash);
-    return () => window.removeEventListener('hashchange', onHash);
+    const onPopState = () => setDeckId(readDeckId());
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
   }, []);
 
   const deck = (courseConfig.decks ?? {})[deckId] ?? {};
