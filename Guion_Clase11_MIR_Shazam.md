@@ -359,27 +359,32 @@ Shazam no está diseñado para reconocer melodías; identifica *grabaciones fís
 
 **[Texto visible en pantalla]**
 - Título: **El algoritmo de *Shazam* completo**
-- 6 etapas visuales interactivas:
+- 8 etapas visuales interactivas:
   1. Captura
   2. Espectrograma (STFT)
   3. Constelación (Extracción de picos)
-  4. Hashing (Tuplas)
-  5. Base de datos
-  6. Scoring (Histograma)
+  4. Hashing Geométrico
+  5. Índice Invertido
+  6. Cruce O(1)
+  7. Coherencia Temporal
+  8. Scoring
 
 **[Animación / clics]**
-- Avanzar manualmente por los 6 pasos para recapitular todo el flujo desde que el usuario graba el audio hasta que el servidor emite el resultado.
+- Avanzar manualmente por los 8 pasos para recapitular todo el flujo desde que el usuario graba el audio hasta que el servidor emite el resultado.
 
 **[Guion hablado]**
-"A modo de conclusión, veamos el gran panorama uniendo todas las piezas que discutimos hoy. Esta es la arquitectura completa del paper de Avery Wang publicada en 2003.
+"A modo de conclusión, veamos el gran panorama uniendo todas las piezas que discutimos hoy. Esta es la arquitectura completa del paper de Avery Wang publicada en 2003, expandida a sus 8 pasos fundamentales.
 Primero, la captura: el celular graba el audio ruidoso del bar.
 Ese audio viaja y se le aplica la transformada de Fourier a corto plazo, generando un Espectrograma gigante.
-A continuación, botamos casi toda esa información y nos quedamos únicamente con la Constelación de picos de máxima energía, porque son los únicos que sobreviven al ruido.
-Luego, amarramos esos picos sueltos creando tuplas combinatorias para generar Hashes fuertes que no dependen del tiempo absoluto.
-Lanzamos estas llaves contra nuestra Base de datos pre-indexada para lograr una búsqueda extremadamente veloz O(1).
-Finalmente, la etapa de Scoring junta todos los matches, arma el histograma de offsets y, si aparece un pico masivo que destaca entre la multitud, ¡Bingo! Hemos identificado la canción."
+A continuación, botamos casi toda esa información y nos quedamos únicamente con la Constelación de picos de máxima energía, porque son los únicos que superviven al ruido.
+Luego, amarramos esos picos sueltos creando tuplas combinatorias para generar Hashes Geométricos fuertes que no dependen del tiempo absoluto.
+Entramos al territorio del servidor: nuestro Índice Invertido es una base de datos pre-computada gigantesca, esperando las consultas.
+Hacemos un Cruce de Hashes O(1), buscando las colisiones exactas contra el servidor a velocidad constante.
+Evaluamos la Coherencia Temporal restando los tiempos relativos para buscar un delta consistente.
+Finalmente, la etapa de Scoring arma el histograma de offsets y, si aparece un pico masivo de Dirac que destaca entre la multitud, ¡Bingo! Hemos identificado la canción."
 
 **[Conceptos por si preguntan]**
 - **Pipeline:** Una tubería algorítmica donde la salida de un proceso es la entrada del siguiente, garantizando un flujo eficiente.
+- **O(1):** En ciencias de la computación, un tiempo de búsqueda constante. Buscar un hash toma el mismo tiempo sin importar si la base de datos tiene cien o diez millones de canciones.
 
 ---
