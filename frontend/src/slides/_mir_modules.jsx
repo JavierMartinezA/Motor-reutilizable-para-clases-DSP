@@ -18,8 +18,6 @@
  */
 
 import { useMemo, useState } from 'react';
-import * as THREE from 'three';
-import DSPCanvas3D from '../components/DSPCanvas3D';
 import {
   INK, INK_MUTED, INK_FAINT, VIOLET, BLUE, RED, AMBER, GREEN,
   PillButton, Slider,
@@ -143,82 +141,11 @@ export function MiniShazam({ audio, teaser = false, scatter = false }) {
   );
 }
 
-// ── Escena 3D: superficie STFT + esferas de picos ────────────────
-function Spec3DScene({ spec, peaks }) {
-  const BIN_STEP = 16;
-  const FRAMES = Math.min(spec.nFrames, 80);
-  const NBINS = Math.floor(spec.nBins / BIN_STEP);
-  const fMax = Math.max(1, FRAMES - 1);
-  const bMax = Math.max(1, NBINS - 1);
-
-  const surfaceGeo = useMemo(() => {
-    const geo = new THREE.BufferGeometry();
-    const pos = new Float32Array(FRAMES * NBINS * 3);
-    const col = new Float32Array(FRAMES * NBINS * 3);
-    const idx = [];
-    for (let fr = 0; fr < FRAMES; fr++) {
-      for (let b = 0; b < NBINS; b++) {
-        const bin = b * BIN_STEP;
-        const db = spec.data[fr * spec.nBins + bin];
-        const t = Math.max(0, Math.min(1, (db + 80) / 80));
-        const i3 = (fr * NBINS + b) * 3;
-        pos[i3]     = (fr / fMax) * 5;
-        pos[i3 + 1] = t * 5;
-        pos[i3 + 2] = (b / bMax) * 5;
-        // gradiente: azul oscuro (silencio) → azul brillante (energía)
-        col[i3]     = 0.04 + t * 0.11;
-        col[i3 + 1] = 0.08 + t * 0.31;
-        col[i3 + 2] = 0.13 + t * 0.79;
-      }
-    }
-    for (let fr = 0; fr < FRAMES - 1; fr++) {
-      for (let b = 0; b < NBINS - 1; b++) {
-        const a = fr * NBINS + b;
-        idx.push(a, a + NBINS, a + 1, a + 1, a + NBINS, a + NBINS + 1);
-      }
-    }
-    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    geo.setAttribute('color',    new THREE.BufferAttribute(col, 3));
-    geo.setIndex(idx);
-    geo.computeVertexNormals();
-    return geo;
-  }, [spec]);
-
-  const sphereGeo = useMemo(() => new THREE.SphereGeometry(0.11, 8, 6), []);
-  const sphereMat = useMemo(() => new THREE.MeshStandardMaterial({
-    color: '#d97706', emissive: '#fbbf24', emissiveIntensity: 0.9,
-  }), []);
-
-  const peakPositions = useMemo(() =>
-    peaks
-      .filter(p => p.fr < FRAMES)
-      .map(p => {
-        const b = Math.min(NBINS - 1, Math.round(p.bin / BIN_STEP));
-        const db = spec.data[p.fr * spec.nBins + p.bin];
-        const t = Math.max(0, Math.min(1, (db + 80) / 80));
-        return [(p.fr / fMax) * 5, t * 5 + 0.22, (b / bMax) * 5];
-      }),
-    [peaks, spec]
-  );
-
-  return (
-    <group position={[-2.5, -2.5, -2.5]}>
-      <mesh geometry={surfaceGeo}>
-        <meshStandardMaterial vertexColors side={THREE.DoubleSide} roughness={0.65} />
-      </mesh>
-      {peakPositions.map((pos, i) => (
-        <mesh key={i} position={pos} geometry={sphereGeo} material={sphereMat} />
-      ))}
-    </group>
-  );
-}
-
 // ── Constelación ────────────────────────────────────────────────
 export function Constelacion({ audio }) {
   const [song, setSong] = useState('A');
   const [nPeaks, setNPeaks] = useState(3);
   const [thr, setThr] = useState(-25);
-  const [show3D, setShow3D] = useState(false);
   const spec = useMemo(() => getSpec(song), [song]);
   const peaks = useMemo(() => detectPeaks(spec, nPeaks, thr), [spec, nPeaks, thr]);
   const density = (peaks.length / (spec.nFrames * 256 / FS)).toFixed(1);
@@ -230,29 +157,9 @@ export function Constelacion({ audio }) {
           {['A', 'B', 'C'].map((k) => (
             <PillButton key={k} color={AMBER} kind={song === k ? 'solid' : 'outline'} onClick={() => { setSong(k); audio?.playBuffer(getSong(k)); }}>▶ {k}</PillButton>
           ))}
-          <PillButton color={VIOLET} kind={show3D ? 'solid' : 'outline'} onClick={() => setShow3D(v => !v)}>
-            {show3D ? '▦ Ver 2D' : '◈ Ver 3D'}
-          </PillButton>
         </div>
-        {show3D ? (
-          <DSPCanvas3D
-            cameraPosition={[9, 7, 11]}
-            fov={42}
-            ambient={0.9}
-            directional={0.7}
-            orbitControls={{ autoRotate: true, autoRotateSpeed: 0.5, enableDamping: true }}
-            style={{ height: 580, borderRadius: 10 }}
-          >
-            <Spec3DScene spec={spec} peaks={peaks} />
-          </DSPCanvas3D>
-        ) : (
-          <Spectrogram spec={spec} peaks={peaks} height={580} />
-        )}
-        <div style={cap}>
-          {show3D
-            ? 'superficie azul = STFT · esferas ámbar = picos · arrastra para rotar'
-            : 'puntos amarillos = picos detectados (la huella digital)'}
-        </div>
+        <Spectrogram spec={spec} peaks={peaks} height={580} />
+        <div style={cap}>puntos amarillos = picos detectados (la huella digital)</div>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
         <span style={kicker}>parámetros de detección</span>
