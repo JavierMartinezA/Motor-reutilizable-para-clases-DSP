@@ -11,12 +11,15 @@
  * Embebe <Hashes /> de _mir_modules.jsx (ancla, fan-out, zona objetivo).
  */
 
+import { useState } from 'react';
 import SlideLayout from '../../components/SlideLayout';
 import MathFormula from '../../components/MathFormula';
-import { INK, INK_MUTED, INK_FAINT, VIOLET, GREEN, BLUE, AMBER } from '../_mir_shared.jsx';
+import { INK, INK_MUTED, INK_FAINT, VIOLET, GREEN, BLUE, AMBER, RED, PillButton } from '../_mir_shared.jsx';
 import { Hashes } from '../_mir_modules.jsx';
 
 export default function SlideHashingCombinatorio() {
+  const [step, setStep] = useState(0);
+
   return (
     <SlideLayout
       sectionId="09"
@@ -58,6 +61,46 @@ export default function SlideHashingCombinatorio() {
           </div>
         </div>
         <Hashes />
+
+        {/* ─── Cliffhanger: ¿solución definitiva? (step 1) ─── */}
+        {step >= 1 && (
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: 14,
+            padding: '10px 18px', borderRadius: 10,
+            background: '#fff5f5', border: `1.5px solid ${RED}55`,
+          }}>
+            <span style={{
+              fontFamily: "'JetBrains Mono', monospace", fontSize: 36, fontWeight: 900,
+              color: RED, lineHeight: 1, flexShrink: 0,
+            }}>NO.</span>
+            <img
+              src="/imagenes/cerebro_musica.png"
+              alt="cerebro"
+              style={{ width: 90, height: 'auto', flexShrink: 0, opacity: 0.88 }}
+            />
+            <div style={{ flex: 1 }}>
+              <div style={{ fontFamily: "'Newsreader', serif", fontSize: 15.5, fontWeight: 600, color: INK }}>
+                ¿Es esta la solución definitiva?
+              </div>
+              <div style={{ fontFamily: "'Inter', sans-serif", fontSize: 12.5, color: INK_MUTED, lineHeight: 1.45, marginTop: 3 }}>
+                H guarda <em>hercios absolutos</em> — transpón el audio y la llave cambia por completo.
+                Tu cerebro hace algo más inteligente.{' '}
+                <strong style={{ color: RED }}>Lo vemos más adelante.</strong>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ─── Botón de paso ─── */}
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <PillButton
+            color={step === 1 ? RED : VIOLET}
+            kind="solid"
+            onClick={() => setStep(s => (s + 1) % 2)}
+          >
+            {step === 0 ? '¿Solución definitiva? →' : '← Reiniciar'}
+          </PillButton>
+        </div>
       </div>
     </SlideLayout>
   );
