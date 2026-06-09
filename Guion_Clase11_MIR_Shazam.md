@@ -363,11 +363,11 @@ Shazam no está diseñado para reconocer melodías; identifica *grabaciones fís
   1. Captura
   2. Espectrograma (STFT)
   3. Constelación (Extracción de picos)
-  4. Hashing Geométrico
-  5. Índice Invertido
-  6. Cruce O(1)
-  7. Coherencia Temporal
-  8. Scoring
+  4. Zonas Objetivo (Target Zone)
+  5. Creación del Hash (Tupla)
+  6. Consulta (Query)
+  7. Índice Invertido (O(1))
+  8. Scoring Final
 
 **[Animación / clics]**
 - Avanzar manualmente por los 8 pasos para recapitular todo el flujo desde que el usuario graba el audio hasta que el servidor emite el resultado.
@@ -377,11 +377,11 @@ Shazam no está diseñado para reconocer melodías; identifica *grabaciones fís
 Primero, la captura: el celular graba el audio ruidoso del bar.
 Ese audio viaja y se le aplica la transformada de Fourier a corto plazo, generando un Espectrograma gigante.
 A continuación, botamos casi toda esa información y nos quedamos únicamente con la Constelación de picos de máxima energía, porque son los únicos que superviven al ruido.
-Luego, amarramos esos picos sueltos creando tuplas combinatorias para generar Hashes Geométricos fuertes que no dependen del tiempo absoluto.
-Entramos al territorio del servidor: nuestro Índice Invertido es una base de datos pre-computada gigantesca, esperando las consultas.
-Hacemos un Cruce de Hashes O(1), buscando las colisiones exactas contra el servidor a velocidad constante.
-Evaluamos la Coherencia Temporal restando los tiempos relativos para buscar un delta consistente.
-Finalmente, la etapa de Scoring arma el histograma de offsets y, si aparece un pico masivo de Dirac que destaca entre la multitud, ¡Bingo! Hemos identificado la canción."
+Luego entramos a la lógica combinatoria: para cada pico de la constelación definimos Zonas Objetivo en el futuro.
+Al conectar el ancla con los puntos de esa zona generamos nuestra Creación del Hash, una tupla fuerte que no depende del tiempo absoluto.
+Lanzamos estas miles de llaves por internet hacia el servidor en forma de Consulta o Query.
+Entramos al territorio del servidor: nuestro Índice Invertido es una base de datos gigantesca que recupera las coincidencias en tiempo O(1) de forma instantánea.
+Finalmente, la etapa de Scoring Final arma el histograma de offsets y, si aparece un pico masivo de Dirac que destaca entre la multitud, ¡Bingo! Hemos identificado la canción."
 
 **[Conceptos por si preguntan]**
 - **Pipeline:** Una tubería algorítmica donde la salida de un proceso es la entrada del siguiente, garantizando un flujo eficiente.

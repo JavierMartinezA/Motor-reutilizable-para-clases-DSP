@@ -12,11 +12,11 @@ const STAGES = [
   { id: 'captura', label: '1. Captura', color: '#64748b', desc: 'Grabación de audio ruidoso desde el micrófono del celular.' },
   { id: 'espectro', label: '2. Espectrograma', color: BLUE, desc: 'Transformada de Fourier a Corto Plazo (STFT).' },
   { id: 'constelacion', label: '3. Constelación', color: VIOLET, desc: 'Filtro de picos de máxima energía (superviven al ruido aditivo).' },
-  { id: 'hashing', label: '4. Hashing Geométrico', color: AMBER, desc: 'Creación de tuplas combinatorias ancladas en zonas objetivo.', formula: 'H = [f_1, f_2, \\Delta t] \\rightarrow (\\text{ID}, t_1)' },
-  { id: 'db', label: '5. Índice Invertido', color: '#1e40af', desc: 'Estructura de datos masiva pre-computada (Base de datos).' },
-  { id: 'search', label: '6. Cruce O(1)', color: '#0d9488', desc: 'Búsqueda cruzada de colisiones a velocidad constante.' },
-  { id: 'coherencia', label: '7. Coherencia Temporal', color: '#e11d48', desc: 'Alineamiento y resta de los deltas (t_db - t_query).' },
-  { id: 'scoring', label: '8. Scoring', color: GREEN, desc: 'Histograma de offsets temporales. El pico máximo de Dirac es el match absoluto.', formula: '\\text{score} = \\max |\\{i : \\delta t_i = k\\}|' },
+  { id: 'pares', label: '4. Zonas Objetivo', color: AMBER, desc: 'Selección de un ancla y sus puntos destino (Target Zone).' },
+  { id: 'hashing', label: '5. Creación del Hash', color: '#ea580c', desc: 'Generación de la tupla invariante combinatoria.', formula: 'H = [f_1, f_2, \\Delta t] \\rightarrow (\\text{ID}, t_1)' },
+  { id: 'search', label: '6. Consulta (Query)', color: '#1e40af', desc: 'Envío de las huellas y búsqueda en el servidor.' },
+  { id: 'db', label: '7. Índice Invertido', color: '#0d9488', desc: 'Recuperación de coincidencias en tiempo constante O(1).' },
+  { id: 'scoring', label: '8. Scoring Final', color: GREEN, desc: 'Alineamiento temporal de los offsets. El pico máximo de Dirac es el match absoluto.', formula: '\\text{score} = \\max |\\{i : \\delta t_i = k\\}|' },
 ];
 
 export default function SlideShazamPipeline() {
