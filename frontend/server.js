@@ -3,13 +3,14 @@ const path = require('path');
 
 const app = express();
 const port = process.env.PORT || 3000;
+const distPath = path.join(__dirname, 'dist');
 
 // Servir archivos estáticos desde dist/
-app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static(distPath));
 
-// Fallback: todas las rutas no encontradas sirven index.html (SPA routing)
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+// Fallback SPA: cualquier ruta no encontrada sirve index.html
+app.use((req, res) => {
+  res.sendFile(path.join(distPath, 'index.html'));
 });
 
 app.listen(port, '0.0.0.0', () => {
