@@ -20,7 +20,7 @@ export default function SlideHistogramaOffsets() {
 
   return (
     <SlideLayout
-      sectionId="09"
+      sectionId="11"
       sectionLabel="MIR · Coherencia temporal"
       title={<>Coherencia temporal: <em>el histograma de offsets</em></>}
       subtitle="Compartir hashes no basta: algunos coinciden por azar. El discriminante real es temporal — la consistencia de los offsets."

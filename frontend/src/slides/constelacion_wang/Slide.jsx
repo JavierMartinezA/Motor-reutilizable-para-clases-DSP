@@ -18,7 +18,7 @@ export default function SlideConstelacionWang() {
 
   return (
     <SlideLayout
-      sectionId="07"
+      sectionId="08"
       sectionLabel="MIR · Constelación"
       title={<>La constelación de <em>Wang (2003)</em></>}
       subtitle="Descarta casi todo el espectrograma; conserva solo los picos. Los máximos locales de energía son lo que resiste el ruido."

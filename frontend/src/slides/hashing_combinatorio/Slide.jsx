@@ -19,7 +19,7 @@ import { Hashes } from '../_mir_modules.jsx';
 export default function SlideHashingCombinatorio() {
   return (
     <SlideLayout
-      sectionId="08"
+      sectionId="09"
       sectionLabel="MIR · Hashing"
       title={<>De picos a <em>hashes</em> — y a búsqueda O(1)</>}
       subtitle="Un pico solo es frágil y ambiguo. Un par (ancla→target) es una llave estable que indexa millones de canciones."

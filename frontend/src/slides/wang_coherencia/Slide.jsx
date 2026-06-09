@@ -26,7 +26,7 @@ export default function SlideWangCoherencia() {
 
   return (
     <SlideLayout
-      sectionId="08b"
+      sectionId="10"
       sectionLabel="MIR · Coherencia"
       title={<>Coherencia temporal: <em>el histograma de offsets</em></>}
       subtitle="Compartir hashes no basta — algunos coinciden por azar. El discriminante real es la consistencia temporal de los matches."

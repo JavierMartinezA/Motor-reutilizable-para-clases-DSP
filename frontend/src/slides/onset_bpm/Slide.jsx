@@ -29,7 +29,7 @@ export default function SlideOnsetBPM() {
 
   return (
     <SlideLayout
-      sectionId="04"
+      sectionId="06"
       sectionLabel="MIR · Onsets & BPM"
       title={<>El <em>latido</em> del audio: onsets y BPM</>}
       subtitle="Un onset es el inicio de un evento (golpe, ataque, palabra). Se detecta con la derivada positiva del espectro."
