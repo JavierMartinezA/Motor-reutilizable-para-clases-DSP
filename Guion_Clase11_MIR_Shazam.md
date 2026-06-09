@@ -355,7 +355,36 @@ Shazam no está diseñado para reconocer melodías; identifica *grabaciones fís
 
 ---
 
-## 12 · discusion_mir — "Síntesis y límites" (cierre)
+## 12 · shazam_pipeline — "Pipeline Completo"
+
+**[Texto visible en pantalla]**
+- Título: **El algoritmo de *Shazam* completo**
+- 6 etapas visuales interactivas:
+  1. Captura
+  2. Espectrograma (STFT)
+  3. Constelación (Extracción de picos)
+  4. Hashing (Tuplas)
+  5. Base de datos
+  6. Scoring (Histograma)
+
+**[Animación / clics]**
+- Avanzar manualmente por los 6 pasos para recapitular todo el flujo desde que el usuario graba el audio hasta que el servidor emite el resultado.
+
+**[Guion hablado]**
+"A modo de conclusión, veamos el gran panorama uniendo todas las piezas que discutimos hoy. Esta es la arquitectura completa del paper de Avery Wang publicada en 2003.
+Primero, la captura: el celular graba el audio ruidoso del bar.
+Ese audio viaja y se le aplica la transformada de Fourier a corto plazo, generando un Espectrograma gigante.
+A continuación, botamos casi toda esa información y nos quedamos únicamente con la Constelación de picos de máxima energía, porque son los únicos que sobreviven al ruido.
+Luego, amarramos esos picos sueltos creando tuplas combinatorias para generar Hashes fuertes que no dependen del tiempo absoluto.
+Lanzamos estas llaves contra nuestra Base de datos pre-indexada para lograr una búsqueda extremadamente veloz O(1).
+Finalmente, la etapa de Scoring junta todos los matches, arma el histograma de offsets y, si aparece un pico masivo que destaca entre la multitud, ¡Bingo! Hemos identificado la canción."
+
+**[Conceptos por si preguntan]**
+- **Pipeline:** Una tubería algorítmica donde la salida de un proceso es la entrada del siguiente, garantizando un flujo eficiente.
+
+---
+
+## 13 · discusion_mir — "Síntesis y límites" (cierre)
 
 **[Texto visible en pantalla]**
 - Título: **Síntesis y *límites***

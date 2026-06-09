@@ -43,7 +43,8 @@ import SlideHashingCombinatorio from './hashing_combinatorio/Slide.jsx'; // 08 h
 import SlideWangCoherencia     from './wang_coherencia/Slide.jsx';      // 08b coherencia temporal (Wang)
 import SlideHistogramaOffsets   from './histograma_offsets/Slide.jsx';   // 09 histograma de offsets
 import SlideLimitesShazam       from './limites_shazam/Slide.jsx';       // 10 rompiendo el algoritmo
-import SlideDiscusionMIR        from './discusion_mir/Slide.jsx';        // 11 veredicto & Q&A
+import SlideShazamPipeline      from './shazam_pipeline/Slide.jsx';      // 12 pipeline completo
+import SlideDiscusionMIR        from './discusion_mir/Slide.jsx';        // 13 veredicto & Q&A
 // Apéndices / backup (fuera del flujo principal).
 import SlideOnsetBPM            from './onset_bpm/Slide.jsx';            // A · onsets & BPM
 import SlidePipelineShazam      from './pipeline_shazam/Slide.jsx';      // A · pipeline (stepper)
@@ -78,6 +79,7 @@ export const SLIDE_REGISTRY = {
   'wang_coherencia':      SlideWangCoherencia,
   'histograma_offsets':   SlideHistogramaOffsets,
   'limites_shazam':       SlideLimitesShazam,
+  'shazam_pipeline':      SlideShazamPipeline,
   'discusion_mir':        SlideDiscusionMIR,
   // Apéndices / backup
   'onset_bpm':            SlideOnsetBPM,
