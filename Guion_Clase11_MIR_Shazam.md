@@ -166,7 +166,29 @@ Con un puñado de estos descriptores ya podemos clasificar audios usando Machine
 
 ---
 
-## 06 · grieta_describir — "¿Por qué Shazam no usa el centroide?"
+## 06 · onset_bpm — "El latido del audio: Onsets & BPM"
+
+**[Texto visible en pantalla]**
+- Título: **El *latido* del audio: onsets y BPM**
+- Tres melodías interactivas para probar.
+- Fórmula ancla: Spectral Flux (derivada positiva).
+- Resultados en vivo: Onsets detectados y BPM estimado.
+
+**[Animación / clics]**
+- Lab interactivo: reproducir distintas melodías (A, B, C) y observar cómo el algoritmo detecta los picos de ataque (onsets) y usa su periodicidad para calcular los BPM en tiempo real.
+
+**[Guion hablado]**
+"Otro ejemplo espectacular de DESCRIBIR es el ritmo. ¿Cómo sabe el computador dónde está el 'golpe' o el ataque de un instrumento? Usamos la derivada positiva del espectro, llamada 'Spectral Flux'. 
+Básicamente, miramos cuadro a cuadro y nos preguntamos: ¿apareció energía nueva de golpe? Si la respuesta es sí, marcamos un 'onset'.
+Si tomamos todos esos onsets a lo largo del tiempo, son como los latidos de la canción. Midiendo la distancia entre latido y latido (la periodicidad), podemos deducir matemáticamente el tempo o los BPM de la canción de forma completamente automática."
+
+**[Conceptos por si preguntan]**
+- **Spectral Flux:** Suma de las diferencias positivas de energía entre un frame y el anterior. Solo nos importan los aumentos súbitos de energía (ataques), no cuando la nota se desvanece (decays).
+- **Onset:** El momento exacto de inicio de un evento musical (el golpe de caja, el punteo de la guitarra, el inicio de una sílaba).
+
+---
+
+## 07 · grieta_describir — "¿Por qué Shazam no usa el centroide?"
 
 **[Texto visible en pantalla]**
 - Título-pregunta: **¿Por qué Shazam *no* usa el centroide?**
@@ -196,7 +218,7 @@ Necesitamos lo opuesto a un promedio: una representación local, reproducible y 
 
 ---
 
-## 07 · constelacion_wang — "La constelación de Wang (2003)"
+## 08 · constelacion_wang — "La constelación de Wang (2003)"
 
 **[Texto visible en pantalla]**
 - Título: **La constelación de *Wang (2003)***
@@ -220,7 +242,7 @@ A este sistema ya no le importa la ecualización ni el volumen. No le importa *c
 
 ---
 
-## 08 · hashing_combinatorio — "De picos a hashes — y a O(1)"
+## 09 · hashing_combinatorio — "De picos a hashes — y a O(1)"
 
 **[Texto visible en pantalla]**
 - Título: **De picos a *hashes* — y a búsqueda O(1)**
@@ -250,7 +272,7 @@ Estos tripletes se convierten en llaves para una gran tabla Hash (un índice inv
 
 ---
 
-## 08b · wang_coherencia — "Coherencia temporal: el histograma de offsets"
+## 09b · wang_coherencia — "Coherencia temporal: el histograma de offsets"
 
 **[Texto visible en pantalla]**
 - Título: **Coherencia temporal: *el histograma de offsets***
@@ -278,7 +300,7 @@ El criterio final para dar una respuesta al usuario no es simplemente contar qui
 
 ---
 
-## 09 · histograma_offsets — "Coherencia temporal en vivo"
+## 10 · histograma_offsets — "Coherencia temporal en vivo"
 
 **[Texto visible en pantalla]**
 - Título: **Coherencia temporal: *el histograma de offsets***
@@ -301,7 +323,7 @@ Esta es la magia operando detrás. El sistema puede distinguir de forma inequív
 
 ---
 
-## 10 · limites_shazam — "Robustez y modos de falla"
+## 11 · limites_shazam — "Robustez y modos de falla"
 
 **[Texto visible en pantalla]**
 - Título: **Robustez y *modos de falla***
@@ -332,7 +354,7 @@ Shazam no está diseñado para reconocer melodías; identifica *grabaciones fís
 
 ---
 
-## 11 · discusion_mir — "Síntesis y límites" (cierre)
+## 12 · discusion_mir — "Síntesis y límites" (cierre)
 
 **[Texto visible en pantalla]**
 - Título: **Síntesis y *límites***

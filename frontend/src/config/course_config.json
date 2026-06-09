@@ -48,15 +48,14 @@
         { "id": "shazam_teaser", "label": "03 · Demostración en vivo", "props": {} },
         { "id": "bifurcacion", "label": "04 · Dos tareas sobre el espectrograma", "props": {} },
         { "id": "features_audio", "label": "05 · DESCRIBIR — descriptores de audio", "props": {} },
-        { "id": "grieta_describir", "label": "06 · El límite de los descriptores", "props": {} },
-        { "id": "constelacion_wang", "label": "07 · La constelación de Wang", "props": {} },
-        { "id": "hashing_combinatorio", "label": "08 · Hashing + índice invertido", "props": {} },
-        { "id": "wang_coherencia", "label": "08b · Coherencia temporal (Wang)", "props": {} },
-        { "id": "histograma_offsets", "label": "09 · Histograma de offsets", "props": {} },
-        { "id": "limites_shazam", "label": "10 · Robustez y límites", "props": {} },
-        { "id": "discusion_mir", "label": "11 · Síntesis & Q&A", "props": {} },
-        { "id": "demo_mir", "label": "A · Laboratorio libre (apéndice)", "props": {} },
-        { "id": "onset_bpm", "label": "A · Onset & BPM (apéndice)", "props": {} }
+        { "id": "onset_bpm", "label": "06 · Onsets & BPM", "props": {} },
+        { "id": "grieta_describir", "label": "07 · El límite de los descriptores", "props": {} },
+        { "id": "constelacion_wang", "label": "08 · La constelación de Wang", "props": {} },
+        { "id": "hashing_combinatorio", "label": "09 · Hashing + índice invertido", "props": {} },
+        { "id": "wang_coherencia", "label": "09b · Coherencia temporal (Wang)", "props": {} },
+        { "id": "histograma_offsets", "label": "10 · Histograma de offsets", "props": {} },
+        { "id": "limites_shazam", "label": "11 · Robustez y límites", "props": {} },
+        { "id": "discusion_mir", "label": "12 · Síntesis & Q&A", "props": {} }
       ]
     }
   },
